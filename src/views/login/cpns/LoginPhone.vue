@@ -1,17 +1,13 @@
 <template>
-  <div class='Home'>
-    <Nav></Nav>
+  <div class='LoginPhone'>
+    手机
   </div>
 </template>
 <script lang='ts'>
 import { defineComponent } from 'vue'
-import Nav from '../components/Nav/Nav.vue'
 
 export default defineComponent({
-  name: 'Home',
-  components:{
-    Nav
-  },
+  name: 'LoginPhone',
   setup(props,content){
     
   }

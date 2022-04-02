@@ -49,7 +49,4 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.login{
-  float: right !important;
-}
 </style>

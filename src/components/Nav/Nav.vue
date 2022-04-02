@@ -1,14 +1,24 @@
 <template>
   <div class='Nav'>
-    <div class="left">左</div>
-    <div class="right">右</div>
+    <div class="left">
+        <NavInfo></NavInfo>
+    </div>
+    <div class="right">
+        <NavLogin></NavLogin>
+    </div>
   </div>
 </template>
 <script lang='ts'>
 import { defineComponent } from 'vue'
+import NavInfo from './NavInfo.vue'
+import NavLogin from './NavLogin.vue'
 
 export default defineComponent({
   name: 'Nav',
+  components:{
+      NavInfo,
+      NavLogin
+  },
   setup(props,content){
     
   }
