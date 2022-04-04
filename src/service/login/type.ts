@@ -1,6 +1,8 @@
 export interface IAccount {
   userName: string,
-  passWord: string
+  passWord: string,
+  code?:string,
+  uuid?:string
 }
 
 
@@ -12,5 +14,6 @@ export interface ILoginResult {
 
 export interface IDataType<T = any> {
   code: number,
+  success:boolean,
   data: T,
 }

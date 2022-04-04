@@ -1,15 +1,28 @@
 <template>
   <div class="LoginPanel">
+    <span class="back">
+    <el-link @click="$router.go(-1)">返回</el-link>
+    </span>
     <el-tabs type="border-card" class="demo-tabs" stretch v-model="currentTab">
-    <el-tab-pane name="account">
+      <el-tab-pane name="login">
       <template #label>
         <span class="custom-tabs-label">
           <el-icon><Avatar /></el-icon>
           <span>账号登录</span>
         </span>
       </template>
-      <LoginAccount ref="accountRef"></LoginAccount>
+      <Login ref="loginRef"></Login>
     </el-tab-pane>
+    <el-tab-pane name="register">
+      <template #label>
+        <span class="custom-tabs-label">
+          <el-icon><Avatar /></el-icon>
+          <span>账号注册</span>
+        </span>
+      </template>
+      <LoginAccount v-if="currentTab!=='login'" ref="accountRef"></LoginAccount>
+    </el-tab-pane>
+    
     <el-tab-pane name="phone">
       <template #label>
         <span class="custom-tabs-label">
@@ -24,7 +37,7 @@
     <el-checkbox v-model="isKeepPassword" label="记住密码" size="large" />
     <el-link type="primary">忘记密码</el-link>
   </div>
-    <el-button class="subForm" type="primary" @click="submitForm()">登录</el-button>
+    <el-button class="subForm" type="primary" @click="submitForm()">提交</el-button>
   </div>
 </template>
 
@@ -33,17 +46,20 @@ import { Avatar ,Iphone} from '@element-plus/icons-vue'
 import { defineComponent ,ref} from 'vue'
 import LoginAccount from './LoginAccount.vue'
 import LoginPhone from './LoginPhone.vue'
+import Login from './Login.vue'
+
 
 export default defineComponent({
   components:{
     Avatar,
     Iphone,
     LoginAccount,
-    LoginPhone
+    LoginPhone,
+    Login,
   },
   setup() {
     const isKeepPassword = ref(true)
-    const currentTab = ref<string>('account')
+    const currentTab = ref<string>('login')
 
     // const test = ref<string>()
     // test = 'wxl'
@@ -55,21 +71,22 @@ export default defineComponent({
      * T 就等于 c
      */
     const accountRef = ref<InstanceType<typeof LoginAccount>>() //拥有构造函数的实例（拿到类型->再拿到它对应的实例)
-    const phoneRef = ref<InstanceType<typeof LoginPhone>>() //拥有构造函数的实例（拿到类型->再拿到它对应的实例)
-
+    const loginRef = ref<InstanceType<typeof Login>>()
+    const phoneRef = ref<InstanceType<typeof LoginPhone>>()
     function submitForm() {
-      if(currentTab.value==='account'){
-        console.log('账号立即登录',accountRef.value)
+      if(currentTab.value==='register'){
         accountRef.value?.loginAction(isKeepPassword.value)
+      }else if(currentTab.value==='login'){
+        loginRef.value?.loginAction(isKeepPassword.value)
       }else{
-        console.log('手机立即登录',phoneRef.value)
-
+        console.log('手机登录')
       }
     }
     return {
       isKeepPassword,
       submitForm,
       accountRef,
+      loginRef,
       phoneRef,
       currentTab
     }
@@ -78,6 +95,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
+@col1: #2196f3;
+@col2: #388e3c;
 .accountAction{
   display: flex;
   justify-content: space-between;
@@ -85,10 +104,25 @@ export default defineComponent({
 .subForm{
   width: 100%;
 }
-.LoginPanel{
-  // width: 80%;
-  margin-bottom: 150px;
+
+.back{
+  display: inline-block;
+  margin-bottom: 5px;
 }
+.LoginPanel{
+  width: 350px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+.logo {
+    background-color: #fff;
+    color: @col1;
+    font-size: 25px;
+      width: 20%;
+    span {
+      color: @col2;
+    }
+  }
 .demo-tabs > .el-tabs__content {
   padding: 32px;
   color: #6b778c;

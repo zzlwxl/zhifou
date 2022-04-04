@@ -65,13 +65,12 @@ export default defineComponent({
             localCache.deleteCache('password')
           }
           //登录验证
-          store.dispatch('login/accountRegisterAction',{...account,...sumcode})
+          store.dispatch('login/accountLoginAction',{...account,...sumcode})
         }
       })
     } 
     //获取验证码
      async function getCode() {
-      localCache.deleteCache('token')
       const codeData = await Code()
       captchaCodeImg.value=codeData.data.img
       sumcode.uuid=codeData.data.uuid

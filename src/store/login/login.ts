@@ -1,8 +1,10 @@
 import { Module } from "vuex";
 
-import { Register,Code ,Login,requetUserInfoById} from "@/service/login/login";
+import { Register ,Login} from "@/service/login/login";
+import {GetUserInfo} from '@/service/user/user'
 import localCache from '@/utils/cache'
 import router from "@/router";
+import { ElMessage } from 'element-plus'
 
 import { ILoginState } from "./types";
 import { IRootState } from "../types";
@@ -30,14 +32,49 @@ const loginModule:Module<ILoginState,IRootState>={
   },
   actions:{
     async accountLoginAction({commit},payload:IAccount){
+      const loginData = await Login({
+        userName:payload.userName,
+        passWord:payload.passWord,
+        code:payload.code,
+        uuid:payload.uuid
+      })
+      if(loginData.success){
+        localCache.setCache('token',loginData.data)
+        router.go(-1)
+      }else{
+        ElMessage({
+          message: loginData.data,
+          type: 'warning',
+        })
+      }
+    },
+    async accountRegisterAction({commit},payload:IAccount){
       // console.log('accountLoginAction执行了action',payload)
       // 登录
-      const registerData = await Register(payload)
-      if(registerData.code === 200){
-        const loginData = await Login(payload)
-        console.log(loginData)
+      if(!payload.code){
+        return ElMessage({
+          message: '验证码不能为空',
+          type: 'warning',
+        })
+      }
+      const registerData = await Register({
+        userName:payload.userName,
+        passWord:payload.passWord
+      })
+      if(registerData.success){
+        const loginData = await Login({
+          userName:payload.userName,
+          passWord:payload.passWord,
+          code:payload.code,
+          uuid:payload.uuid
+        })
+        localCache.setCache('token',loginData.data)
+        router.go(-1)
       }else{
-
+        ElMessage({
+          message: registerData.data,
+          type: 'warning',
+        })
       }
       // const {id,token}= loginRequest.data
       // commit('changeToken',token)
@@ -50,8 +87,6 @@ const loginModule:Module<ILoginState,IRootState>={
       // commit('changeUserInfo',userInfo)
       
 
-      //跳到首页
-      router.push('/main')
     },
 
     loadLocalLogin({commit}){

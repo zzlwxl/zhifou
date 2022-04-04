@@ -1,4 +1,4 @@
-import type {AxiosRequestConfig, AxiosResponse } from 'axios'
+import type {AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse} from 'axios'
 
 //对应各个拦截器
 export interface ZZLRequestInterceptors<T = AxiosResponse> {
@@ -19,5 +19,6 @@ export interface ZZLRequestInterceptors<T = AxiosResponse> {
  */
 export interface ZZLRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
   interceptors?: ZZLRequestInterceptors<T>
-  showLoading?:boolean
+  isToken?:boolean
+  // showLoading?:boolean
 }

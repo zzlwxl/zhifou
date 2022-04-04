@@ -1,55 +1,68 @@
 <template>
-  <div class="main">
-    <header class="phoneNavBox">
-      <nav>导航</nav>
-      <span class="logo">logo</span>
-      <span class="login">登录/注册</span>
-    </header>
-    <header class="navBox">
-      <span class="logo">logo</span>
-      <nav>导航</nav>
-      <span class="login">登录/注册</span>
-    </header>
-    <button @click="login">登录</button>
-    首页
+  <div class='Main'>
+    <Nav></Nav>
+    <div>www</div>
+    <div>www</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
+    <div>ddd</div>
   </div>
 </template>
-<script lang="ts">
+<script lang='ts'>
 import { defineComponent } from 'vue'
-// import router from '/Users/new/lean/view/vue3/cms/src/router/index'
-import { useRouter } from 'vue-router'
+import Nav from '../../components/Nav/Nav.vue'
 
 export default defineComponent({
-  name: 'main',
-  setup(props, content) {
-    const router = useRouter()
-    const login = () => {
-      router.push('/login')
-    }
-
-    return {
-      login,
-    }
+  name: 'Main',
+  components:{
+    Nav
   },
+  setup(props,content){
+    
+  }
 })
 </script>
 
-<style scoped lang="less">
+<style scoped lang='less'>
 
-.navBox{
-  display: none;
-  background-color: red;
-}
-.phoneNavBox{
-  display: flex;
-  background-color: blue;
-}
-@media screen and (min-width: 800px){
-    .phoneNavBox{
-      display: none;
-    }
-    .navBox{
-      display: flex;
-    }
-}
 </style>

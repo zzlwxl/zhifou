@@ -11,14 +11,12 @@ const zzlRequest = new ZZLRequest({
   interceptors:{
     //请求拦截
     requestInterceptor:(config)=>{
-      console.log('请求拦截',config)
-      //携带token的拦截 
+      // console.log('请求拦截',config)
       // const token = localCache.getCache('token')
-      // if(token && config.headers){
+      // if(token){
+      //   console.log('设置token')
       //   config.headers.Authorization=`Bearer ${token}`
       // }
- 
-      console.log('请求成功')
       return config
     },
     requestInterceptorCatch:(err)=>{
@@ -26,10 +24,12 @@ const zzlRequest = new ZZLRequest({
     },
     //响应拦截
     responseInterceptor:(res)=>{
-      console.log('响应成功')
+      console.log('res2',res)
+      // console.log('响应成功')
       return res
     },
     responseInterceptorCatch:(err)=>{
+      console.log('err2',err)
       return err
     }
   }

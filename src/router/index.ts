@@ -9,7 +9,11 @@ const routes: Array<RouteRecordRaw> = [
   {
     path:'/login',
     component:() => import(/* webpackChunkName: "login" */ '../views/login/cpns/LoginPanel.vue')
-  }
+  },
+  {
+    path:'/user',
+    component:() => import(/* webpackChunkName: "user" */ '../views/user/user.vue')
+  },
 ]
 
 const router = createRouter({
