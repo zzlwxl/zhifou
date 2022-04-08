@@ -35,7 +35,7 @@
   </el-tabs>
   <div class="accountAction">
     <el-checkbox v-model="isKeepPassword" label="记住密码" size="large" />
-    <el-link type="primary">忘记密码</el-link>
+    <el-link type="primary" @click="$router.push('/forgetpwd')">忘记密码</el-link>
   </div>
     <el-button class="subForm" type="primary" @click="submitForm()">提交</el-button>
   </div>

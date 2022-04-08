@@ -1,7 +1,7 @@
 import { Module } from "vuex";
 
 import { Register ,Login} from "@/service/login/login";
-import {GetUserInfo} from '@/service/user/user'
+
 import localCache from '@/utils/cache'
 import router from "@/router";
 import { ElMessage } from 'element-plus'
@@ -15,20 +15,12 @@ const loginModule:Module<ILoginState,IRootState>={
   state(){
     return{
       token:'',
-      userInfo:{},
-      userMenus:[]
     }
   },
   mutations:{
     changeToken(state,token:string){
       state.token=token
     },
-    changeUserInfo(state,userInfo:any){
-      state.userInfo=userInfo
-    },
-    changeUserMenus(state,userMenus:any){
-      state.userMenus=userMenus
-    }
   },
   actions:{
     async accountLoginAction({commit},payload:IAccount){
@@ -39,6 +31,8 @@ const loginModule:Module<ILoginState,IRootState>={
         uuid:payload.uuid
       })
       if(loginData.success){
+        commit('changeToken',loginData.data)
+        localCache.setCache('token',loginData.data)
         localCache.setCache('token',loginData.data)
         router.go(-1)
       }else{
@@ -68,6 +62,7 @@ const loginModule:Module<ILoginState,IRootState>={
           code:payload.code,
           uuid:payload.uuid
         })
+        commit('changeToken',loginData.data)
         localCache.setCache('token',loginData.data)
         router.go(-1)
       }else{

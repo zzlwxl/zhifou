@@ -24,14 +24,13 @@ const zzlRequest = new ZZLRequest({
     },
     //响应拦截
     responseInterceptor:(res)=>{
-      console.log('res2',res)
       // console.log('响应成功')
       return res
     },
-    responseInterceptorCatch:(err)=>{
-      console.log('err2',err)
-      return err
-    }
+    // responseInterceptorCatch:(err)=>{
+    //   console.log('err2',err)
+    //   return err
+    // }
   }
 })
 

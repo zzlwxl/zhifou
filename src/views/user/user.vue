@@ -1,152 +1,84 @@
 <template>
-  <el-form
-    ref="ruleFormRef"
-    :model="ruleForm"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-    :size="formSize"
-  >
-    <el-form-item label="Activity name" prop="name">
-      <el-input v-model="ruleForm.name" />
-    </el-form-item>
-    <el-form-item label="Activity zone" prop="region">
-      <el-select v-model="ruleForm.region" placeholder="Activity zone">
-        <el-option label="Zone one" value="shanghai" />
-        <el-option label="Zone two" value="beijing" />
-      </el-select>
-    </el-form-item>
-    <el-form-item label="Activity time" required>
-      <el-col :span="11">
-        <el-form-item prop="date1">
-          <el-date-picker
-            v-model="ruleForm.date1"
-            type="date"
-            placeholder="Pick a date"
-            style="width: 100%"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col class="text-center" :span="2">
-        <span class="text-gray-500">-</span>
-      </el-col>
-      <el-col :span="11">
-        <el-form-item prop="date2">
-          <el-time-picker
-            v-model="ruleForm.date2"
-            placeholder="Pick a time"
-            style="width: 100%"
-          />
-        </el-form-item>
-      </el-col>
-    </el-form-item>
-    <el-form-item label="Instant delivery" prop="delivery">
-      <el-switch v-model="ruleForm.delivery" />
-    </el-form-item>
-    <el-form-item label="Activity type" prop="type">
-      <el-checkbox-group v-model="ruleForm.type">
-        <el-checkbox label="Online activities" name="type" />
-        <el-checkbox label="Promotion activities" name="type" />
-        <el-checkbox label="Offline activities" name="type" />
-        <el-checkbox label="Simple brand exposure" name="type" />
-      </el-checkbox-group>
-    </el-form-item>
-    <el-form-item label="Resources" prop="resource">
-      <el-radio-group v-model="ruleForm.resource">
-        <el-radio label="Sponsorship" />
-        <el-radio label="Venue" />
-      </el-radio-group>
-    </el-form-item>
-    <el-form-item label="Activity form" prop="desc">
-      <el-input v-model="ruleForm.desc" type="textarea" />
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submitForm(ruleFormRef)"
-        >Create</el-button
-      >
-      <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
-    </el-form-item>
-  </el-form>
+  <div class="user">
+    <Nav :headImgUrl="userInfo ? userInfo.headImgUrl : ''"></Nav>
+    <div class="userBox">
+     <div class="imgBox">
+       <Avatar :headImgUrl="userInfo ? userInfo.headImgUrl : ''"></Avatar>
+     </div>
+    <el-descriptions title="用户信息" direction="vertical" column="1" size="24" border>
+      <el-descriptions-item label="用户名">{{ userInfo.userName }}</el-descriptions-item>
+      <el-descriptions-item label="昵称">{{ userInfo.nickName }}</el-descriptions-item>
+      <el-descriptions-item label="手机号" :span="2">{{ userInfo.phoneNum }}</el-descriptions-item>
+      <el-descriptions-item label="性别">
+        <el-tag v-if="userInfo.sex === '男'" class="ml-2" type="success">男</el-tag>
+        <el-tag v-else-if="userInfo.sex === '女'" class="ml-2" type="danger">女</el-tag>
+        <el-tag v-else class="ml-2" type="info">未知</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="邮箱">{{ userInfo.email }} </el-descriptions-item>
+    </el-descriptions>
+    <div class="activeBox">
+    <el-button type="primary" @click="centerDialogVisible=true">编辑信息</el-button>
+    <el-button type="primary" @click="$router.push('/setpwd')">修改密码</el-button>
+    </div>
+    <el-dialog v-model="centerDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="80%" center>
+      <ChangeUserInfo @changeDialogVisibleEmit="changeDialogVisible"></ChangeUserInfo>
+    </el-dialog>
+    </div>
+  </div>
 </template>
+<script lang="ts">
+import { defineComponent, ref,computed } from 'vue'
+import Nav from '../../components/Nav/Nav.vue'
+import Avatar from './Avatar.vue'
+import ChangeUserInfo from './ChangeUserInfo.vue'
 
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
+import { useStore } from '../../store/'
+import { useRouter } from 'vue-router'
 
-const formSize = ref('default')
-const ruleFormRef = ref<FormInstance>()
-const ruleForm = reactive({
-  name: 'Hello',
-  region: '',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
-  desc: '',
-})
-
-const rules = reactive({
-  name: [
-    { required: true, message: 'Please input Activity name', trigger: 'blur' },
-    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
-  ],
-  region: [
-    {
-      required: true,
-      message: 'Please select Activity zone',
-      trigger: 'change',
-    },
-  ],
-  date1: [
-    {
-      type: 'date',
-      required: true,
-      message: 'Please pick a date',
-      trigger: 'change',
-    },
-  ],
-  date2: [
-    {
-      type: 'date',
-      required: true,
-      message: 'Please pick a time',
-      trigger: 'change',
-    },
-  ],
-  type: [
-    {
-      type: 'array',
-      required: true,
-      message: 'Please select at least one activity type',
-      trigger: 'change',
-    },
-  ],
-  resource: [
-    {
-      required: true,
-      message: 'Please select activity resource',
-      trigger: 'change',
-    },
-  ],
-  desc: [
-    { required: true, message: 'Please input activity form', trigger: 'blur' },
-  ],
-})
-
-const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  await formEl.validate((valid, fields) => {
-    if (valid) {
-      console.log('submit!')
-    } else {
-      console.log('error submit!', fields)
+export default defineComponent({
+  name: 'user',
+  components: {
+    ChangeUserInfo,
+    Nav,
+    Avatar
+  },
+  setup(props, content) {
+    const store = useStore()
+    const userInfo = computed(()=>store.state.user.userInfo)
+    const centerDialogVisible=ref(false)
+    if(store.state.user.userInfo.firstLogin){
+      //用户首次登录从未补充信息
+      centerDialogVisible.value=true
     }
-  })
-}
-
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
-}
+    const changeDialogVisible=()=>{
+      console.log('事件')
+      centerDialogVisible.value=false
+      
+    }
+    return {
+      userInfo,
+      centerDialogVisible,
+      changeDialogVisible
+    }
+  },
+})
 </script>
+
+<style scoped lang="less">
+.userBox {
+  width: 350px;
+  margin: 50px auto;
+}
+.activeBox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+.imgBox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+</style>

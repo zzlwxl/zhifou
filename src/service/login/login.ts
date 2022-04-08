@@ -27,13 +27,13 @@ export default function Code(){
 export function Register(account:IAccount){
   return zzlRequest.post<IDataType>({
     url:LoginAPI.Register,
-    data:QS.stringify(account)
+    data:account
   })
 }
 export function Login(account:IAccount){
   return zzlRequest.post<IDataType>({
     url:LoginAPI.Login,
-    data:QS.stringify(account)
+    data:account
   })
 }
 export function accountLoginRequest(account:IAccount){
