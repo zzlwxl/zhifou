@@ -8,6 +8,7 @@ import { ElMessage } from 'element-plus'
 
 import { IUserInfo } from './types'
 import { IRootState } from '../types'
+import {checkPhone} from '../../utils/checkPhone'
 // import {} from '@/service/user/type'
 
 const userModule: Module<IUserInfo, IRootState> = {
@@ -19,6 +20,9 @@ const userModule: Module<IUserInfo, IRootState> = {
     },
     mutations: {
         changeUserInfo(state, userInfo: any) {
+            if(JSON.stringify(userInfo)!=="{}"){
+                userInfo.phoneNum=checkPhone(userInfo.phoneNum)
+            }
             state.userInfo = userInfo
         },
     },

@@ -2,11 +2,12 @@ import zzlRequest from "../index";
 
 import QS from 'qs'
 
-import { IArticle ,IDataType} from "./type";
+import { IArticle ,IDataType,ICreateCate} from "./type";
 
 enum Article{
   addArticle='/article/add',
-  getCategorys='/category/get'
+  getCategorys='/category/get',
+  createCate='/category/add'
 }
 
 
@@ -21,5 +22,9 @@ export function getCategorys(){
         url:Article.getCategorys
     })
 }
-
-
+export function createCate(data:ICreateCate){
+  return zzlRequest.post<IDataType>({
+    url:Article.createCate,
+    data
+  })
+}

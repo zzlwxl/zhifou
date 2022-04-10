@@ -35,6 +35,8 @@ import {ElMessage} from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import {IUserInfo} from '../../service/user/type'
 
+import {checkPhone} from '../../utils/checkPhone'
+
 import {editUserInfo} from '../../service/user/user'
 
 export default defineComponent({
@@ -54,7 +56,7 @@ export default defineComponent({
           const submitFormData= {
             userName: userInfoForm.userName,
             nickName: userInfoForm.nickName,
-            phoneNum: `${userInfoForm.phoneNum}`,
+            phoneNum: checkPhone(userInfoForm.phoneNum),
             email: userInfoForm.email,
             sex: userInfoForm.sex,
           }
@@ -62,6 +64,7 @@ export default defineComponent({
         }
       })
     }
+   
     //提交表单
     async function submitForm(data:IUserInfo) {
         const value = await editUserInfo(data)
@@ -70,10 +73,12 @@ export default defineComponent({
           message: '修改成功',
           type: 'success',
         })
+          //更改vuex里的用户信息
+          store.commit('user/changeUserInfo',value.data)
+          content.emit('changeDialogVisibleEmit')
+        }else{
+          ElMessage.error(value.data)
         }
-        //更改vuex里的用户信息
-        store.commit('user/changeUserInfo',value.data)
-        content.emit('changeDialogVisibleEmit')
     }
     return {
       userInfoForm,

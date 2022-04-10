@@ -4,20 +4,15 @@
       <header class="phoneNavBox">
         <nav>
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="1">sd</el-menu-item>
-            <el-sub-menu index="2">
-              <template #title>Workspace</template>
-              <el-menu-item index="2-1">item one</el-menu-item>
-              <el-menu-item index="2-2">item two</el-menu-item>
-              <el-menu-item index="2-3">item three</el-menu-item>
-              <el-sub-menu index="2-4">
-                <template #title>item four</template>
-                <el-menu-item index="2-4-1">item one</el-menu-item>
-                <el-menu-item index="2-4-2">item two</el-menu-item>
-                <el-menu-item index="2-4-3">item three</el-menu-item>
-              </el-sub-menu>
+            <el-sub-menu :index="item.categoryId"  v-for="(item) in categorysArray" :key="item.categoryId">
+              <template #title>{{ item.categoryName }}</template>
+              <template v-if="item.children.length">
+                <el-menu-item :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{item.categoryName}}</el-menu-item>
+              </template>
+              <template v-else>
+                <span class="nullCate">没有子分类</span>
+              </template>
             </el-sub-menu>
-            <el-menu-item index="4">Orders</el-menu-item>
           </el-menu>
         </nav>
         <span @click="$router.push('/')" class="logo">知<span>否</span></span>
@@ -91,7 +86,6 @@ export default defineComponent({
       const data = await getCategorys()
       if (data.success) {
         categorysArray.value = data.data
-        console.log('dd',categorysArray)
       } else {
       }
     }
@@ -134,10 +128,10 @@ export default defineComponent({
 .main {
   position: fixed;
   width: 100%;
+  z-index: 1000;
 }
 .navBox {
   display: none;
-  background-color: red;
 }
 .nullCate{
   color: rgb(110, 110, 110);
@@ -146,6 +140,9 @@ export default defineComponent({
 .phoneNavBox {
   .el-menu--horizontal {
     border-bottom: 0px;
+  }
+  nav{
+    margin-top: 10px;
   }
   .logo {
     flex: 1;
@@ -208,7 +205,6 @@ export default defineComponent({
     }
     nav {
       flex: 1;
-      background-color: rgb(1, 192, 255);
     }
     .create-article {
       padding: 5px;

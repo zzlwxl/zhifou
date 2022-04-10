@@ -1,54 +1,42 @@
 <template>
   <div class="Avatar">
-    <el-avatar :size="50" :src="circleUrl ? circleUrl : $store.state.user.userInfo.headImgUrl" />
+    <img v-if="circleUrl" @click="handlePictureCardPreview" :src="circleUrl" class="avatar" />
     <el-upload class="upload-demo" :headers="headerObj" :action="action" :on-success="handleAvatarSuccess" :on-preview="handlePreview" :show-file-list="false" :on-remove="handleRemove">
-      <el-button style="margin-top:10px" type="primary">更改头像</el-button>
+      <el-button style="margin-top: 10px; margin-left: 10px" type="primary">选择文章缩略图</el-button>
     </el-upload>
+    <el-dialog v-model="dialogVisible" class="dialog">
+      <img :src="circleUrl" alt="" />
+    </el-dialog>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import type { UploadProps, UploadUserFile } from 'element-plus'
+import type { UploadProps, UploadFile } from 'element-plus'
 import { ElMessage } from 'element-plus'
-// import localCache from '../../utils/cache'
-import  localCache from '@/utils/cache'
-import {useStore} from '../../store/index'
-import { editUserInfo } from '../../service/user/user'
+import localCache from '../../utils/cache'
 
 export default defineComponent({
   name: 'Avatar',
-  props:{
-      headImgUrl:{
-          type:String,
-      }
-  },
+  emits: ['coverImgEmit'],
   setup(props, content) {
     const circleUrl = ref()
-    const store = useStore()
     const action = 'http://192.168.1.68:8080/cos/upload'
-
-    circleUrl.value=props.headImgUrl
     const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
       console.log(uploadFile, uploadFiles)
     }
+    const dialogVisible = ref(false)
+    const handlePictureCardPreview = () => {
+      dialogVisible.value = true
+    }
     const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
-
       if (response.success) {
         circleUrl.value = response.data.fileBaseUrl + response.data.filePath
-        update()
+        console.log(response.data)
         ElMessage.success('上传成功')
-      }else{
+        content.emit('coverImgEmit', circleUrl.value)
+      } else {
         ElMessage.error(response.data)
       }
-    }
-    async function update() {
-      console.log('update')
-        const data = await editUserInfo({
-            headImgUrl:circleUrl.value
-        })
-        if(data.success){
-            store.commit('user/changeUserInfo',data.data)
-        }
     }
     const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
       if (rawFile.type !== 'image/jpeg') {
@@ -70,15 +58,22 @@ export default defineComponent({
       action,
       headerObj,
       handleAvatarSuccess,
+      handlePictureCardPreview,
+      dialogVisible
     }
   },
 })
 </script>
 
 <style scoped lang="less">
+.avatar{
+    width: 100px;
+    cursor: pointer;
+}
+
 .Avatar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

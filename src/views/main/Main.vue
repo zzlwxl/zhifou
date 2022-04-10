@@ -1,95 +1,86 @@
 <template>
-  <div class='Main'>
+  <div class="Main">
     <Nav></Nav>
-    <div>www</div>
-    <div>www</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>ddd</div>
-    <div>www</div>
-    <Footer></Footer>
+    <div class="mainBox">
+      <aside class="left">左</aside>
+      <main>
+        <div class="slide">
+          <Slide></Slide>
+          <ArticleList></ArticleList>
+        </div>
+      </main>
+      <aside class="right">右</aside>
+    </div>
+    <footer>
+      <Footer></Footer>
+    </footer>
   </div>
 </template>
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent } from 'vue'
 import Nav from '../../components/Nav/Nav.vue'
 import Footer from '../../components/Footer/Footer.vue'
+import Slide from '../article/Slide.vue'
+import ArticleList from '../article/ArticleList.vue'
 
 export default defineComponent({
   name: 'Main',
-  components:{
+  components: {
     Nav,
-    Footer
+    Footer,
+    Slide,
+    ArticleList
   },
-  setup(props,content){
-    
-  }
+  setup(props, content) {},
 })
 </script>
 
-<style scoped lang='less'>
-
+<style scoped lang="less">
+.mainBox {
+  margin-top: 2vw;
+  display: flex;
+  justify-content: center;
+}
+main {
+  width: 95%;
+  height: 1000px;
+  background-color: rgb(255, 116, 116);
+  display: flex;
+  justify-content: center;
+  .slide {
+    width: 95%;
+    position: relative;
+  }
+}
+.left {
+  display: none;
+}
+.right {
+  display: none;
+}
+@media screen and (min-width: 800px) {
+  .right {
+    height: 1000px;
+    background-color: rgb(145, 145, 255);
+    display: block;
+    width: 40%;
+  }
+  .left {
+    display: none;
+  }
+}
+@media screen and (min-width: 1600px) {
+  .left {
+    height: 1000px;
+    background-color: rgb(150, 255, 150);
+    width: 30%;
+    display: block;
+  }
+  .right {
+    height: 1000px;
+    background-color: rgb(138, 138, 255);
+    width: 30%;
+    display: block;
+  }
+}
 </style>

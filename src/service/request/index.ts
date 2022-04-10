@@ -98,18 +98,18 @@ class ZZLRequest {
   }
 
   request<T = any>(config: ZZLRequestConfig<T>): Promise<T> {
-    switch(config.method){
-      case 'GET':
-        if(config.data){
-          config.url = config.url + '?' + config.data
-        }
-        break
-      case 'POST':
-        if(config.data){
-          config.data=QueryString.stringify(config.data)
-        }
-        break
-    }
+    // switch(config.method){
+    //   case 'GET':
+    //     if(config.data){
+    //       config.url = config.url + '?' + config.data
+    //     }
+    //     break
+    //   case 'POST':
+    //     if(config.data){
+    //       config.data=QueryString.stringify(config.data)
+    //     }
+    //     break
+    // }
     return new Promise((resolve, reject) => {
       //3 对单个请求进行特殊拦截处理（某个请求对应的拦截）
       if (config.interceptors?.requestInterceptor) {
@@ -145,10 +145,12 @@ class ZZLRequest {
   }
 
   get<T = any>(config: ZZLRequestConfig<T>): Promise<T> {
+    if(config.data) config.url = config.url + '?' + config.data
     return this.request<T>({ ...config, method: 'GET' })
   }
 
   post<T = any>(config: ZZLRequestConfig<T>): Promise<T> {
+    if(config.data) config.data=QueryString.stringify(config.data)
     return this.request<T>({ ...config, method: 'POST' })
   }
   delete<T = any>(config: ZZLRequestConfig<T>): Promise<T> {

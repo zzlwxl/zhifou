@@ -4,10 +4,7 @@
       <el-form-item label="文章标题" prop="articleTitle">
         <el-input v-model="subForm.articleTitle" />
       </el-form-item>
-      <Category></Category>
-      <!-- <el-form-item label="文章内容" prop="articleName">
-        <el-input v-model="subForm.articleName" />
-      </el-form-item> -->
+      <Category @changeCateEmit="changeCate"></Category>
       <el-form-item label="文章内容" prop="articleContent">
         <el-input type="textarea" v-model="subForm.articleContent" />
       </el-form-item>
@@ -17,8 +14,11 @@
           <el-radio label="2" size="large">草稿</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="文章头图">
+        <CoverImg @coverImgEmit="coverImgFun"></CoverImg>
+      </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitFormRule(ruleFormRef)">提交</el-button>
+        <el-button style="width:100%" type="primary" @click="submitFormRule(ruleFormRef)">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -27,6 +27,7 @@
 import { defineComponent, ref, reactive } from 'vue'
 
 import Category from './Category.vue'
+import CoverImg from './CoverImg.vue'
 
 import { useRouter } from 'vue-router'
 import { articleRules } from './config/articleRules'
@@ -36,12 +37,15 @@ import { ElMessage } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import { IArticle } from '../../service/article/type'
 
+import {categoryID} from './config/defaultCateID'
+
 import { addArticle } from '../../service/article/index'
 
 export default defineComponent({
   name: 'Article',
   components:{
-      Category
+      Category,
+      CoverImg
   },
   setup(props, content) {
     const router = useRouter()
@@ -49,11 +53,20 @@ export default defineComponent({
     const subForm = reactive({
       articleTitle: '',
       articleName: '',
-      categoryId: '',
+      categoryId: categoryID,
       articleContent: '',
       articleState: '',
+      coverImg:''
     })
-
+    //接收分类组件传过来的分类ID
+    const changeCate=(value:string)=>{
+      console.log('value',value)
+      subForm.categoryId=value
+    }
+    //接收头图组件传过来的图片地址
+    const coverImgFun=(url:string)=>{
+      subForm.coverImg=url
+    }
     //提交前验证表单
     const submitFormRule = async (formEl: FormInstance | undefined) => {
       if (!formEl) return
@@ -65,6 +78,7 @@ export default defineComponent({
             categoryId: subForm.categoryId,
             articleContent: subForm.articleContent,
             articleState: subForm.articleState,
+            coverImg:subForm.coverImg
           }
           submitForm(submitFormData)
         }
@@ -78,7 +92,7 @@ export default defineComponent({
           message: '提交成功',
           type: 'success',
         })
-        //   router.replace('/login')
+          router.push('/')
       } else {
         ElMessage({
           message: value.data,
@@ -91,6 +105,8 @@ export default defineComponent({
       submitFormRule,
       articleRules,
       ruleFormRef,
+      changeCate,
+      coverImgFun
     }
   },
 })
