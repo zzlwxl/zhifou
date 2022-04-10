@@ -145,7 +145,7 @@ class ZZLRequest {
   }
 
   get<T = any>(config: ZZLRequestConfig<T>): Promise<T> {
-    if(config.data) config.url = config.url + '?' + config.data
+    if(config.data) config.url = config.url + '?' + QueryString.stringify(config.data)
     return this.request<T>({ ...config, method: 'GET' })
   }
 

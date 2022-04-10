@@ -68,8 +68,10 @@ import { defineComponent, onMounted, computed, ref, reactive, watchEffect } from
 import { useRouter } from 'vue-router'
 import { Edit } from '@element-plus/icons-vue'
 import { getCategorys } from '../../service/article/index'
+import {logout} from '../../service/user/user'
 import localCache from '../../utils/cache'
 import { useStore } from 'vuex'
+import {ElMessage} from 'element-plus'
 
 export default defineComponent({
   name: 'main',
@@ -104,11 +106,19 @@ export default defineComponent({
     const userName = computed(() => {
       return store.state.user.userInfo.userName
     })
-
+    async function out() {
+      const data = await logout()
+      if(data.success){
+        localCache.deleteCache('token')
+        store.commit('user/changeUserInfo', {})
+        router.push('/')
+        ElMessage.success(data.data)
+      }else{
+        ElMessage.warning(data.data)
+      }
+    }
     const outLogin = () => {
-      localCache.deleteCache('token')
-      store.commit('user/changeUserInfo', {})
-      router.push('/login')
+      out()
     }
     return {
       userName,

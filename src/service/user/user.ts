@@ -10,7 +10,8 @@ enum UserInfo{
   editPwd='/user/editPwd',
   getPhoneCode='/auth/getPhone',
   resetPwd='/auth/resetPwd',
-  uploadFile='/cos/upload'
+  uploadFile='/cos/upload',
+  logout='/auth/logout'
 }
 export function GetUserInfo(){
   return zzlRequest.get<IDataType>({
@@ -40,6 +41,11 @@ export function resetPwd(data:IResetPwd){
   return zzlRequest.post<IDataType>({
     url:UserInfo.resetPwd,
     data
+  })
+}
+export function logout(){
+  return zzlRequest.get<IDataType>({
+    url:UserInfo.logout
   })
 }
 // export function uploadFile(data:FormData){

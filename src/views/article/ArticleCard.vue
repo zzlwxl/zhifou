@@ -1,109 +1,117 @@
 <template>
-  <div class='ArticleCard'>
+  <div class="ArticleCard">
     <div class="ArticleCardBox">
-        <div class="top">
-        <img class="img" src="https://file.lddcc.cn/zhifou/6250fe81ed9484cda226935a.png" alt="">
+      <div class="top">
+        <img class="img" :src="article.coverImg" alt="没有图片" />
         <div class="contentBox">
-            <div class="title">
-            <h1>文章标题</h1>
-            <div class="cate">分类</div>
-            </div>
-            <div class="content">文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容</div>
+          <div class="title">
+            <h1>{{ article.articleTitle }}</h1>
+            <div class="cate">{{ article.category.categoryName }}</div>
+          </div>
+          <div class="content">{{ article.contentView }}</div>
         </div>
-        </div>
-        <div class="activeBox">
-            <div class="time">时间</div>
-            <div class="other-data">作者</div>
-            <div class="active">操作</div>
-        </div>
+      </div>
+      <div class="activeBox">
+        <div class="time">{{ article.createTime }}</div>
+        <div class="other-data">{{ article.author.nickName }}</div>
+        <div class="active">{{ '浏览量' + article.articleViews }}</div>
+      </div>
     </div>
   </div>
 </template>
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'ArticleCard',
-  setup(props,content){
-    
-  }
+  props: {
+    articleData: {
+      type: Object,
+    },
+  },
+  setup(props, content) {
+    const article = props.articleData
+    return {
+      article,
+    }
+  },
 })
 </script>
 
-<style scoped lang='less'>
-.ArticleCardBox{
+<style scoped lang="less">
+@col2: #388e3c;
+.ArticleCardBox {
+  width: 100%;
+  height: 25vw;
+  background-color: #ffffff;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  .top {
     width: 100%;
-    height: 25vw;
-    background-color: #fff;
+    height: 80%;
     display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    .top{
-        width: 100%;
-        height: 80%;
-        background-color: rgb(255, 192, 18);
+    align-items: center;
+    img {
+      width: 30%;
+      height: 85%;
+    }
+    .contentBox {
+      width: 70%;
+      height: 85%;
+      display: flex;
+      flex-direction: column;
+      margin-left: 1vw;
+      .title {
         display: flex;
         align-items: center;
-        img{
-            width: 30%;
-            height: 85%;
+        h1 {
+          color: rgb(27, 27, 27);
+          font-size: 1rem;
         }
-        .contentBox{
-            width: 70%;
-            height: 85%;
-            background-color: skyblue;
-            display: flex;
-            flex-direction: column;
-            margin-left: 1vw;
-            .title{
-                display: flex;
-                align-items: center;
-                h1{
-                    color: rgb(27, 27, 27);
-                    font-size: 1rem;
-                }
-                .cate{
-                    font-size: .2rem;
-                    margin-left: 1vw;
-                }
-            }
-            .content{
-                overflow: hidden;
-                font-size: .5rem;
-                color: rgb(29, 29, 29);
-                margin-bottom: 2vw;
-            }
+        .cate {
+          font-size: 0.2rem;
+          margin-left: 1vw;
         }
+      }
+      .content {
+        overflow: hidden;
+        font-size: 0.5rem;
+        color: rgb(29, 29, 29);
+        margin-bottom: 2vw;
+      }
     }
-    .activeBox{
-        width: 100%;
-        height: 20%;
-        background-color: green;
-        display: flex;
-        align-items: center;
-        .time{
-            width: 20%;
-            font-size: .2rem;
-            background-color: red;
-        }
-        .other-data{
-            width: 30%;
-            font-size: .2rem;
-            background-color: pink;
-        }
-        .active{
-            width: 50%;
-            font-size: .2rem;
-            background:yellow;
-        }
+  }
+  .activeBox {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    .time {
+      width: 20%;
+      font-size: 0.2rem;
     }
+    .other-data {
+      width: 30%;
+      font-size: 0.2rem;
+    }
+    .active {
+      width: 50%;
+      font-size: 0.2rem;
+    }
+  }
 }
-@media screen and (min-width:800px) {
-    .ArticleCardBox{
-        height: 15vw;
-        .img{
-            width: 10vw;
-        }
+.ArticleCardBox:hover {
+  box-shadow: darkgrey 10px 10px 30px 5px;
+}
+@media screen and (min-width: 800px) {
+  .ArticleCardBox {
+    height: 15vw;
+    .img {
+      width: 10vw;
     }
+  }
 }
 </style>

@@ -2,12 +2,14 @@ import zzlRequest from "../index";
 
 import QS from 'qs'
 
-import { IArticle ,IDataType,ICreateCate} from "./type";
+import { IArticle ,IDataType,ICreateCate,IGetArticleAll} from "./type";
 
 enum Article{
   addArticle='/article/add',
   getCategorys='/category/get',
-  createCate='/category/add'
+  createCate='/category/add',
+    getArticleAll='/article/getPage',
+    getArticleTop='/article/getTop'
 }
 
 
@@ -28,3 +30,13 @@ export function createCate(data:ICreateCate){
     data
   })
 }
+export function getArticleAll(data:IGetArticleAll){
+    return zzlRequest.get<IDataType>({
+        url:Article.getArticleAll,
+        data
+    })
+}
+export function getArticleTop(){
+  return zzlRequest.get<IDataType>({
+    url:Article.getArticleTop
+  })}

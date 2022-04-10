@@ -15,3 +15,7 @@ export interface ICreateCate<T=any>{
     categoryAlias:string,
     parentCategoryId:string
 }
+export interface IGetArticleAll<T=any>{
+    current:number,
+    size:number
+}

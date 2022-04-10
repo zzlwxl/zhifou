@@ -44,7 +44,6 @@ export default defineComponent({
 main {
   width: 95%;
   height: 1000px;
-  background-color: rgb(255, 116, 116);
   display: flex;
   justify-content: center;
   .slide {
