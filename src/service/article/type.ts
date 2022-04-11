@@ -19,3 +19,6 @@ export interface IGetArticleAll<T=any>{
     current:number,
     size:number
 }
+export interface IGetArticleInfo<T=any>{
+    articleId:string
+}

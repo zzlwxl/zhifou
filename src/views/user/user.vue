@@ -2,6 +2,9 @@
   <div class="user">
     <Nav :headImgUrl="userInfo ? userInfo.headImgUrl : ''"></Nav>
     <div class="userBox">
+      <span class="back">
+    <el-link @click="$router.go(-1)">返回</el-link>
+    </span>
      <div class="imgBox">
        <Avatar :headImgUrl="userInfo ? userInfo.headImgUrl : ''"></Avatar>
      </div>

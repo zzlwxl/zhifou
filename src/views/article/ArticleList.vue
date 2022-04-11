@@ -1,5 +1,6 @@
 <template>
   <div class='ArticleList'>
+    <Slide></Slide>
     <template v-for="(item) in ArticleAllList">
       <ArticleCard :articleData="item"></ArticleCard>
     </template>
@@ -12,12 +13,14 @@
 <script lang='ts'>
 import { defineComponent ,ref} from 'vue'
 import ArticleCard from './ArticleCard.vue'
+import Slide from '../article/Slide.vue'
 import {getArticleAll} from '@/service/article'
 
 export default defineComponent({
   name: 'ArticleList',
   components:{
-      ArticleCard
+      ArticleCard,
+      Slide
   },
   setup(props,content){
     let current=1

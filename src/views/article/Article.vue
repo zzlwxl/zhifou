@@ -1,5 +1,8 @@
 <template>
   <div class="article">
+    <span class="back">
+    <el-link @click="$router.go(-1)">返回</el-link>
+    </span>
     <el-form ref="ruleFormRef" :model="subForm" :rules="articleRules" label-width="120px" class="demo-userInfoForm" :size="formSize">
       <el-form-item label="文章标题" prop="articleTitle">
         <el-input v-model="subForm.articleTitle" />
@@ -59,9 +62,9 @@ export default defineComponent({
       coverImg:''
     })
     //接收分类组件传过来的分类ID
-    const changeCate=(value:string)=>{
-      console.log('value',value)
-      subForm.categoryId=value
+    const changeCate=(value:any)=>{
+      //categoryID是创建的ID,value是选择的ID
+      subForm.categoryId=value.categoryID ?? value.categoryId
     }
     //接收头图组件传过来的图片地址
     const coverImgFun=(url:string)=>{

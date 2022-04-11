@@ -52,7 +52,7 @@
                 </template>
               </el-dropdown>
             </div>
-            <el-button @click="$router.push('create')" color="#388e3c" style="color: white" round>创作文章</el-button>
+            <el-button @click="$router.push('/create')" color="#388e3c" style="color: white" round>创作文章</el-button>
           </template>
           <template v-else>
             <el-link @click="$router.push('/login')">登录/注册</el-link>

@@ -87,12 +87,16 @@ class ZZLRequest {
               })
               localCache.deleteCache('token')
               router.push('/login')
+              return '登录过期，请重新登录'
+            default:
+              ElMessage.warning(error.response.msg)
+              return Promise.reject(error.response)
           }
           // console.log('所有实例都有的响应拦截器-响应失败')
 
           // 移除加载动画
           // this.loading?.close()
-          return error
+          // return error
         }
       )
   }

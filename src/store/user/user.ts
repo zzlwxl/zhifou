@@ -21,7 +21,7 @@ const userModule: Module<IUserInfo, IRootState> = {
     mutations: {
         changeUserInfo(state, userInfo: any) {
             if(JSON.stringify(userInfo)!=="{}"){
-                userInfo.phoneNum=checkPhone(userInfo.phoneNum)
+                userInfo.phoneNum=checkPhone(userInfo.phoneNum ?? '')
             }
             state.userInfo = userInfo
         },
@@ -30,7 +30,7 @@ const userModule: Module<IUserInfo, IRootState> = {
         async getUserInfoAction({commit}){
             const userData=await GetUserInfo()
             console.log(userData)
-            if(userData.success){
+            if(userData.success ?? false){
                 commit('changeUserInfo',userData.data)
             }
         }

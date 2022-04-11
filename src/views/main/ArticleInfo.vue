@@ -1,14 +1,11 @@
 <template>
-  <div class="Main">
+  <div class="ArticleMain">
     <Nav></Nav>
     <div class="mainBox">
       <aside class="left">左</aside>
-      <main>
-        <div class="slide">
-          <!-- <Slide></Slide> -->
+        <div class="articleBox">
           <router-view></router-view>
         </div>
-      </main>
       <aside class="right">右</aside>
     </div>
     <footer>
@@ -24,33 +21,33 @@ import Footer from '../../components/Footer/Footer.vue'
 import ArticleList from '../article/ArticleList.vue'
 
 export default defineComponent({
-  name: 'Main',
+  name: 'ArticleMain',
   components: {
     Nav,
     Footer,
     // Slide,
-    ArticleList
+    ArticleList,
   },
-  setup(props, content) {},
+  setup(props, content) {
+    console.log('dd')
+  },
 })
 </script>
 
 <style scoped lang="less">
+.articleBox {
+  width: 100%;
+  height: 100%;
+  background-color: red;
+}
 .mainBox {
   margin-top: 2vw;
   display: flex;
+  width: 100%;
+  background-color: pink;
   justify-content: center;
 }
-main {
-  width: 95%;
-  height: 1000px;
-  display: flex;
-  justify-content: center;
-  .slide {
-    width: 95%;
-    position: relative;
-  }
-}
+
 .left {
   display: none;
 }
@@ -80,6 +77,12 @@ main {
     background-color: rgb(138, 138, 255);
     width: 30%;
     display: block;
+  }
+  .articleBox {
+    width: 40%;
+    height: 1000px;
+    // padding: 100%;
+    background-color: red;
   }
 }
 </style>

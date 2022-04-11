@@ -9,7 +9,8 @@ enum Article{
   getCategorys='/category/get',
   createCate='/category/add',
     getArticleAll='/article/getPage',
-    getArticleTop='/article/getTop'
+    getArticleTop='/article/getTop',
+    getArticleInfo='/article/detail'
 }
 
 
@@ -40,3 +41,9 @@ export function getArticleTop(){
   return zzlRequest.get<IDataType>({
     url:Article.getArticleTop
   })}
+export function getArticleInfo(articleId:string){
+  return zzlRequest.get<IDataType>({
+    url:Article.getArticleInfo,
+    data:{articleId}
+  })
+}

@@ -1,6 +1,6 @@
 <template>
   <div class="ArticleCard">
-    <div class="ArticleCardBox">
+    <div class="ArticleCardBox" @click="clickArticleInfo(article.articleId)">
       <div class="top">
         <img class="img" :src="article.coverImg" alt="没有图片" />
         <div class="contentBox">
@@ -21,6 +21,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'ArticleCard',
@@ -30,9 +31,14 @@ export default defineComponent({
     },
   },
   setup(props, content) {
+    const router=useRouter()
     const article = props.articleData
+    const clickArticleInfo=(id:string)=>{
+      router.push(`/articleinfo/info/${id}`)
+    }
     return {
       article,
+      clickArticleInfo
     }
   },
 })
