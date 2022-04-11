@@ -27,7 +27,7 @@
             <el-sub-menu :index="item.categoryId"  v-for="(item) in categorysArray" :key="item.categoryId">
               <template #title>{{ item.categoryName }}</template>
               <template v-if="item.children.length">
-                <el-menu-item :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{item.categoryName}}</el-menu-item>
+                <el-menu-item @click="articleListByCate(item.categoryName,item.categoryId)" :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{item.categoryName}}</el-menu-item>
               </template>
               <template v-else>
                 <span class="nullCate">没有子分类</span>
@@ -35,6 +35,7 @@
             </el-sub-menu>
           </el-menu>
         </nav>
+        <Search></Search>
         <span class="login">
           <template v-if="userName">
             <div class="user-info">
@@ -46,7 +47,7 @@
                       {{ userName }}
                     </div>
                     <el-dropdown-item @click="$router.push('/user')">个人中心</el-dropdown-item>
-                    <el-dropdown-item>文章管理</el-dropdown-item>
+                    <el-dropdown-item @click="$router.push(`/article/user/${$store.state.user.userInfo.userId}`)">文章管理</el-dropdown-item>
                     <el-dropdown-item @click="outLogin">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -65,6 +66,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, computed, ref, reactive, watchEffect } from 'vue'
+import Search from '../Serarch/Search.vue'
 import { useRouter } from 'vue-router'
 import { Edit } from '@element-plus/icons-vue'
 import { getCategorys } from '../../service/article/index'
@@ -77,6 +79,7 @@ export default defineComponent({
   name: 'main',
   components: {
     Edit,
+    Search
   },
   setup(props, content) {
     const router = useRouter()
@@ -92,6 +95,10 @@ export default defineComponent({
       }
     }
     categorys()
+    const articleListByCate=(categoryName:string,categoryId:string)=>{
+      console.log(categoryName,categoryId)
+      router.push(`/article/articlebycate/${categoryId}`)
+    }
 
     function userInfo() {
       console.log(store.state.login.token)
@@ -124,6 +131,7 @@ export default defineComponent({
       userName,
       outLogin,
       categorysArray,
+      articleListByCate
     }
   },
 })

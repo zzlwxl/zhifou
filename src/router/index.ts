@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
     component: import(/* webpackChunkName: "main" */ '../views/main/Main.vue'),
     children: [
       {
-        path: '/article',
+        path: 'article',
         component: import(/* webpackChunkName: "main" */ '../views/article/ArticleList.vue'),
       }
     ]

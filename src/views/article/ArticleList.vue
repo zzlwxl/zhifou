@@ -14,6 +14,7 @@
 import { defineComponent ,ref} from 'vue'
 import ArticleCard from './ArticleCard.vue'
 import Slide from '../article/Slide.vue'
+import {useRoute} from 'vue-router'
 import {getArticleAll} from '@/service/article'
 
 export default defineComponent({
@@ -23,11 +24,13 @@ export default defineComponent({
       Slide
   },
   setup(props,content){
+    const route = useRoute()
     let current=1
     let size=10
     let ArticleAllList=ref<any>([])
     let isNullArticle=ref(false)
     let loading=ref(true)
+    console.log('路由',route.params)
     async function getArticleAllList(){
       // loading.value=false
       const articleData = await getArticleAll({current,size})

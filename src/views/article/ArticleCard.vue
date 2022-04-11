@@ -15,6 +15,8 @@
         <div class="time">{{ article.createTime }}</div>
         <div class="other-data">{{ article.author.nickName }}</div>
         <div class="active">{{ '浏览量' + article.articleViews }}</div>
+        <div class="active">{{ '评论量' + article.articleViews }}</div>
+        <div class="active">{{ '点赞量' + article.articleViews }}</div>
       </div>
     </div>
   </div>
@@ -31,14 +33,14 @@ export default defineComponent({
     },
   },
   setup(props, content) {
-    const router=useRouter()
+    const router = useRouter()
     const article = props.articleData
-    const clickArticleInfo=(id:string)=>{
+    const clickArticleInfo = (id: string) => {
       router.push(`/articleinfo/info/${id}`)
     }
     return {
       article,
-      clickArticleInfo
+      clickArticleInfo,
     }
   },
 })
@@ -47,6 +49,7 @@ export default defineComponent({
 <style scoped lang="less">
 @col2: #388e3c;
 .ArticleCardBox {
+  padding: 5px 0;
   width: 100%;
   height: 25vw;
   background-color: #ffffff;
@@ -84,6 +87,12 @@ export default defineComponent({
       }
       .content {
         overflow: hidden;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        box-orient: vertical;
+        display: -webkit-box;
+        display: box;
         font-size: 0.5rem;
         color: rgb(29, 29, 29);
         margin-bottom: 2vw;
@@ -96,8 +105,9 @@ export default defineComponent({
     display: flex;
     align-items: center;
     .time {
-      width: 20%;
-      font-size: 0.2rem;
+      background-color: red;
+      width: 30%;
+      font-size: 0.1rem;
     }
     .other-data {
       width: 30%;

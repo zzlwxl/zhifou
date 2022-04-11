@@ -2,7 +2,7 @@
   <div class='ArticleInfo'>
     <div class="article_box">
       <div class="active_box">d</div>
-      <div class="info-box">{{articleData.articleContent}}</div>
+      <pre class="info-box">{{articleData.articleContent}}</pre>
     </div>
   </div>
 </template>
