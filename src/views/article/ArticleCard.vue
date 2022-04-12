@@ -17,7 +17,7 @@
         <div class="other-data">{{ article.author.nickName }}</div>
         <div class="active">{{ '浏览量' + article.articleViews }}</div>
         <div class="active">{{ '评论量' + article.articleViews }}</div>
-        <div class="active">{{ '点赞量' + article.articleViews }}</div>
+        <el-button :disabled="article.liked"  @click="addStarFun(article.articleId)"  type="text">{{`点赞${article.articleStar}`}}</el-button>
         <el-button v-if="isEdit" type="text">编辑文章</el-button>
       </div>
     </div>
@@ -26,6 +26,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
+import {getAddStar} from '../../service/article/index'
+import { ElMessage } from 'element-plus'
 
 export default defineComponent({
   name: 'ArticleCard',
@@ -45,10 +47,22 @@ export default defineComponent({
     const clickArticleInfo = (id: string) => {
       router.push(`/articleinfo/info/${id}`)
     }
+    const addStarFun=(id:string)=>{
+      addStar(id)
+    }
+    async function addStar(id:string) {
+      const data = await getAddStar({articleId:id})
+      if(data.success){
+        ElMessage.success('点赞成功')
+      }else{
+        ElMessage.warning(data.data)
+      }
+    }
     return {
       article,
       clickArticleInfo,
-      isEdit
+      isEdit,
+      addStarFun
     }
   },
 })

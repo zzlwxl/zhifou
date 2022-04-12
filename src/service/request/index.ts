@@ -10,20 +10,20 @@ import QueryString from "qs";
 // import {LoadingOptionsResolved} from 'element-plus/global'
 
 const DEAFULT_LOADING = true
-const DEAFULT_ISTOKEN = true
+const DEAFULT_NOTOKEN = false
 
 class ZZLRequest {
   instance: AxiosInstance
   interceptors?: ZZLRequestInterceptors
   // showLoading:boolean
   // loading?:LoadingOptionsResolved 
-  isToken: boolean
+  noToken: boolean=false
 
   constructor(config: ZZLRequestConfig) {
     //创建 axios实例
     this.instance = axios.create(config)
 
-    this.isToken = config.isToken ?? DEAFULT_ISTOKEN
+    this.noToken = config.noToken ?? DEAFULT_NOTOKEN
 
     this.instance.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
@@ -119,12 +119,18 @@ class ZZLRequest {
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
       }
-      this.isToken = config.isToken ?? DEAFULT_ISTOKEN
-      if (this.isToken) {
+      console.log('config.noToken',config)
+      this.noToken = config.noToken ?? DEAFULT_NOTOKEN
+      console.log('this.noToken',this.noToken)
+      if (!this.noToken) {
         const token = localCache.getCache('token')
+        console.log('需要带token,但拿到的token的是',token)
         if (token) {
+          console.log('token111',token)
           this.instance.defaults.headers.common['token'] = `zzl_${token}`
         }
+      }else{
+          this.instance.defaults.headers.common['token'] = ''
       }
       // if(config.showLoading === false){
       //   this.showLoading=config.showLoading

@@ -142,7 +142,9 @@ export default defineComponent({
     })
     async function out() {
       const data = await logout()
+      console.log('准备推出登录')
       if (data.success) {
+        console.log('已经推出登录')
         localCache.deleteCache('token')
         store.commit('user/changeUserInfo', {})
         router.push('/')

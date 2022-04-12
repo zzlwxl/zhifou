@@ -2,7 +2,7 @@ import zzlRequest from "../index";
 
 import QS from 'qs'
 
-import { IArticle, IDataType, ICreateCate, IGetArticleAll,IGetArticleTop } from "./type";
+import { IArticle, IDataType, ICreateCate, IGetArticleAll,IGetArticleTop,IGetAddStar } from "./type";
 
 enum Article {
   addArticle = '/article/add',
@@ -13,7 +13,8 @@ enum Article {
   getArticleInfo = '/article/detail',
   getArticleByUser='/article/get',
   getArticleByCate='/article/getByCategoryId',
-  getArticleBySearch='/article/fuzzySearch'
+  getArticleBySearch='/article/fuzzySearch',
+  getAddStar = '/article/star'
 }
 
 
@@ -26,7 +27,7 @@ export function addArticle(data: IArticle) {
 export function getCategorys() {
   return zzlRequest.get<IDataType>({
     url: Article.getCategorys,
-    isToken: false
+    noToken: false
   })
 }
 export function createCate(data: ICreateCate) {
@@ -38,7 +39,7 @@ export function createCate(data: ICreateCate) {
 export function getArticleAll(data: IGetArticleAll) {
   return zzlRequest.get<IDataType>({
     url: Article.getArticleAll,
-    isToken: false,
+    noToken: false,
     data
   })
 }
@@ -46,33 +47,40 @@ export function getArticleTop(data:IGetArticleTop) {
   return zzlRequest.get<IDataType>({
     url: Article.getArticleTop,
     data,
-    isToken: false,
+    noToken: false,
   })
 }
 export function getArticleInfo(articleId: string) {
   return zzlRequest.get<IDataType>({
     url: Article.getArticleInfo,
-    isToken: false,
+    noToken: true,
     data: { articleId }
   })
 }
 export function getArticleByUser(data: IGetArticleAll){
   return zzlRequest.get<IDataType>({
     url:Article.getArticleByUser,
-    data
+    data,
+    // noToken:false
   })
 }
 export function getArticleByCate(data:IGetArticleAll){
   return zzlRequest.get<IDataType>({
     url:Article.getArticleByCate,
     data,
-    isToken:false
+    noToken:false
   })
 }
 export function getArticleBySearch(data:IGetArticleAll){
   return zzlRequest.get<IDataType>({
     url:Article.getArticleBySearch,
     data,
-    isToken:false
+    noToken: true,
+  })
+}
+export function getAddStar(data:IGetAddStar){
+  return zzlRequest.get<IDataType>({
+    url:Article.getAddStar,
+    data
   })
 }

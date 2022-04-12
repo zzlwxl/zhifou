@@ -28,10 +28,8 @@
 <script lang="ts">
 import { defineComponent, reactive,ref } from 'vue'
 import type { FormInstance } from 'element-plus'
-import localCache from '/Users/new/lean/view/vue3/zhifou/src/utils/cache'
-
-import Code from '/Users/new/lean/view/vue3/zhifou/src/service/login/login'
-
+import localCache from '../../../utils/cache'
+import Code from '../../../service/login/login'
 import { rules } from '../config/account-config'
 
 import {useStore} from 'vuex'

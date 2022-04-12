@@ -19,6 +19,6 @@ export interface ZZLRequestInterceptors<T = AxiosResponse> {
  */
 export interface ZZLRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
   interceptors?: ZZLRequestInterceptors<T>
-  isToken?:boolean
+  noToken?:boolean
   // showLoading?:boolean
 }

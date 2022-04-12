@@ -28,3 +28,6 @@ export interface IGetArticleTop<T=any>{
     orderBy?:string
     limit?:number
 }
+export interface IGetAddStar<T=any>{
+    articleId:string
+}

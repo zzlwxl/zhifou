@@ -47,6 +47,7 @@ import { defineComponent ,ref} from 'vue'
 import LoginAccount from './LoginAccount.vue'
 import LoginPhone from './LoginPhone.vue'
 import Login from './Login.vue'
+import localCache from '../../../utils/cache'
 
 
 export default defineComponent({
@@ -74,6 +75,7 @@ export default defineComponent({
     const loginRef = ref<InstanceType<typeof Login>>()
     const phoneRef = ref<InstanceType<typeof LoginPhone>>()
     function submitForm() {
+      console.log(localCache.getCache('token') ?? '没有')
       if(currentTab.value==='register'){
         accountRef.value?.loginAction(isKeepPassword.value)
       }else if(currentTab.value==='login'){

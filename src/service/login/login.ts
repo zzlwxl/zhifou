@@ -21,7 +21,7 @@ enum UserInfo{
 export default function Code(){
   return zzlRequest.get<IDataType>({
     url:LoginAPI.Code,
-    isToken:false
+    noToken: true,
   })
 }
 export function Register(account:IAccount){
@@ -33,7 +33,8 @@ export function Register(account:IAccount){
 export function Login(account:IAccount){
   return zzlRequest.post<IDataType>({
     url:LoginAPI.Login,
-    data:account
+    data:account,
+    noToken:false
   })
 }
 export function accountLoginRequest(account:IAccount){

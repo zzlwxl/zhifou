@@ -33,7 +33,7 @@ const loginModule:Module<ILoginState,IRootState>={
       if(loginData.success){
         commit('changeToken',loginData.data)
         localCache.setCache('token',loginData.data)
-        localCache.setCache('token',loginData.data)
+        console.log('登录设置token',loginData.data)
         router.go(-1)
       }else{
         ElMessage({
@@ -86,6 +86,7 @@ const loginModule:Module<ILoginState,IRootState>={
 
     loadLocalLogin({commit}){
       const token = localCache.getCache('token')
+      console.log('本地初始化token',token)
       token && commit('changeToken',token)
 
       const userInfo = localCache.getCache('userInfo')

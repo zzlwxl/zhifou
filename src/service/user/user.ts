@@ -16,7 +16,7 @@ enum UserInfo{
 export function GetUserInfo(){
   return zzlRequest.get<IDataType>({
     url:UserInfo.Info,
-    // isToken:true
+    // noToken:true
   })
 }
 export function editUserInfo(userInfo:IUserInfo){
