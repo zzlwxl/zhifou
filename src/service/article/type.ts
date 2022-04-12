@@ -18,7 +18,13 @@ export interface ICreateCate<T=any>{
 export interface IGetArticleAll<T=any>{
     current:number,
     size:number
+    categoryId?:string
+    key?:string
 }
 export interface IGetArticleInfo<T=any>{
     articleId:string
+}
+export interface IGetArticleTop<T=any>{
+    orderBy?:string
+    limit?:number
 }

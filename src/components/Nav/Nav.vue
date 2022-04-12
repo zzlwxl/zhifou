@@ -4,10 +4,10 @@
       <header class="phoneNavBox">
         <nav>
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-sub-menu :index="item.categoryId"  v-for="(item) in categorysArray" :key="item.categoryId">
+            <el-sub-menu :index="item.categoryId" v-for="item in categorysArray" :key="item.categoryId">
               <template #title>{{ item.categoryName }}</template>
               <template v-if="item.children.length">
-                <el-menu-item :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{item.categoryName}}</el-menu-item>
+                <el-menu-item @click="articleListByData(item.categoryName, item.categoryId)" :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{ item.categoryName }}</el-menu-item>
               </template>
               <template v-else>
                 <span class="nullCate">没有子分类</span>
@@ -24,10 +24,10 @@
         <span @click="$router.push('/')" class="logo">知<span>否</span></span>
         <nav>
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-sub-menu :index="item.categoryId"  v-for="(item) in categorysArray" :key="item.categoryId">
+            <el-sub-menu :index="item.categoryId" v-for="item in categorysArray" :key="item.categoryId">
               <template #title>{{ item.categoryName }}</template>
               <template v-if="item.children.length">
-                <el-menu-item @click="articleListByCate(item.categoryName,item.categoryId)" :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{item.categoryName}}</el-menu-item>
+                <el-menu-item @click="articleListByData('category',item.categoryName, item.categoryId)" :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{ item.categoryName }}</el-menu-item>
               </template>
               <template v-else>
                 <span class="nullCate">没有子分类</span>
@@ -35,7 +35,7 @@
             </el-sub-menu>
           </el-menu>
         </nav>
-        <Search></Search>
+        <Search @chilkSearchEmit="chilkSearch"></Search>
         <span class="login">
           <template v-if="userName">
             <div class="user-info">
@@ -47,7 +47,7 @@
                       {{ userName }}
                     </div>
                     <el-dropdown-item @click="$router.push('/user')">个人中心</el-dropdown-item>
-                    <el-dropdown-item @click="$router.push(`/article/user/${$store.state.user.userInfo.userId}`)">文章管理</el-dropdown-item>
+                    <el-dropdown-item @click="articleListByData('user',$store.state.user.userInfo.nickName)">文章管理</el-dropdown-item>
                     <el-dropdown-item @click="outLogin">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -70,17 +70,18 @@ import Search from '../Serarch/Search.vue'
 import { useRouter } from 'vue-router'
 import { Edit } from '@element-plus/icons-vue'
 import { getCategorys } from '../../service/article/index'
-import {logout} from '../../service/user/user'
+import { logout } from '../../service/user/user'
 import localCache from '../../utils/cache'
 import { useStore } from 'vuex'
-import {ElMessage} from 'element-plus'
+import { ElMessage } from 'element-plus'
 
 export default defineComponent({
   name: 'main',
   components: {
     Edit,
-    Search
+    Search,
   },
+  emits: ['chilkEmit'],
   setup(props, content) {
     const router = useRouter()
     const store = useStore()
@@ -95,11 +96,37 @@ export default defineComponent({
       }
     }
     categorys()
-    const articleListByCate=(categoryName:string,categoryId:string)=>{
-      console.log(categoryName,categoryId)
-      router.push(`/article/articlebycate/${categoryId}`)
+    /**
+     * type:通过什么类型请求数据
+     * name:在URL地址栏中向用户展示查询条件
+     * id:请求数据的参数
+     */
+    const articleListByData = (type:string,name: string, id: string) => {
+      router.push({
+        name: 'article',
+        path: '/article',
+        query: {
+          name,
+          id
+        },
+        params: {
+          type
+        },
+      })
+      emitFun(id)
     }
-
+    /**
+     * data请求数据的参数
+     */
+    const emitFun = (data: string) => {
+      content.emit('chilkEmit', { data })
+    }
+    /**
+     * 因为搜索组件是Articlelist的孙组件,需要三个组件来传值
+     */
+    const chilkSearch=(value:string)=>{
+      emitFun(value)
+    }
     function userInfo() {
       console.log(store.state.login.token)
       if (store.state.login.token || localCache.getCache('token')) {
@@ -115,12 +142,12 @@ export default defineComponent({
     })
     async function out() {
       const data = await logout()
-      if(data.success){
+      if (data.success) {
         localCache.deleteCache('token')
         store.commit('user/changeUserInfo', {})
         router.push('/')
         ElMessage.success(data.data)
-      }else{
+      } else {
         ElMessage.warning(data.data)
       }
     }
@@ -131,7 +158,8 @@ export default defineComponent({
       userName,
       outLogin,
       categorysArray,
-      articleListByCate
+      articleListByData,
+      chilkSearch
     }
   },
 })
@@ -151,7 +179,7 @@ export default defineComponent({
 .navBox {
   display: none;
 }
-.nullCate{
+.nullCate {
   color: rgb(110, 110, 110);
   margin-left: 10px;
 }
@@ -159,7 +187,7 @@ export default defineComponent({
   .el-menu--horizontal {
     border-bottom: 0px;
   }
-  nav{
+  nav {
     margin-top: 10px;
   }
   .logo {

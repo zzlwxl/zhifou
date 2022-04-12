@@ -1,7 +1,7 @@
 <template>
   <div class='Slide'>
     <el-carousel :interval="4000" type="card" height="200px">
-    <el-carousel-item v-for="(item,index) in articleTopAll" :key="index">
+    <el-carousel-item @click="$router.push(`/articleinfo/info/${item.articleId}`)" v-for="(item,index) in articleTopAll" :key="index">
       <div class="imgBox">
       <img :src="item.coverImg" alt="没有图片">
       <span>{{ item.articleTitle }}</span>
@@ -19,7 +19,7 @@ export default defineComponent({
   setup(props,content){
     let articleTopAll=ref<any>([])
     async function getArticle(){
-      const artiicle = await getArticleTop()
+      const artiicle = await getArticleTop({orderBy:'articleViews.desc'})
       if(artiicle.success){
         articleTopAll.value.push(...artiicle.data)
       }

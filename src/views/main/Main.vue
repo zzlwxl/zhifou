@@ -1,19 +1,6 @@
 <template>
   <div class="Main">
-    <Nav></Nav>
-    <div class="mainBox">
-      <aside class="left">左</aside>
-      <main>
-        <div class="slide">
-          <!-- <Slide></Slide> -->
-          <router-view></router-view>
-        </div>
-      </main>
-      <aside class="right">右</aside>
-    </div>
-    <footer>
-      <Footer></Footer>
-    </footer>
+    <router-view></router-view>
   </div>
 </template>
 <script lang="ts">
@@ -29,57 +16,10 @@ export default defineComponent({
     Nav,
     Footer,
     // Slide,
-    ArticleList
+    ArticleList,
   },
   setup(props, content) {},
 })
 </script>
 
-<style scoped lang="less">
-.mainBox {
-  margin-top: 2vw;
-  display: flex;
-  justify-content: center;
-}
-main {
-  width: 95%;
-  height: 1000px;
-  display: flex;
-  justify-content: center;
-  .slide {
-    width: 95%;
-    position: relative;
-  }
-}
-.left {
-  display: none;
-}
-.right {
-  display: none;
-}
-@media screen and (min-width: 800px) {
-  .right {
-    height: 1000px;
-    background-color: rgb(145, 145, 255);
-    display: block;
-    width: 40%;
-  }
-  .left {
-    display: none;
-  }
-}
-@media screen and (min-width: 1600px) {
-  .left {
-    height: 1000px;
-    background-color: rgb(150, 255, 150);
-    width: 30%;
-    display: block;
-  }
-  .right {
-    height: 1000px;
-    background-color: rgb(138, 138, 255);
-    width: 30%;
-    display: block;
-  }
-}
-</style>
+<style scoped lang="less"></style>

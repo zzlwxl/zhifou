@@ -1,5 +1,6 @@
 <template>
   <div class="ArticleCard">
+    <!-- {{article}} -->
     <div class="ArticleCardBox" @click="clickArticleInfo(article.articleId)">
       <div class="top">
         <img class="img" :src="article.coverImg" alt="没有图片" />
@@ -17,6 +18,7 @@
         <div class="active">{{ '浏览量' + article.articleViews }}</div>
         <div class="active">{{ '评论量' + article.articleViews }}</div>
         <div class="active">{{ '点赞量' + article.articleViews }}</div>
+        <el-button v-if="isEdit" type="text">编辑文章</el-button>
       </div>
     </div>
   </div>
@@ -31,16 +33,22 @@ export default defineComponent({
     articleData: {
       type: Object,
     },
+    isEdit:{
+      type:Boolean,
+      default:false
+    }
   },
   setup(props, content) {
     const router = useRouter()
     const article = props.articleData
+    const isEdit=props.isEdit
     const clickArticleInfo = (id: string) => {
       router.push(`/articleinfo/info/${id}`)
     }
     return {
       article,
       clickArticleInfo,
+      isEdit
     }
   },
 })
