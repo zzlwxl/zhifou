@@ -27,7 +27,6 @@ export default defineComponent({
 .main {
   position: fixed;
   bottom: 0;
-  background-color: red;
   width: 100%;
 }
 .demo-tabs{
@@ -36,7 +35,7 @@ export default defineComponent({
     justify-content: space-around;
 }
 .demo-tabs > .el-tabs__content{
-    background-color: blue;
+    // background-color: blue;
 }
 .el-tabs .el-tabs--bottom .demo-tabs{
     display: none;

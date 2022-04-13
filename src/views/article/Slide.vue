@@ -1,43 +1,52 @@
 <template>
-  <div class='Slide'>
+  <div class="Slide">
     <el-carousel :interval="4000" type="card" height="200px">
-    <el-carousel-item @click="$router.push(`/articleinfo/info/${item.articleId}`)" v-for="(item,index) in articleTopAll" :key="index">
-      <div class="imgBox">
-      <img :src="item.coverImg" alt="没有图片">
-      <span>{{ item.articleTitle }}</span>
-      </div>
-    </el-carousel-item>
-  </el-carousel>
+      <el-carousel-item @click="$router.push(`/articleinfo/info/${item.articleId}`)" v-for="(item, index) in articleTopAll" :key="index">
+        <div class="imgBox">
+          <img :src="item.coverImg" alt="没有图片" />
+          <span>{{ item.articleTitle }}</span>
+        </div>
+      </el-carousel-item>
+    </el-carousel>
   </div>
 </template>
-<script lang='ts'>
-import { defineComponent ,ref} from 'vue'
-import {getArticleTop} from '../../service/article/index'
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import { getArticleTop } from '../../service/article/index'
 
 export default defineComponent({
   name: 'Slide',
-  setup(props,content){
-    let articleTopAll=ref<any>([])
-    async function getArticle(){
-      const artiicle = await getArticleTop({orderBy:'articleViews.desc'})
-      if(artiicle.success){
+  setup(props, content) {
+    let articleTopAll = ref<any>([])
+    async function getArticle() {
+      const artiicle = await getArticleTop({ orderBy: 'articleViews.desc' })
+      if (artiicle.success) {
         articleTopAll.value.push(...artiicle.data)
       }
     }
     getArticle()
-    return{
-      articleTopAll
+    return {
+      articleTopAll,
     }
-  }
+  },
 })
 </script>
 
-<style scoped lang='less'>
-.el-carousel__item span{
+<style scoped lang="less">
+.imgBox {
+  span {
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+  }
+}
+.el-carousel__item span {
   width: 100%;
-  background-color: rgb(99, 99, 99,0.1);
-  color: rgb(255, 255, 255);
+  background-color: rgba(239, 0, 0, 0.1) !important;
+  color: rgb(0, 0, 0);
   position: absolute;
+  font-size: 14px;
   top: 90%;
   padding-left: 2%;
 }

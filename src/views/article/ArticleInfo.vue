@@ -36,17 +36,17 @@ export default defineComponent({
 </script>
 
 <style scoped lang='less'>
-// .article-box{
-//   display: flex;
-//   .active_box{
-//     width: 100%;
-//     height: 5%;
-//     background-color: red;
-//   }
-//   .info_box{
-//     width: 100%;
-//     height: 95%;
-//     background-color: blue;
-//   }
-// }
+.article-box{
+  display: flex;
+  .active_box{
+    width: 100%;
+    height: 5%;
+    background-color: red;
+  }
+  .info_box{
+    width: 100%;
+    height: 95%;
+    background-color: blue;
+  }
+}
 </style>

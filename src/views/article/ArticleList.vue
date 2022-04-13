@@ -157,12 +157,12 @@ export default defineComponent({
   justify-content: center;
 }
 main {
-  width: 95%;
   height: 1000px;
   display: flex;
   justify-content: center;
+  margin: 0 auto;
   .slide {
-    width: 95%;
+    width: 90%;
     position: relative;
   }
 }

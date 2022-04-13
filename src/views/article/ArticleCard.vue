@@ -1,24 +1,41 @@
 <template>
   <div class="ArticleCard">
-    <!-- {{article}} -->
     <div class="ArticleCardBox" @click="clickArticleInfo(article.articleId)">
       <div class="top">
         <img class="img" :src="article.coverImg" alt="没有图片" />
         <div class="contentBox">
+          <div class="top-cate-box">
+            <div class="cate">{{ article.author.nickName }}</div>
+            <div class="cate">原创</div>
+            <div class="cate"><div></div><span>{{ article.category.categoryName }}</span> </div>
+          </div>
           <div class="title">
             <h1>{{ article.articleTitle }}</h1>
-            <div class="cate">{{ article.category.categoryName }}</div>
           </div>
           <div class="content">{{ article.contentView }}</div>
         </div>
       </div>
       <div class="activeBox">
-        <div class="time">{{ article.createTime }}</div>
-        <div class="other-data">{{ article.author.nickName }}</div>
-        <div class="active">{{ '浏览量' + article.articleViews }}</div>
-        <div class="active">{{ '评论量' + article.articleViews }}</div>
-        <el-button :disabled="article.liked"  @click="addStarFun(article.articleId)"  type="text">{{`点赞${article.articleStar}`}}</el-button>
-        <el-button v-if="isEdit" type="text">编辑文章</el-button>
+        <el-icon :size="size" :color="color">
+          <Stopwatch />
+        </el-icon>
+        <div class="active">{{ formatUtcString(article.createTime) }}</div>
+        <el-icon :size="size" :color="color">
+          <View />
+        </el-icon>
+        <div class="active">{{ '浏览量 ' + article.articleViews }}</div>
+        <el-icon :size="size" :color="color">
+          <Comment />
+        </el-icon>
+        <div class="active">{{ '评论量 ' + article.articleComments }}</div>
+        <el-icon :size="size" :color="color">
+          <Star />
+        </el-icon>
+        <div class="active" @click.stop="addStarFun(article.articleId)">{{ `点赞 ${article.articleStar}` }}</div>
+        <el-icon v-if="isEdit" :size="size" :color="color">
+          <Edit />
+        </el-icon>
+        <div class="active" v-if="isEdit">编辑文章</div>
       </div>
     </div>
   </div>
@@ -26,8 +43,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import {getAddStar} from '../../service/article/index'
+
+import { getAddStar } from '../../service/article/index'
+
+import { formatUtcString } from '../../utils/date'
+
 import { ElMessage } from 'element-plus'
+import { Edit, Stopwatch, View, Comment, Star } from '@element-plus/icons-vue'
 
 export default defineComponent({
   name: 'ArticleCard',
@@ -35,26 +57,34 @@ export default defineComponent({
     articleData: {
       type: Object,
     },
-    isEdit:{
-      type:Boolean,
-      default:false
-    }
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  components: {
+    Edit,
+    Stopwatch,
+    View,
+    Comment,
+    Star,
   },
   setup(props, content) {
     const router = useRouter()
     const article = props.articleData
-    const isEdit=props.isEdit
+    const isEdit = props.isEdit
+    const color = '#777'
     const clickArticleInfo = (id: string) => {
       router.push(`/articleinfo/info/${id}`)
     }
-    const addStarFun=(id:string)=>{
+    const addStarFun = (id: string) => {
       addStar(id)
     }
-    async function addStar(id:string) {
-      const data = await getAddStar({articleId:id})
-      if(data.success){
+    async function addStar(id: string) {
+      const data = await getAddStar({ articleId: id })
+      if (data.success) {
         ElMessage.success('点赞成功')
-      }else{
+      } else {
         ElMessage.warning(data.data)
       }
     }
@@ -62,21 +92,30 @@ export default defineComponent({
       article,
       clickArticleInfo,
       isEdit,
-      addStarFun
+      addStarFun,
+      formatUtcString,
+      color,
     }
   },
 })
 </script>
 
 <style scoped lang="less">
+@col1: #2196f3;
 @col2: #388e3c;
+@fontCol: #777;
+// .remMixin() {
+//       @functions: ~`(function() {
+//           return
+//         }
+//       )()`;
+
 .ArticleCardBox {
-  padding: 5px 0;
-  width: 100%;
+  background-color: #fff;
+  padding: 0.2rem 0.4rem;
   height: 25vw;
-  background-color: #ffffff;
   border-radius: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 0.4rem;
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -86,6 +125,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     img {
+      border-radius: 10px;
       width: 30%;
       height: 85%;
     }
@@ -93,63 +133,127 @@ export default defineComponent({
       width: 70%;
       height: 85%;
       display: flex;
+      position: relative;
       flex-direction: column;
       margin-left: 1vw;
+      .top-cate-box {
+        display: flex;
+        justify-content: end;
+        margin-bottom: 0.2rem;
+        .cate {
+          position: relative;
+          padding: 0.2rem;
+          margin: 0.2rem;
+          border-radius: 1px;
+          font-size: 0.1rem;
+          background-color: @col1;
+          color: rgb(255, 255, 255);
+          span{
+            z-index: 999;
+          }
+        }
+        .cate:nth-child(1){
+          background-color: @fontCol;
+        }
+        .cate:nth-child(3){
+          background-color: @col2;
+          div{
+            border-radius: 4px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0px;
+            height: 100%;
+            background-color: @col1;
+            transition: all .3s;
+            z-index: 1;
+          }
+        }
+      }
       .title {
         display: flex;
         align-items: center;
         h1 {
-          color: rgb(27, 27, 27);
-          font-size: 1rem;
-        }
-        .cate {
-          font-size: 0.2rem;
-          margin-left: 1vw;
+          color: @col2;
+          font-size: 0.8rem;
+          width: 100%;
+          overflow: hidden;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          display: -webkit-box;
         }
       }
       .content {
         overflow: hidden;
         -webkit-line-clamp: 2;
-        line-clamp: 2;
         -webkit-box-orient: vertical;
-        box-orient: vertical;
         display: -webkit-box;
-        display: box;
-        font-size: 0.5rem;
-        color: rgb(29, 29, 29);
-        margin-bottom: 2vw;
+        font-size: 0.6rem;
+        line-height: 10px;
+        color: @fontCol;
+        text-indent: 2em;
+      }
+      @media screen and (min-width:320px) {
+        .content{
+          line-height: 10px;
+        }
+      }
+      @media screen and (min-width: 540px) {
+        .content {
+          -webkit-line-clamp: 3;
+          line-height: 16px;
+        }
+      }
+      @media screen and (min-width: 800px) {
+        .content {
+          -webkit-line-clamp: 1;
+        }
+      }
+      @media screen and (min-width: 900px) {
+        .content {
+          -webkit-line-clamp: 3;
+        }
+      }
+      @media screen and (min-width: 1200px) {
+        .content {
+          -webkit-line-clamp: 2;
+        }
       }
     }
   }
   .activeBox {
+    padding: 0 2px;
     width: 100%;
-    height: 20%;
     display: flex;
     align-items: center;
-    .time {
-      background-color: red;
-      width: 30%;
-      font-size: 0.1rem;
-    }
-    .other-data {
-      width: 30%;
-      font-size: 0.2rem;
-    }
     .active {
-      width: 50%;
+      width: 20%;
       font-size: 0.2rem;
+      margin-left: 2px;
+      color: @fontCol;
+    }
+    .active:nth-child(1) {
+      font-size: 0.1rem;
     }
   }
 }
 .ArticleCardBox:hover {
   box-shadow: darkgrey 10px 10px 30px 5px;
+  // .top .contentBox .top-cate-box .cate:nth-child(3){
+    // div{
+    //   background-color: @col1;
+    //   width: 100%;
+    // }
+  // }
 }
 @media screen and (min-width: 800px) {
   .ArticleCardBox {
-    height: 15vw;
-    .img {
-      width: 10vw;
-    }
+    height: 16vw;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .ArticleCardBox {
+    height: 10vw;
   }
 }
 </style>

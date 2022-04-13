@@ -38,13 +38,11 @@ export default defineComponent({
 .articleBox {
   width: 100%;
   height: 100%;
-  background-color: red;
 }
 .mainBox {
   margin-top: 2vw;
   display: flex;
   width: 100%;
-  background-color: pink;
   justify-content: center;
 }
 
@@ -82,7 +80,6 @@ export default defineComponent({
     width: 40%;
     height: 1000px;
     // padding: 100%;
-    background-color: red;
   }
 }
 </style>
