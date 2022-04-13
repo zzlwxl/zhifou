@@ -9,6 +9,10 @@ enum LoginAPI{
   Login='/auth/login',
   Code='/auth/code',
   LoginUserInfo='/user/info',
+  // LoginByWxCode='/auth/loginByWxCode'
+  LoginByWxAuth2='/auth/getWxOAuth2Code',
+  LoginByWxAuth2Callback='/auth/loginByOAuth2',
+  CompleteUserInfo='/auth/completeUserInfo'
 }
 enum UserInfo{
   Info='/user/info'
@@ -49,4 +53,29 @@ export function requetUserInfoById(id:number){
     url:LoginAPI.LoginUserInfo+id
   })
 }
-
+// export function LoginByWxCode(code:string){
+//   return zzlRequest.get<IDataType>({
+//     url:LoginAPI.LoginByWxCode,
+//     data:{code},
+//     noToken:true
+//   })
+// }
+export function LoginByWxAuth2(){
+  return zzlRequest.get<IDataType>({
+    url:LoginAPI.LoginByWxAuth2,
+    noToken:true
+  })
+}
+export function LoginByWxAuth2Callback(state:string){
+  return zzlRequest.get<IDataType>({
+    url:LoginAPI.LoginByWxAuth2Callback,
+    data:{state},
+    noToken:true
+  })
+}
+export function CompleteUserInfo(account:IAccount){
+  return zzlRequest.post<IDataType>({
+    url:LoginAPI.CompleteUserInfo,
+    data:account
+  })
+}

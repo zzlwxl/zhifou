@@ -113,7 +113,7 @@ export default defineComponent({
 .ArticleCardBox {
   background-color: #fff;
   padding: 0.2rem 0.4rem;
-  height: 25vw;
+  height: 35vw;
   border-radius: 10px;
   margin-bottom: 0.4rem;
   display: flex;
@@ -145,7 +145,7 @@ export default defineComponent({
           padding: 0.2rem;
           margin: 0.2rem;
           border-radius: 1px;
-          font-size: 0.1rem;
+          font-size: 1rem;
           background-color: @col1;
           color: rgb(255, 255, 255);
           span{
@@ -175,7 +175,7 @@ export default defineComponent({
         align-items: center;
         h1 {
           color: @col2;
-          font-size: 0.8rem;
+          font-size: 1.4rem;
           width: 100%;
           overflow: hidden;
           -webkit-line-clamp: 1;
@@ -188,35 +188,49 @@ export default defineComponent({
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         display: -webkit-box;
-        font-size: 0.6rem;
-        line-height: 10px;
+        font-size: 1.2rem;
+        line-height: 5px;
         color: @fontCol;
         text-indent: 2em;
+
       }
       @media screen and (min-width:320px) {
         .content{
-          line-height: 10px;
+          line-height: 16px;
         }
       }
       @media screen and (min-width: 540px) {
         .content {
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 4;
           line-height: 16px;
+        }
+      }
+      @media screen and (min-width: 600px) {
+        .content {
+          -webkit-line-clamp: 3;
+          font-size: 1rem;
+          line-height: 18px;
         }
       }
       @media screen and (min-width: 800px) {
         .content {
           -webkit-line-clamp: 1;
+          font-size: 1.2rem;
         }
       }
       @media screen and (min-width: 900px) {
+        .content {
+          -webkit-line-clamp: 2;
+        }
+      }
+      @media screen and (min-width: 1000px) {
         .content {
           -webkit-line-clamp: 3;
         }
       }
       @media screen and (min-width: 1200px) {
         .content {
-          -webkit-line-clamp: 2;
+          -webkit-line-clamp: 4;
         }
       }
     }
@@ -228,7 +242,7 @@ export default defineComponent({
     align-items: center;
     .active {
       width: 20%;
-      font-size: 0.2rem;
+      font-size: 1.2rem;
       margin-left: 2px;
       color: @fontCol;
     }
@@ -248,12 +262,12 @@ export default defineComponent({
 }
 @media screen and (min-width: 800px) {
   .ArticleCardBox {
-    height: 16vw;
+    height: 20vw;
   }
 }
 @media screen and (min-width: 1200px) {
   .ArticleCardBox {
-    height: 10vw;
+    height: 20vw;
   }
 }
 </style>
