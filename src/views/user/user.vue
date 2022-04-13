@@ -20,11 +20,16 @@
       <el-descriptions-item label="邮箱">{{ userInfo.email }} </el-descriptions-item>
     </el-descriptions>
     <div class="activeBox">
-    <el-button type="primary" @click="centerDialogVisible=true">编辑信息</el-button>
+    <el-button v-if="!userInfo.userIdWechat" type="primary" @click="changeBindWxDialogVisible">绑定微信</el-button>
+    <el-button v-else type="primary" @click="unBindWx">解绑微信</el-button>
+    <el-button type="primary" @click="completeUserInfoDialogVisible=true">编辑信息</el-button>
     <el-button type="primary" @click="$router.push('/setpwd')">修改密码</el-button>
     </div>
-    <el-dialog v-model="centerDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="80%" center>
+    <el-dialog v-model="completeUserInfoDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="80%" center>
       <ChangeUserInfo @changeDialogVisibleEmit="changeDialogVisible"></ChangeUserInfo>
+    </el-dialog>
+    <el-dialog v-model="bindWxDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="80%" center>
+      <LoginPhone :isCallBack="isCallBack" :isBindWxFlag="true"  @getStateEmit="getState"></LoginPhone>
     </el-dialog>
     </div>
   </div>
@@ -34,34 +39,74 @@ import { defineComponent, ref,computed } from 'vue'
 import Nav from '../../components/Nav/Nav.vue'
 import Avatar from './Avatar.vue'
 import ChangeUserInfo from './ChangeUserInfo.vue'
+import LoginPhone from '../login/cpns/LoginPhone.vue'
+
+import {BindWx,UnBind} from '../../service/login/login'
 
 import { useStore } from '../../store/'
 import { useRouter } from 'vue-router'
+
+import { ElMessage } from 'element-plus'
 
 export default defineComponent({
   name: 'user',
   components: {
     ChangeUserInfo,
     Nav,
-    Avatar
+    Avatar,
+    LoginPhone
   },
   setup(props, content) {
     const store = useStore()
     const userInfo = computed(()=>store.state.user.userInfo)
-    const centerDialogVisible=ref(false)
+    const completeUserInfoDialogVisible=ref(false)
+    const bindWxDialogVisible=ref(false)
+    const isCallBack=ref(false)
     if(store.state.user.userInfo.firstLogin){
       //用户首次登录从未补充信息
-      centerDialogVisible.value=true
+      completeUserInfoDialogVisible.value=true
     }
     const changeDialogVisible=()=>{
       console.log('事件')
-      centerDialogVisible.value=false
-      
+      completeUserInfoDialogVisible.value=false
+    }
+    //绑定微信 
+    async function bindWx(state:string) {
+      const data=await BindWx(state)
+      if(data.success){
+        ElMessage.success('绑定成功')
+        bindWxDialogVisible.value=false
+        userInfo.value.userIdWechat=true
+      }else{
+        ElMessage.warning(data.data)
+      }
+    }
+    async function unBindWx() {
+      const data = await UnBind()
+      if(data.success){
+        ElMessage.success('解绑成功')
+        userInfo.value.userIdWechat=false
+      }else{
+        ElMessage.warning(data.data)
+      }
+    }
+    const getState=(state:string)=>{
+      console.log('state',state)
+      ElMessage.success(`state :+${state}`)
+    }
+    const changeBindWxDialogVisible=()=>{
+      bindWxDialogVisible.value=true
+      isCallBack.value=true
     }
     return {
       userInfo,
-      centerDialogVisible,
-      changeDialogVisible
+      completeUserInfoDialogVisible,
+      bindWxDialogVisible,
+      changeDialogVisible,
+      changeBindWxDialogVisible,
+      getState,
+      isCallBack,
+      unBindWx
     }
   },
 })

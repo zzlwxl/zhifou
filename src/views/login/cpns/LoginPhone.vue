@@ -2,9 +2,9 @@
   <div class="LoginPhone">
     <div class="tip">
       <div>微信扫码登录</div>
-    <img :src="codeImgSrc" />
+      <img :src="codeImgSrc" />
     </div>
-    <el-dialog v-model="centerDialogVisible" title="补全用户信息" width="30%" center>
+    <el-dialog v-model="centerDialogVisible" width="30%" center>
       <el-form :model="account" :rules="rules" class="demo-ruleForm">
         <el-form-item label="账号" prop="userName">
           <el-input v-model="account.userName" />
@@ -18,7 +18,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
+import { defineComponent, ref, reactive,watchEffect } from 'vue'
 
 import { LoginByWxAuth2, LoginByWxAuth2Callback, CompleteUserInfo } from '../../../service/login/login'
 
@@ -31,8 +31,21 @@ import { ElMessage } from 'element-plus'
 
 export default defineComponent({
   name: 'LoginPhone',
+  props: {
+    isBindWxFlag: {
+      type: Boolean,
+      default: false,
+    },
+    isCallBack: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ['getStateEmit'],
   setup(props, content) {
     const router = useRouter()
+    let isCallBack = props.isCallBack //是否允许轮训
+    let isBindWxFlag = props.isBindWxFlag
     let centerDialogVisible = ref(false)
     let state = ''
     let codeImgSrc = ref('')
@@ -43,14 +56,13 @@ export default defineComponent({
       userName: localCache.getCache('name') ?? '',
       passWord: localCache.getCache('password') ?? '',
     })
-
     LoginByWxAuthCode()
     async function loginCallback() {
       const data = await LoginByWxAuth2Callback(state)
       if (data.success) {
         callBackFlag = true
         token = data.data.token
-        if (data.data.needUpdateInfo) {
+        if (!isBindWxFlag && data.data.needUpdateInfo) {
           centerDialogVisible.value = true
         } else {
           localCache.setCache('token', data.data.token)
@@ -64,31 +76,49 @@ export default defineComponent({
       const data = await CompleteUserInfo(account)
       if (data.success) {
         ElMessage.success('登录成功')
-        router.go(-1)
+        console.log('datadatafatfasfas', data)
+        if (isBindWxFlag) {
+          // content.emit('getStateEmit', data.data.state)
+        } else {
+          router.go(-1)
+        }
       } else {
         ElMessage.warning(data.data)
         localCache.deleteCache('token')
       }
     }
     async function LoginByWxAuthCode() {
-      const data = await LoginByWxAuth2()
-      if (data.success) {
-        state = data.data.state
-        codeImgSrc.value = data.data.img
-        let count = 0
-        let timer = setInterval(() => {
-          if (callBackFlag) {
-            clearInterval(timer)
-          } else if (count === 60) {
-            clearInterval(timer)
-            ElMessage.error('长时间未操作')
-          } else {
-            count++
-            loginCallback()
+      ElMessage.success('打算论序')
+      //不允许轮训
+      // if (isCallBack) {
+      //   ElMessage.success('不允许论序')
+        
+      // }else{
+        const data = await LoginByWxAuth2()
+        if (data.success) {
+          state = data.data.state
+          codeImgSrc.value = data.data.img
+          if (isBindWxFlag) {
+            console.log('datadatafatfasfas', data)
+            content.emit('getStateEmit', data.data.state)
+            callBackFlag=true
           }
-        }, 1000)
-      }
-      console.log(data)
+          let count = 0
+          let timer = setInterval(() => {
+            if (callBackFlag) {
+              clearInterval(timer)
+            } else if (count === 60) {
+              clearInterval(timer)
+              ElMessage.error('长时间未操作')
+            } else {
+              count++
+              loginCallback()
+            }
+          }, 1000)
+        }
+        console.log(data)
+        
+      // }
     }
 
     const submit = () => {
@@ -120,11 +150,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.tip{
+.tip {
   display: flex;
   flex-direction: column;
   align-items: center;
-  div{
+  div {
     font-size: 1.4rem;
   }
 }

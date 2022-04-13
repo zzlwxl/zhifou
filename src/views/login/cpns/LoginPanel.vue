@@ -30,7 +30,7 @@
             <span>扫码登录</span>
           </span>
         </template>
-        <LoginPhone v-if="currentTab === 'phone'" ref="phoneRef"></LoginPhone>
+        <LoginPhone v-if="currentTab === 'phone'" :isCallBack="true" ref="phoneRef"></LoginPhone>
       </el-tab-pane>
     </el-tabs>
     <div v-if="currentTab !== 'phone'" class="accountAction">

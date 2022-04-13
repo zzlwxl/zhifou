@@ -12,7 +12,9 @@ enum LoginAPI{
   // LoginByWxCode='/auth/loginByWxCode'
   LoginByWxAuth2='/auth/getWxOAuth2Code',
   LoginByWxAuth2Callback='/auth/loginByOAuth2',
-  CompleteUserInfo='/auth/completeUserInfo'
+  CompleteUserInfo='/auth/completeUserInfo',
+  BindWx='/auth/bindWechat',
+  UnBind='/auth/unBind'
 }
 enum UserInfo{
   Info='/user/info'
@@ -77,5 +79,16 @@ export function CompleteUserInfo(account:IAccount){
   return zzlRequest.post<IDataType>({
     url:LoginAPI.CompleteUserInfo,
     data:account
+  })
+}
+export function BindWx(state:string){
+  return zzlRequest.post<IDataType>({
+    url:LoginAPI.BindWx,
+    data:{state}
+  })
+}
+export function UnBind(){
+  return zzlRequest.get<IDataType>({
+    url:LoginAPI.UnBind
   })
 }
