@@ -3,18 +3,19 @@
     <Nav></Nav>
     <div class="mainBox">
       <aside class="left">左</aside>
-        <div class="articleBox">
-          <router-view></router-view>
-        </div>
+      <div class="articleBox">
+        <router-view></router-view>
+      </div>
       <aside class="right">右</aside>
     </div>
     <footer>
       <Footer></Footer>
     </footer>
+    
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent ,ref} from 'vue'
 import Nav from '../../components/Nav/Nav.vue'
 import Footer from '../../components/Footer/Footer.vue'
 // import Slide from '../article/Slide.vue'
@@ -29,7 +30,7 @@ export default defineComponent({
     ArticleList,
   },
   setup(props, content) {
-    console.log('dd')
+    
   },
 })
 </script>

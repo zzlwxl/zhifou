@@ -5,7 +5,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Main',
-    redirect: '/article/default',
+    // redirect: '/article/default',
     component: import(/* webpackChunkName: "main" */ '../views/main/Main.vue'),
     children: [
       {
@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/create',
-    component: import(/* webpackChunkName: "user" */ '../views/article/Article.vue'),
+    component: import(/* webpackChunkName: "main" */ '../views/article/Article.vue'),
   }
 ]
 
