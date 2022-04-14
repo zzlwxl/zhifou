@@ -4,7 +4,7 @@
       <el-form-item label="用户名" prop="userName">
         <div class="get-code">
           <el-input v-model="codeForm.userName" placeholder="提交用户名发送手机验证码" />
-          <el-button id="codeBtn" :disabled="disabled" style="margin-left: 5px" type="primary" @click="submitCodeFormRule(ruleCodeFormRef)">获取验证码</el-button>
+          <el-button id="codeBtn" :disabled="disabled" style="margin-left: 5px" type="primary" @click="submitCodeFormRule(ruleCodeFormRef)">{{disabled ? `${timeNum}s` : `获取验证码`}}</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -23,7 +23,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
+import { defineComponent, ref, reactive,onUnmounted } from 'vue'
 
 import { useRouter } from 'vue-router'
 import { pwdRules } from './config/pwdRule'
@@ -42,7 +42,12 @@ export default defineComponent({
     const router = useRouter()
     const ruleCodeFormRef = ref<FormInstance>()
     const ruleResetFormRef = ref<FormInstance>()
+
     const disabled = ref(false)
+    let timeNum=ref(60)
+    let unMountTime=false
+
+
     const codeForm = reactive({
       userName: '',
     })
@@ -80,10 +85,16 @@ export default defineComponent({
           message: '获取验证码成功',
           type: 'success',
         })
-        setTimeout(()=>{
-            disabled.value=false
-        },60000)
-        
+        let timer=setInterval(()=>{
+         if(timeNum.value===0){
+           clearInterval(timer)
+           disabled.value=false
+         }else if(unMountTime){
+           clearInterval(timer)
+         }else{
+           timeNum.value--
+         }
+        },1000)
       } else {
         ElMessage({
           message: codeData.data,
@@ -116,6 +127,9 @@ export default defineComponent({
           })
       }
     }
+    onUnmounted(()=>{
+      unMountTime=true
+    })
     return {
       codeForm,
       submitCodeFormRule,
@@ -126,7 +140,8 @@ export default defineComponent({
       rules,
       ruleCodeFormRef,
       ruleResetFormRef,
-      disabled
+      disabled,
+      timeNum
     }
   },
 })

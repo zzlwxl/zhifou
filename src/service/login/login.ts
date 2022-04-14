@@ -82,7 +82,7 @@ export function CompleteUserInfo(account:IAccount){
   })
 }
 export function BindWx(state:string){
-  return zzlRequest.post<IDataType>({
+  return zzlRequest.get<IDataType>({
     url:LoginAPI.BindWx,
     data:{state}
   })

@@ -28,8 +28,8 @@
     <el-dialog v-model="completeUserInfoDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="80%" center>
       <ChangeUserInfo @changeDialogVisibleEmit="changeDialogVisible"></ChangeUserInfo>
     </el-dialog>
-    <el-dialog v-model="bindWxDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="80%" center>
-      <LoginPhone :isCallBack="isCallBack" :isBindWxFlag="true"  @getStateEmit="getState"></LoginPhone>
+    <el-dialog v-model="bindWxDialogVisible" title="绑定微信" width="80%" center>
+      <LoginPhone :isBindWxFlag="true"  @bindWxOkEmit="bindWxOk"></LoginPhone>
     </el-dialog>
     </div>
   </div>
@@ -61,13 +61,11 @@ export default defineComponent({
     const userInfo = computed(()=>store.state.user.userInfo)
     const completeUserInfoDialogVisible=ref(false)
     const bindWxDialogVisible=ref(false)
-    const isCallBack=ref(false)
     if(store.state.user.userInfo.firstLogin){
       //用户首次登录从未补充信息
       completeUserInfoDialogVisible.value=true
     }
     const changeDialogVisible=()=>{
-      console.log('事件')
       completeUserInfoDialogVisible.value=false
     }
     //绑定微信 
@@ -90,13 +88,13 @@ export default defineComponent({
         ElMessage.warning(data.data)
       }
     }
-    const getState=(state:string)=>{
-      console.log('state',state)
-      ElMessage.success(`state :+${state}`)
+    const bindWxOk=()=>{
+      ElMessage.success('绑定成功')
+      bindWxDialogVisible.value=false
+      userInfo.value.userIdWechat=true
     }
     const changeBindWxDialogVisible=()=>{
       bindWxDialogVisible.value=true
-      isCallBack.value=true
     }
     return {
       userInfo,
@@ -104,8 +102,7 @@ export default defineComponent({
       bindWxDialogVisible,
       changeDialogVisible,
       changeBindWxDialogVisible,
-      getState,
-      isCallBack,
+      bindWxOk,
       unBindWx
     }
   },

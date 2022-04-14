@@ -4,6 +4,10 @@
       <div class="active_box">d</div>
       <pre class="info-box">{{articleData.articleContent}}</pre>
     </div>
+    <div class="commentBox">
+      ddd
+      <CommentsCard :articleId="articleData.articleId"></CommentsCard>
+    </div>
   </div>
 </template>
 <script lang='ts'>
@@ -11,10 +15,13 @@ import { defineComponent,ref } from 'vue'
 import {getArticleInfo} from '../../service/article/index'
 import {useRoute} from 'vue-router'
 import { ElMessage } from 'element-plus'
-
+import CommentsCard from '../comment/CommentsCard.vue'
 
 export default defineComponent({
   name: 'ArticleInfo',
+  components:{
+    CommentsCard
+  },
   setup(props,content){
     const route = useRoute()
     const articleData=ref({})
@@ -48,5 +55,8 @@ export default defineComponent({
     height: 95%;
     background-color: blue;
   }
+}
+.commentBox{
+  width: 100%;
 }
 </style>

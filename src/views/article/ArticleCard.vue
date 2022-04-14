@@ -28,10 +28,11 @@
           <Comment />
         </el-icon>
         <div class="active">{{ '评论量 ' + article.articleComments }}</div>
-        <el-icon :size="size" :color="color">
+        <el-icon :size="size" :color="(starNum === article.articleStar)==!article.liked ? color : '#C62828'">
           <Star />
         </el-icon>
-        <div class="active" @click.stop="addStarFun(article.articleId)">{{ `点赞 ${article.articleStar}` }}</div>
+        <div v-if="starNum === article.articleStar" class="active" @click.stop="addStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
+        <div v-else class="active" @click.stop="unStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
         <el-icon v-if="isEdit" :size="size" :color="color">
           <Edit />
         </el-icon>
@@ -41,10 +42,10 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent ,ref,watchEffect} from 'vue'
 import { useRouter } from 'vue-router'
 
-import { getAddStar } from '../../service/article/index'
+import { getAddStar,unStar } from '../../service/article/index'
 
 import { formatUtcString } from '../../utils/date'
 
@@ -74,6 +75,10 @@ export default defineComponent({
     const article = props.articleData
     const isEdit = props.isEdit
     const color = '#777'
+    let starNum=ref(0)
+    watchEffect(()=>{
+      starNum.value=article?.articleStar
+    })
     const clickArticleInfo = (id: string) => {
       router.push(`/articleinfo/info/${id}`)
     }
@@ -84,6 +89,19 @@ export default defineComponent({
       const data = await getAddStar({ articleId: id })
       if (data.success) {
         ElMessage.success('点赞成功')
+        starNum.value++
+      } else {
+        ElMessage.warning(data.data)
+      }
+    }
+    const unStarFun = (id: string) => {
+      deleteStar(id)
+    }
+    async function deleteStar(id: string) {
+      const data = await unStar(id)
+      if (data.success) {
+        ElMessage.success('取消点赞成功')
+        starNum.value--
       } else {
         ElMessage.warning(data.data)
       }
@@ -95,6 +113,8 @@ export default defineComponent({
       addStarFun,
       formatUtcString,
       color,
+      starNum,
+      unStarFun
     }
   },
 })
@@ -104,11 +124,6 @@ export default defineComponent({
 @col1: #2196f3;
 @col2: #388e3c;
 @fontCol: #777;
-// .remMixin() {
-//       @functions: ~`(function() {
-//           return
-//         }
-//       )()`;
 
 .ArticleCardBox {
   background-color: #fff;
@@ -221,16 +236,23 @@ export default defineComponent({
       @media screen and (min-width: 900px) {
         .content {
           -webkit-line-clamp: 2;
+        line-height: 10px;
         }
       }
       @media screen and (min-width: 1000px) {
         .content {
           -webkit-line-clamp: 3;
+        font-size: 1rem;
+        line-height: 14px;
+        height: 30vw;
         }
       }
       @media screen and (min-width: 1200px) {
         .content {
           -webkit-line-clamp: 4;
+          font-size: 1.4rem;
+          line-height: 3rem;
+          height: 30vw;
         }
       }
     }

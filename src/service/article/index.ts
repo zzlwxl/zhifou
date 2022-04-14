@@ -14,7 +14,8 @@ enum Article {
   getArticleByUser='/article/get',
   getArticleByCate='/article/getByCategoryId',
   getArticleBySearch='/article/fuzzySearch',
-  getAddStar = '/article/star'
+  getAddStar = '/article/star',
+  unStar='/article/unStar'
 }
 
 
@@ -82,5 +83,11 @@ export function getAddStar(data:IGetAddStar){
   return zzlRequest.get<IDataType>({
     url:Article.getAddStar,
     data
+  })
+}
+export function unStar(articleId:string){
+  return zzlRequest.get<IDataType>({
+    url:Article.unStar,
+    data:{articleId}
   })
 }

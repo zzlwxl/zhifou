@@ -67,17 +67,17 @@ export default defineComponent({
   .left {
     height: 1000px;
     background-color: rgb(150, 255, 150);
-    width: 30%;
+    width: 20%;
     display: block;
   }
   .right {
     height: 1000px;
     background-color: rgb(138, 138, 255);
-    width: 30%;
+    width: 20%;
     display: block;
   }
   .articleBox {
-    width: 40%;
+    width: 60%;
     height: 1000px;
     // padding: 100%;
   }

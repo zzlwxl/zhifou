@@ -109,6 +109,7 @@ export default defineComponent({
           isEdit.value=true
           break
         case 'category':
+          if (!getID) return
           articleData=await getArticleByCate({ current, size ,categoryId:getID})
           break
         case 'search':
