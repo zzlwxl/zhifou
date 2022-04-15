@@ -3,7 +3,7 @@
     <div class="main">
       <header class="phoneNavBox">
         <nav>
-          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+          <!-- <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-sub-menu :index="item.categoryId" v-for="item in categorysArray" :key="item.categoryId">
               <template #title>{{ item.categoryName }}</template>
               <template v-if="item.children.length">
@@ -13,7 +13,8 @@
                 <span class="nullCate">没有子分类</span>
               </template>
             </el-sub-menu>
-          </el-menu>
+          </el-menu> -->
+          <NavMenu @NavMenuSelectEmit="NavMenuSelect"></NavMenu>
         </nav>
         <span @click="$router.push('/')" class="logo">知<span>否</span></span>
         <span class="login">
@@ -22,6 +23,7 @@
       </header>
       <header class="navBox">
         <span @click="$router.push('/')" class="logo">知<span>否</span></span>
+
         <nav>
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-sub-menu :index="item.categoryId" v-for="item in categorysArray" :key="item.categoryId">
@@ -34,7 +36,9 @@
               </template>
             </el-sub-menu>
           </el-menu>
+
         </nav>
+        
         <Search @chilkSearchEmit="chilkSearch"></Search>
         <span class="login">
           <template v-if="userName">
@@ -67,6 +71,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, computed, ref, reactive, watchEffect } from 'vue'
 import Search from '../Serarch/Search.vue'
+import NavMenu from './NavMenu.vue'
 import { useRouter } from 'vue-router'
 import { Edit } from '@element-plus/icons-vue'
 import { getCategorys } from '../../service/article/index'
@@ -74,18 +79,20 @@ import { logout } from '../../service/user/user'
 import localCache from '../../utils/cache'
 import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
+import {NavMenuEmitData} from './types'
 
 export default defineComponent({
   name: 'main',
   components: {
     Edit,
     Search,
+    NavMenu
   },
   emits: ['chilkEmit'],
   setup(props, content) {
     const router = useRouter()
     const store = useStore()
-
+    
     let categorysArray = ref([])
 
     async function categorys() {
@@ -115,6 +122,13 @@ export default defineComponent({
       })
       emitFun(id)
     }
+    /**
+     * 移动端导航的传值,并且要调用nav的articleListByData
+     */
+    const NavMenuSelect=(data:NavMenuEmitData)=>{
+      articleListByData(data.type,data.name,data.id)
+    }
+
     /**
      * data请求数据的参数
      */
@@ -159,7 +173,8 @@ export default defineComponent({
       outLogin,
       categorysArray,
       articleListByData,
-      chilkSearch
+      chilkSearch,
+      NavMenuSelect
     }
   },
 })
@@ -188,7 +203,7 @@ export default defineComponent({
     border-bottom: 0px;
   }
   nav {
-    margin-top: 10px;
+    // margin-top: 10px;
   }
   .logo {
     flex: 1;

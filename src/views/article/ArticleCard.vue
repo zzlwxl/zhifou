@@ -31,7 +31,7 @@
         <el-icon :size="size" :color="(starNum === article.articleStar)==!article.liked ? color : '#C62828'">
           <Star />
         </el-icon>
-        <div v-if="starNum === article.articleStar" class="active" @click.stop="addStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
+        <div v-if="(starNum === article.articleStar)==!article.liked " class="active" @click.stop="addStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
         <div v-else class="active" @click.stop="unStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
         <el-icon v-if="isEdit" :size="size" :color="color">
           <Edit />
