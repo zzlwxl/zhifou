@@ -6,10 +6,10 @@
       <div class="articleBox">
         <router-view></router-view>
       </div>
-      <aside class="right">右</aside>
+      <aside class="right">右边</aside>
     </div>
+      <FooterNav></FooterNav>
     <footer>
-      <Footer></Footer>
     </footer>
     
   </div>
@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent ,ref} from 'vue'
 import Nav from '../../components/Nav/Nav.vue'
-import Footer from '../../components/Footer/Footer.vue'
+import FooterNav from '../../components/Footer/FooterNav.vue'
 // import Slide from '../article/Slide.vue'
 import ArticleList from '../article/ArticleList.vue'
 
@@ -25,7 +25,7 @@ export default defineComponent({
   name: 'ArticleMain',
   components: {
     Nav,
-    Footer,
+    FooterNav,
     // Slide,
     ArticleList,
   },
@@ -56,7 +56,7 @@ export default defineComponent({
 @media screen and (min-width: 800px) {
   .right {
     height: 1000px;
-    background-color: rgb(145, 145, 255);
+    background-color: rgb(0, 0, 198);
     display: block;
     width: 40%;
   }
@@ -73,7 +73,7 @@ export default defineComponent({
   }
   .right {
     height: 1000px;
-    background-color: rgb(138, 138, 255);
+    background-color: rgb(0, 0, 249);
     width: 20%;
     display: block;
   }

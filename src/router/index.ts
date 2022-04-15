@@ -6,54 +6,54 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Main',
     redirect: '/article/default',
-    component: import(/* webpackChunkName: "main" */ '../views/main/Main.vue'),
+    component: ()=> import(/* webpackChunkName: "main" */ '../views/main/Main.vue'),
     children: [
       {
         path: 'article/:type',
         name:'article',
-        component: import(/* webpackChunkName: "main" */ '../views/article/ArticleList.vue'),
+        component: ()=> import(/* webpackChunkName: "main" */ '../views/article/ArticleList.vue'),
       }
     ]
   },
   {
     path:'/articleinfo',
     name:'ArticleInfo',
-    component:import(/* webpackChunkName: "main" */ '../views/main/ArticleInfo.vue'),
+    component: ()=>import(/* webpackChunkName: "main" */ '../views/main/ArticleInfo.vue'),
     children:[
       {
         
         path:'info/:id',
         name:'info',
         props:true,
-        component:import(/* webpackChunkName: "main" */ '../views/article/ArticleInfo.vue'),
+        component: ()=>import(/* webpackChunkName: "main" */ '../views/article/ArticleInfo.vue'),
       }
     ]
   },
   {
     path: '/login',
-    component: () => import(/* webpackChunkName: "login" */ '../views/login/cpns/LoginPanel.vue')
+    component: ()=> () => import(/* webpackChunkName: "login" */ '../views/login/cpns/LoginPanel.vue')
   },
   {
     path: '/user',
-    component: () => import(/* webpackChunkName: "user" */ '../views/user/user.vue'),
+    component: ()=> () => import(/* webpackChunkName: "user" */ '../views/user/user.vue'),
     meta: {
       login_require: true,
     },
   },
   {
     path: '/setpwd',
-    component: import(/* webpackChunkName: "user" */ '../views/user/SetPwd.vue'),
+    component: ()=> import(/* webpackChunkName: "user" */ '../views/user/SetPwd.vue'),
     meta: {
       login_require: true,
     },
   },
   {
     path: '/forgetpwd',
-    component: import(/* webpackChunkName: "user" */ '../views/user/ForgetPwd.vue'),
+    component: ()=> import(/* webpackChunkName: "user" */ '../views/user/ForgetPwd.vue'),
   },
   {
     path: '/create',
-    component: import(/* webpackChunkName: "main" */ '../views/article/Article.vue'),
+    component: ()=> import(/* webpackChunkName: "main" */ '../views/article/Article.vue'),
   }
 ]
 

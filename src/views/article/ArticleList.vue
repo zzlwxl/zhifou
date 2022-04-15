@@ -17,13 +17,14 @@
       <aside class="right">右</aside>
     </div>
     <footer>
-      <Footer></Footer>
+      <FooterNav></FooterNav>
     </footer>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, watchEffect } from 'vue'
 import ArticleCard from './ArticleCard.vue'
+import FooterNav from '../../components/Footer/FooterNav.vue'
 import Nav from '../../components/Nav/Nav.vue'
 import Slide from '../article/Slide.vue'
 import { useRoute,useRouter } from 'vue-router'
@@ -37,6 +38,7 @@ export default defineComponent({
     ArticleCard,
     Slide,
     Nav,
+    FooterNav
   },
   setup(props, content) {
     const route = useRoute()
