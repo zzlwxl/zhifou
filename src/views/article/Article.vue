@@ -1,9 +1,10 @@
 <template>
   <div class="article">
+    <div class="articleBox">
     <span class="back">
     <el-link @click="$router.go(-1)">返回</el-link>
     </span>
-    <el-form ref="ruleFormRef" :model="subForm" :rules="articleRules" label-width="120px" class="demo-userInfoForm" :size="formSize">
+    <el-form ref="ruleFormRef" :model="subForm" :rules="articleRules"  class="demo-userInfoForm" :size="formSize">
       <el-form-item label="文章标题" prop="articleTitle">
         <el-input v-model="subForm.articleTitle" />
       </el-form-item>
@@ -24,6 +25,8 @@
         <el-button style="width:100%" type="primary" @click="submitFormRule(ruleFormRef)">提交</el-button>
       </el-form-item>
     </el-form>
+
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -117,9 +120,12 @@ export default defineComponent({
 
 <style scoped lang="less">
 .article {
-  width: 400px;
+  width: 100%;
   margin: 0 auto;
   margin-top: 10px;
+  .articleBox{
+    margin: 10px;
+  }
 }
 .pwd {
   width: 350px;

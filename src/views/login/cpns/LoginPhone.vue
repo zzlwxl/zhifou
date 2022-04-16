@@ -1,7 +1,7 @@
 <template>
   <div class="LoginPhone">
     <div class="tip">
-      <div>微信扫码登录</div>
+      <div><slot name="title">微信扫码登录</slot></div>
       <img :src="codeImgSrc" />
     </div>
     <el-dialog v-model="centerDialogVisible" width="30%" center>

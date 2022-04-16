@@ -3,42 +3,49 @@
     <div class="main">
       <header class="phoneNavBox">
         <nav>
-          <!-- <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-sub-menu :index="item.categoryId" v-for="item in categorysArray" :key="item.categoryId">
-              <template #title>{{ item.categoryName }}</template>
-              <template v-if="item.children.length">
-                <el-menu-item @click="articleListByData(item.categoryName, item.categoryId)" :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{ item.categoryName }}</el-menu-item>
-              </template>
-              <template v-else>
-                <span class="nullCate">没有子分类</span>
-              </template>
-            </el-sub-menu>
-          </el-menu> -->
           <NavMenu @NavMenuSelectEmit="NavMenuSelect"></NavMenu>
         </nav>
         <span @click="$router.push('/')" class="logo">知<span>否</span></span>
         <span class="login">
-          <el-link v-if="!userName" @click="$router.push('/login')">登录/注册</el-link>
+          <template v-if="userName">
+            <div class="user-info">
+              <el-dropdown size="small" type="primary">
+                <el-avatar :size="30" :src="$store.state.user.userInfo.headImgUrl" />
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <div style="margin: 5px; text-align: center">
+                      {{ userName }}
+                    </div>
+                    <el-dropdown-item @click="$router.push('/user')">个人中心</el-dropdown-item>
+                    <el-dropdown-item @click="articleListByData('user', $store.state.user.userInfo.nickName)">文章管理</el-dropdown-item>
+                    <el-dropdown-item @click="outLogin">退出登录</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+          </template>
+          <template v-else>
+            <el-link @click="$router.push('/login')">登录/注册</el-link>
+          </template>
         </span>
       </header>
       <header class="navBox">
         <span @click="$router.push('/')" class="logo">知<span>否</span></span>
-
         <nav>
           <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-sub-menu :index="item.categoryId" v-for="item in categorysArray" :key="item.categoryId">
               <template #title>{{ item.categoryName }}</template>
               <template v-if="item.children.length">
-                <el-menu-item @click="articleListByData('category',item.categoryName, item.categoryId)" :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{ item.categoryName }}</el-menu-item>
+                <el-menu-item @click="articleListByData('category', item.categoryName, item.categoryId)" :index="item.categoryId" v-for="item in item.children" :key="item.categoryId">{{ item.categoryName }}</el-menu-item>
               </template>
               <template v-else>
                 <span class="nullCate">没有子分类</span>
               </template>
             </el-sub-menu>
           </el-menu>
-
+          <!-- <HelloWorld></HelloWorld> -->
         </nav>
-        
+        <div class="orther"></div>
         <Search @chilkSearchEmit="chilkSearch"></Search>
         <span class="login">
           <template v-if="userName">
@@ -51,7 +58,7 @@
                       {{ userName }}
                     </div>
                     <el-dropdown-item @click="$router.push('/user')">个人中心</el-dropdown-item>
-                    <el-dropdown-item @click="articleListByData('user',$store.state.user.userInfo.nickName)">文章管理</el-dropdown-item>
+                    <el-dropdown-item @click="articleListByData('user', $store.state.user.userInfo.nickName)">文章管理</el-dropdown-item>
                     <el-dropdown-item @click="outLogin">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -72,6 +79,7 @@
 import { defineComponent, onMounted, computed, ref, reactive, watchEffect } from 'vue'
 import Search from '../Serarch/Search.vue'
 import NavMenu from './NavMenu.vue'
+import HelloWorld from '../HelloWorld.vue'
 import { useRouter } from 'vue-router'
 import { Edit } from '@element-plus/icons-vue'
 import { getCategorys } from '../../service/article/index'
@@ -79,20 +87,21 @@ import { logout } from '../../service/user/user'
 import localCache from '../../utils/cache'
 import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
-import {NavMenuEmitData} from './types'
+import { NavMenuEmitData } from './types'
 
 export default defineComponent({
   name: 'main',
   components: {
     Edit,
     Search,
-    NavMenu
+    NavMenu,
+    HelloWorld,
   },
   emits: ['chilkEmit'],
   setup(props, content) {
     const router = useRouter()
     const store = useStore()
-    
+
     let categorysArray = ref([])
 
     async function categorys() {
@@ -108,16 +117,16 @@ export default defineComponent({
      * name:在URL地址栏中向用户展示查询条件
      * id:请求数据的参数
      */
-    const articleListByData = (type:string,name: string, id: string) => {
+    const articleListByData = (type: string, name: string, id: string) => {
       router.push({
         name: 'article',
         path: '/article',
         query: {
           name,
-          id
+          id,
         },
         params: {
-          type
+          type,
         },
       })
       emitFun(id)
@@ -125,8 +134,8 @@ export default defineComponent({
     /**
      * 移动端导航的传值,并且要调用nav的articleListByData
      */
-    const NavMenuSelect=(data:NavMenuEmitData)=>{
-      articleListByData(data.type,data.name,data.id)
+    const NavMenuSelect = (data: NavMenuEmitData) => {
+      articleListByData(data.type, data.name, data.id)
     }
 
     /**
@@ -138,7 +147,7 @@ export default defineComponent({
     /**
      * 因为搜索组件是Articlelist的孙组件,需要三个组件来传值
      */
-    const chilkSearch=(value:string)=>{
+    const chilkSearch = (value: string) => {
       emitFun(value)
     }
     function userInfo() {
@@ -174,7 +183,7 @@ export default defineComponent({
       categorysArray,
       articleListByData,
       chilkSearch,
-      NavMenuSelect
+      NavMenuSelect,
     }
   },
 })
@@ -204,6 +213,7 @@ export default defineComponent({
   }
   nav {
     // margin-top: 10px;
+    
   }
   .logo {
     flex: 1;
@@ -240,7 +250,7 @@ export default defineComponent({
     display: none;
   }
   .el-menu--horizontal {
-    border-bottom: 1px solid @col2;
+    border-bottom: 1px solid #ffffff;
   }
   .navBox {
     display: flex;
@@ -249,7 +259,7 @@ export default defineComponent({
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #fff;
+      background-color: rgb(255, 255, 255);
       color: @col1;
       font-size: 25px;
       cursor: pointer;
@@ -265,13 +275,24 @@ export default defineComponent({
       width: 16%;
     }
     nav {
+      // flex: 1;
+      width: 5%;
+      height: 40px;
+      display: flex;
+      background-color: rgb(255, 255, 255);
+    }
+    .orther {
       flex: 1;
+      background-color: #fff;
     }
     .create-article {
       padding: 5px;
       background-color: @col2;
       border-radius: 20px 5px 20px 5px;
       color: rgb(255, 255, 255);
+    }
+    .el-sub-menu__title {
+      padding: 9px 19px !important;
     }
   }
 }

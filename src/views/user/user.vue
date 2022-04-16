@@ -25,11 +25,15 @@
     <el-button type="primary" @click="completeUserInfoDialogVisible=true">编辑信息</el-button>
     <el-button type="primary" @click="$router.push('/setpwd')">修改密码</el-button>
     </div>
-    <el-dialog v-model="completeUserInfoDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="80%" center>
+    <el-dialog v-model="completeUserInfoDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="95%" center>
       <ChangeUserInfo @changeDialogVisibleEmit="changeDialogVisible"></ChangeUserInfo>
     </el-dialog>
-    <el-dialog v-model="bindWxDialogVisible" title="绑定微信" width="80%" center>
-      <LoginPhone :isBindWxFlag="true"  @bindWxOkEmit="bindWxOk"></LoginPhone>
+    <el-dialog v-model="bindWxDialogVisible" width="90%" center>
+      <LoginPhone :isBindWxFlag="true"  @bindWxOkEmit="bindWxOk">
+        <template v-slot:title>
+          绑定微信
+        </template>
+      </LoginPhone>
     </el-dialog>
     </div>
   </div>

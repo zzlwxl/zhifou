@@ -47,6 +47,7 @@ export default defineComponent({
   background-color: rgb(255, 255, 255);
   display: flex;
   align-items: center;
+  width: 20%;
   .searchBtn {
     color: white;
     background-color: @col2;

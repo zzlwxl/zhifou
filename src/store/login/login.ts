@@ -15,12 +15,17 @@ const loginModule:Module<ILoginState,IRootState>={
   state(){
     return{
       token:'',
+      isRefReshCode:false
     }
   },
   mutations:{
     changeToken(state,token:string){
       state.token=token
     },
+    //刷新验证码
+    changeisRefReshCode(state,isCode:boolean){
+      state.isRefReshCode=isCode
+    }
   },
   actions:{
     async accountLoginAction({commit},payload:IAccount){
@@ -33,13 +38,14 @@ const loginModule:Module<ILoginState,IRootState>={
       if(loginData.success){
         commit('changeToken',loginData.data)
         localCache.setCache('token',loginData.data)
-        console.log('登录设置token',loginData.data)
+        commit('changeisRefReshCode',false)
         router.go(-1)
       }else{
         ElMessage({
           message: loginData.data,
           type: 'warning',
         })
+        commit('changeisRefReshCode',true)
       }
     },
     async accountRegisterAction({commit},payload:IAccount){
@@ -62,14 +68,21 @@ const loginModule:Module<ILoginState,IRootState>={
           code:payload.code,
           uuid:payload.uuid
         })
-        commit('changeToken',loginData.data)
-        localCache.setCache('token',loginData.data)
-        router.go(-1)
+        if(loginData.success){
+          commit('changeToken',loginData.data)
+          localCache.setCache('token',loginData.data)
+          commit('changeisRefReshCode',false)
+          router.go(-1)
+        }else{
+          ElMessage.warning(loginData.data)
+          commit('changeisRefReshCode',true)
+        }
       }else{
         ElMessage({
           message: registerData.data,
           type: 'warning',
         })
+        commit('changeisRefReshCode',true)
       }
       // const {id,token}= loginRequest.data
       // commit('changeToken',token)

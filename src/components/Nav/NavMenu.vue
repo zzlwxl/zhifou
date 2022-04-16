@@ -3,8 +3,7 @@
     <el-button class="menuBtn" @click="drawer2 = true">
       <el-icon :size="size" :color="color"> <Expand /> </el-icon>菜单</el-button
     >
-    <el-drawer v-model="drawer" title="I am the title" :direction="direction" :before-close="handleClose"> </el-drawer>
-    <el-drawer v-model="drawer2" direction="ltr">
+    <el-drawer size="50%" v-model="drawer2" direction="ltr">
       <template #title>
         <h4 class="text item" @click="getHome">首页</h4>
       </template>
@@ -91,6 +90,7 @@ export default defineComponent({
 .item {
   margin-bottom: 18px;
   color: @col1;
+  overflow: hidden;
   cursor: pointer;
 }
 .item:hover {

@@ -52,9 +52,6 @@ export default defineComponent({
     let isEdit=ref(false)
     let getID = '' //请求数据查询参数
     watchEffect(() => {
-      console.log('路由route.params', route.params.type)
-      console.log('路由route.query', route.query.name)
-      console.log('路由route.query', route.query.id)
       switch (route.params.type) {
         case undefined:
           console.log('not found')
@@ -65,6 +62,7 @@ export default defineComponent({
           getArticleAllList()
           break
         case 'category':
+          console.log('分类分类')
           getType = 'category'
           init()
           getArticleAllList()
@@ -111,14 +109,18 @@ export default defineComponent({
           isEdit.value=true
           break
         case 'category':
-          if (!getID) return
+          if(!getID ){
+            if(route.query.id && route.query.id.length>0){
+              getID=route.query.id as string
+            }
+          }
+          if(!getID ) return
           articleData=await getArticleByCate({ current, size ,categoryId:getID})
           break
         case 'search':
           articleData=await getArticleBySearch({ current, size ,key:getID})
           break
       }
-      // const articleData = await getArticleAll({ current, size })
       if (articleData.success) {
         ElMessage.success('获取文章成功')
         if (articleData.data.pages === articleData.data.current) {

@@ -1,35 +1,30 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    
+  <div class='HelloWorld'>
+    <el-button class="menuBtn" @click="drawer2 = true">
+      <el-icon :size="size" :color="color"> <Expand /> </el-icon>菜单</el-button
+    >
+    <div class="drawerBox">
+    <el-drawer custom-class="drawer" size="50%" v-model="drawer2" direction="ttb">
+    </el-drawer>
+
+    </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang='ts'>
+import { defineComponent ,ref} from 'vue'
 
 export default defineComponent({
   name: 'HelloWorld',
-  props: {
-    msg: String,
-  },
-});
+  setup(props,content){
+    const drawer2 = ref(false)
+
+    return{
+      drawer2
+    }
+  }
+})
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="less">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+<style scoped lang='less'>
+
 </style>

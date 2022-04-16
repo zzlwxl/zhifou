@@ -5,7 +5,6 @@
       <pre class="info-box">{{articleData.articleContent}}</pre>
     </div>
     <div class="commentBox">
-      ddd
       <CommentsCard :articleId="articleData.articleId"></CommentsCard>
     </div>
   </div>
@@ -44,7 +43,7 @@ export default defineComponent({
 
 <style scoped lang='less'>
 .article-box{
-  display: flex;
+  // display: flex;
   .active_box{
     width: 100%;
     height: 5%;

@@ -1,6 +1,6 @@
 <template>
   <div class="pwd">
-    <el-form ref="ruleFormRef" :model="pwdForm" :rules="pwdRules" label-width="120px" class="demo-userInfoForm" :size="formSize">
+    <el-form ref="ruleFormRef" :model="pwdForm" :rules="pwdRules"  class="demo-userInfoForm" :size="formSize">
       <el-form-item label="旧密码" prop="oldPwd">
         <el-input v-model="pwdForm.oldPwd" />
       </el-form-item>
@@ -8,7 +8,7 @@
         <el-input v-model="pwdForm.pwd" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitFormRule(ruleFormRef)">提交</el-button>
+        <el-button style="margin:0 auto" type="primary" @click="submitFormRule(ruleFormRef)">提交</el-button>
       </el-form-item>
     </el-form>
   </div>

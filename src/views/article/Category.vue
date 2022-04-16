@@ -1,6 +1,6 @@
 <template>
   <div class="Category">
-    <el-form label-width="120px" class="demo-userInfoForm" :size="formSize">
+    <el-form class="demo-userInfoForm" :size="formSize">
       <el-form-item id="create-cate-input" label="文章分类">
         <div class="selectBox">
         <el-input v-model="changeCateForm.categoryName" class="selectInput" disabled placeholder="Please input" />

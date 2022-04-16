@@ -26,13 +26,13 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive,ref } from 'vue'
+import { defineComponent, reactive,ref,watchEffect } from 'vue'
 import type { FormInstance } from 'element-plus'
 import localCache from '../../../utils/cache'
 import Code from '../../../service/login/login'
 import { rules } from '../config/account-config'
 
-import {useStore} from 'vuex'
+import { useStore } from '../../../store/index'
 
 export default defineComponent({
   name: 'LoginAccount',
@@ -50,6 +50,15 @@ export default defineComponent({
       uuid: ''
     })
     const ruleFormRef = ref<FormInstance>()
+
+    //监听是否刷新验证码
+    watchEffect(()=>{
+      if(store.state.login.isRefReshCode===true){
+        //重新获取验证码
+        getCode()
+        store.commit('login/changeisRefReshCode',false)
+      }
+    })
 
     const loginAction = (isKeepPassword:boolean)=>{
       ruleFormRef.value?.validate((valid)=>{
