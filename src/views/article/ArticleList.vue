@@ -6,9 +6,11 @@
       <main>
         <div class="slide">
           <Slide></Slide>
+          <div class="contentBox">
           <template v-for="item in ArticleAllList">
             <ArticleCard :articleData="item" :isEdit="isEdit"></ArticleCard>
           </template>
+          </div>
           <div class="active">
             <el-button :disabled="isNullArticle" @click="getArticleAllList" color="#388e3c" style="color: white">加载更多</el-button>
           </div>
@@ -149,12 +151,7 @@ export default defineComponent({
 <style scoped lang="less">
 @col2: #388e3c;
 .ArticleList {
-  .active {
-    width: 100%;
-    display: flex;
-    margin-top: 10px;
-    justify-content: center;
-  }
+
 }
 .mainBox {
   margin-top: 2vw;
@@ -166,6 +163,21 @@ main {
   display: flex;
   justify-content: center;
   margin: 0 auto;
+    .active {
+    width: 90%;
+    position: fixed;
+    bottom: 8vh;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .contentBox{
+  }
+  @media screen and (min-width:800px) {
+    .active{
+      bottom: 4px;
+    }
+  }
   .slide {
     width: 90%;
     position: relative;
