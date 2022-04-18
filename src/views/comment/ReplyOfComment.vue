@@ -136,18 +136,23 @@ export default defineComponent({
     const delCommentFun=(commentId:string)=>{
       delComment(commentId)
     }
-    async function delComment(commentId:string) {
+    async function delComment(commentId:string,isDelVirComment=false) {
       const data = await getDelComment(commentId)
         if(data.success){
           ElMessage.success('删除评论成功')
-          content.emit('destroyCommentEmit',true)
+          if(isDelVirComment){
+            content.emit('VirReplyDelEmit',props.virIndex)
+          }
+          else{
+            content.emit('destroyCommentEmit',true)
+          }
         }else{
           ElMessage.error(data.data)
         }
     }
     //删除虚拟评论
     const delVirCommentFun=(commentId:string)=>{
-      content.emit('VirReplyDelEmit',props.virIndex)
+      delComment(commentId,true)
     }
     return {
       replyFun,
