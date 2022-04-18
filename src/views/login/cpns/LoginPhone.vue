@@ -1,7 +1,14 @@
 <template>
   <div class="LoginPhone">
     <div class="tip">
-      <div><slot name="title">微信扫码登录</slot></div>
+      <div>
+        <slot name="title">
+          <div class="title">
+            <span>微信扫码登录</span>
+            <span class="tips">首次使用默认密码是123456</span>
+          </div>
+        </slot>
+      </div>
       <img :src="codeImgSrc" />
     </div>
     <el-dialog v-model="centerDialogVisible" width="30%" center>
@@ -26,7 +33,8 @@ import localCache from '../../../utils/cache'
 import { rules } from '../config/account-config'
 import { BindWx } from '../../../service/login/login'
 
-import { useRouter } from 'vue-router'
+import { useStore } from '../../../store/index'
+import { useRoute, useRouter } from 'vue-router'
 
 import { ElMessage } from 'element-plus'
 
@@ -40,7 +48,9 @@ export default defineComponent({
   },
   emits: ['getStateEmit', 'bindWxOkEmit'],
   setup(props, content) {
+    const route = useRoute()
     const router = useRouter()
+    const store = useStore()
     let isBindWxFlag = props.isBindWxFlag
     let centerDialogVisible = ref(false)
     let state = ''
@@ -48,12 +58,19 @@ export default defineComponent({
     let callBackFlag = false
     let token = ''
     let count = 0
+    let flag = true
 
     const account = reactive({
       userName: localCache.getCache('name') ?? '',
       passWord: localCache.getCache('password') ?? '',
     })
 
+    watchEffect(() => {
+      // if(store.state.login.token!=='' && flag){
+      //    router.push(route.query.redirect+'')
+      //    flag=false
+      // }
+    })
     //轮训请求用户是否扫码成功
     async function loginCallback() {
       if (isBindWxFlag) {
@@ -72,15 +89,10 @@ export default defineComponent({
       if (data.success) {
         callBackFlag = true
         token = data.data.token
-        if (!isBindWxFlag && data.data.needUpdateInfo) {
-          //补全用户信息的弹窗
-          centerDialogVisible.value = true
-        } else if (!isBindWxFlag) {
-          //先保存token
-          localCache.setCache('token', data.data.token)
-          ElMessage.success('登录成功')
-          router.go(-1)
-        }
+        //先保存token
+        localCache.setCache('token', data.data.token)
+        ElMessage.success('登录成功')
+        router.go(-1)
       }
     }
     //补全用户信息
@@ -172,6 +184,16 @@ export default defineComponent({
   align-items: center;
   div {
     font-size: 1.4rem;
+  }
+}
+.title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .tips{
+    color: rgb(161, 161, 161);
+    margin-top: 2px;
+    font-size: 12px;
   }
 }
 </style>

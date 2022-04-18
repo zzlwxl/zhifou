@@ -21,6 +21,8 @@ import { defineComponent, reactive, ref ,watchEffect,computed} from 'vue'
 import type { FormInstance } from 'element-plus'
 import localCache from '../../../utils/cache'
 
+import { useRoute,useRouter } from 'vue-router'
+
 import Code from '../../../service/login/login'
 
 import { rules } from '../config/account-config'
@@ -31,8 +33,11 @@ export default defineComponent({
   name: 'LoginAccount',
   setup(props, content) {
     const store = useStore()
+    const route=useRoute()
+    const router=useRouter()
 
     const captchaCodeImg = ref()
+    let flag=true
 
     const account = reactive({
       userName: localCache.getCache('name') ?? '',
@@ -51,6 +56,10 @@ export default defineComponent({
         getCode()
         store.commit('login/changeisRefReshCode',false)
       }
+      // if(store.state.login.token!=='' && flag){
+      //    router.push(route.query.redirect+'')
+      //    flag=false
+      // }
     })
 
     const loginAction = (isKeepPassword: boolean) => {

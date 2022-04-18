@@ -17,7 +17,7 @@ class ZZLRequest {
   interceptors?: ZZLRequestInterceptors
   // showLoading:boolean
   // loading?:LoadingOptionsResolved 
-  noToken: boolean=false
+  noToken: boolean = false
 
   constructor(config: ZZLRequestConfig) {
     //创建 axios实例
@@ -82,16 +82,17 @@ class ZZLRequest {
           switch (error.response.status) {
             case 401:
               ElMessage({
-                message: '登录过期，请重新登录',
+                message: '登录过期，请重新登录!',
                 type: 'warning',
               })
               localCache.deleteCache('token')
               router.push('/login')
-              return '登录过期，请重新登录'
+              break
             default:
               ElMessage.warning(error.response.msg)
-              return Promise.reject(error.response)
+              break
           }
+          return error
           // console.log('所有实例都有的响应拦截器-响应失败')
 
           // 移除加载动画
@@ -119,18 +120,18 @@ class ZZLRequest {
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
       }
-      console.log('config.noToken',config)
+      console.log('config.noToken', config)
       this.noToken = config.noToken ?? DEAFULT_NOTOKEN
-      console.log('this.noToken',this.noToken)
+      console.log('this.noToken', this.noToken)
       if (!this.noToken) {
         const token = localCache.getCache('token')
-        console.log('需要带token,但拿到的token的是',token)
+        console.log('需要带token,但拿到的token的是', token)
         if (token) {
-          console.log('token111',token)
+          console.log('token111', token)
           this.instance.defaults.headers.common['token'] = `zzl_${token}`
         }
-      }else{
-          this.instance.defaults.headers.common['token'] = ''
+      } else {
+        this.instance.defaults.headers.common['token'] = ''
       }
       // if(config.showLoading === false){
       //   this.showLoading=config.showLoading
@@ -148,19 +149,18 @@ class ZZLRequest {
       })
         .catch((err) => {
           // this.showLoading=DEAFULT_LOADING
-          reject(err)
           return err
         })
     })
   }
 
   get<T = any>(config: ZZLRequestConfig<T>): Promise<T> {
-    if(config.data) config.url = config.url + '?' + encodeURI(QueryString.stringify(config.data))
+    if (config.data) config.url = config.url + '?' + encodeURI(QueryString.stringify(config.data))
     return this.request<T>({ ...config, method: 'GET' })
   }
 
   post<T = any>(config: ZZLRequestConfig<T>): Promise<T> {
-    if(config.data) config.data=QueryString.stringify(config.data)
+    if (config.data) config.data = QueryString.stringify(config.data)
     return this.request<T>({ ...config, method: 'POST' })
   }
   delete<T = any>(config: ZZLRequestConfig<T>): Promise<T> {

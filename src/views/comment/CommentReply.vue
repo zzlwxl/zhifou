@@ -1,18 +1,23 @@
 <template>
   <div class="CommentReply">
     <div class="commentBox" :class="deep === 1 ? 'replyItem' : 'commentItem'">
-      <ReplyOfComment @isReplyOkEmit="isReplyOk" :comment="comment" :present="present2" :isReply="isReply"></ReplyOfComment>
+      <ReplyOfComment @destroyCommentEmit="destroyComment" v-if="!isDestroy" @isReplyOkEmit="isReplyOk" :comment="comment" :present="present2" :isReply="isReply"></ReplyOfComment>
       <template v-if="isShowVirComment">
-        <div v-for="item in virReplyCommentList" :key="item.commentId"   class="replyItem">
-          <ReplyOfComment :present="present" @isReplyOkEmit="isReplyOk" :comment="item" :isReply="true"></ReplyOfComment>
-        </div>
+        <template v-if="isDelVirCommentFlag>0">
+          {{isDelVirCommentFlag}}
+          <div v-for="(item, index) in virReplyCommentList" :key="index" class="replyItem">
+            <ReplyOfComment v-if="!delVirCommentMap.has(index)" :present="present" :virIndex="index" :isVirComment="true" @VirReplyDelEmit="VirReplyDel" :comment="item" :isReply="true"></ReplyOfComment>
+          </div>
+        </template>
       </template>
-      <CommentReply v-for="item in reply" :key="item.commentId" :reply="item.children" :comment="item" :isReply="true" :present2="!item.children.length ? present2 : item.author" :deep="deep + 1"></CommentReply>
+      <template v-if="!isDestroy">
+        <CommentReply v-for="item in reply" :key="item.commentId" :reply="item.children" :comment="item" :isReply="true" :present2="!item.children.length ? present2 : item.author" :deep="deep + 1"></CommentReply>
+      </template>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 import { formatUtcString } from '../../utils/date'
 
@@ -28,22 +33,40 @@ export default defineComponent({
     let present = ref({
       nickName: '',
     })
+    let isDestroy = ref(false)
     //用户回复成功,渲染形成的虚拟评论
     let isShowVirComment = ref(false)
-    let virReplyCommentList=ref<any>([])
+    let virReplyCommentList = ref<any>([])
     let replyInputContent = ref('')
+
+    //该变量用来告诉页面更新数据
+    let isDelVirCommentFlag=ref(1)
+    //已经删除的虚拟列表
+    let delVirCommentMap=ref(new Map())
+
     let isReplyInput = ref(false)
     const isReplyOk = (value: any) => {
       isShowVirComment.value = true
       present.value.nickName = value.byReplyer
       virReplyCommentList.value.push({
-        commentContent:value.commentContent,
-        createTime:value.createTime,
-        commentId:value.user.commentId,
-        author:{
-          headImgUrl:value.user.headImgUrl
-        }
+        commentContent: value.commentContent,
+        createTime: value.createTime,
+        commentId: value.user.commentId,
+        owner: true,
+        author: {
+          headImgUrl: value.user.author.headImgUrl,
+        },
       })
+    }
+    // 监听删除评论事件
+    const destroyComment = (Destroy: boolean) => {
+      isDestroy.value = Destroy
+    }
+    //监听虚拟评论删除事件
+    const VirReplyDel = (value: any) => {
+      console.log(value)
+      delVirCommentMap.value.set(value,value)
+      isDelVirCommentFlag.value++
     }
     return {
       formatUtcString,
@@ -52,7 +75,12 @@ export default defineComponent({
       isShowVirComment,
       isReplyOk,
       present,
-      virReplyCommentList
+      virReplyCommentList,
+      isDestroy,
+      destroyComment,
+      VirReplyDel,
+      isDelVirCommentFlag,
+      delVirCommentMap
     }
   },
 })

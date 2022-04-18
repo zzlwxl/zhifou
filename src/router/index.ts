@@ -59,6 +59,9 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/create',
     component: ()=> import(/* webpackChunkName: "main" */ '../views/article/Article.vue'),
+    meta: {
+      login_require: true,
+    },
   }
 ]
 
@@ -71,6 +74,7 @@ router.beforeEach((to, from) => {
   if (to.meta.login_require && !LocalCache.getCache('token')) {
     return {
       path: '/login',
+      query: { redirect: to.fullPath },
     }
   }
 })

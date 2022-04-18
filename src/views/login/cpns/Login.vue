@@ -32,12 +32,16 @@ import localCache from '../../../utils/cache'
 import Code from '../../../service/login/login'
 import { rules } from '../config/account-config'
 
+import { useRoute,useRouter } from 'vue-router'
+
 import { useStore } from '../../../store/index'
 
 export default defineComponent({
   name: 'LoginAccount',
   setup(props, content) {
     const store = useStore()
+    const route=useRoute()
+    const router=useRouter()
     
     const captchaCodeImg=ref()
 
@@ -50,6 +54,7 @@ export default defineComponent({
       uuid: ''
     })
     const ruleFormRef = ref<FormInstance>()
+    let flag=true
 
     //监听是否刷新验证码
     watchEffect(()=>{
@@ -58,6 +63,11 @@ export default defineComponent({
         getCode()
         store.commit('login/changeisRefReshCode',false)
       }
+      console.log('store.state.login.token',store.state.login.token)
+      // if(store.state.login.token!=='' && flag){
+      //    router.push(route.query.redirect+'')
+      //    flag=false
+      // }
     })
 
     const loginAction = (isKeepPassword:boolean)=>{

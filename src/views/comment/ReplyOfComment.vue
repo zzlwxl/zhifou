@@ -4,8 +4,8 @@
       <div>
         <el-avatar :size="40" :src="comment.author.headImgUrl" />
       </div>
-      <span v-if="!isReply">{{ nickNameFun(comment.author.nickName) }} :</span>
-      <span v-else>{{ nickNameFun(comment.author.nickName) }} 回复 @{{ nickNameFun(present.nickName) }} :</span>
+      <span v-if="!isReply">{{ nickNameFun(comment.author.nickName) }}:</span>
+      <span v-else>{{ nickNameFun(comment.author.nickName) }} 回复 @{{ nickNameFun(present.nickName) }}:</span>
     </div>
     <div class="content">
       {{ comment.commentContent }}
@@ -13,12 +13,16 @@
     <div class="active">
       <template v-if="!comment.owner">
         <div>{{ formatUtcString(comment.createTime) }}</div>
-        <div class="commentBtn">点赞 {{ comment.commentStar }}</div>
-        <div class="commentBtn" @click="replyFun(comment.commentId)">评论</div>
+        <el-icon :size="size" :color="(starNum === comment.commentStar) === !comment.liked ? color : '#C62828'">
+          <Star />
+        </el-icon>
+        <div class="commentBtn" v-if="(starNum === comment.commentStar) === !comment.liked" @click.stop="commentStarFun(comment.commentId, false)">{{ `点赞 ${starNum}` }}</div>
+        <div class="commentBtn" v-else @click.stop="commentStarFun(comment.commentId, true)">{{ `点赞 ${starNum}` }}</div>
+        <div class="commentBtn" @click.stop="replyFun(comment.commentId)">评论</div>
       </template>
       <template v-else>
-        <div>编辑</div>
-        <div>删除</div>
+        <div v-if="!isVirComment" class="commentBtn" @click="delCommentFun(comment.commentId)">删除</div>
+        <div v-else class="commentBtn" @click="delVirCommentFun(comment.commentId)">删除</div>
       </template>
     </div>
     <div v-if="isReplyInput" class="replyInput">
@@ -44,10 +48,18 @@ import { formatUtcString } from '../../utils/date'
 
 import { addComment } from '../../service/comment/index'
 
+import { getCommentStar,getDelComment } from '../../service/comment/index'
+
+import { Comment, Star } from '@element-plus/icons-vue'
+
 export default defineComponent({
   name: 'ReplyOfComment',
-  props: ['comment', 'isReply', 'present'],
-  emits: ['isReplyOkEmit'],
+  props: ['comment', 'isReply', 'present','isVirComment','virIndex'],
+  emits: ['isReplyOkEmit','destroyCommentEmit','VirReplyDelEmit'],
+  components: {
+    Comment,
+    Star,
+  },
   setup(props, content) {
     const route = useRoute()
     const router = useRouter()
@@ -55,6 +67,8 @@ export default defineComponent({
     let isReplyInput = ref(false)
     let parentCommentId = ''
     let replyInputContent = ref('')
+    let starNum = ref(0)
+    starNum.value = props.comment.commentStar
 
     //是否已经登录
     const isLogin = () => {
@@ -89,15 +103,51 @@ export default defineComponent({
       if (data.success) {
         ElMessage.success('回复成功')
         isReplyInput.value = false
-        content.emit('isReplyOkEmit', { 
-            replyer: store.state.user.userInfo, 
-            byReplyer: nickNameFun(props.comment.author.nickName), 
-            user:data.data,
-            commentContent: replyInputContent.value })
+        content.emit('isReplyOkEmit', {
+          replyer: store.state.user.userInfo,
+          byReplyer: nickNameFun(props.comment.author.nickName),
+          user: data.data,
+          commentContent: replyInputContent.value,
+        })
         replyInputContent.value = ''
       } else {
         ElMessage.error(data.data)
       }
+    }
+    //点赞
+    const commentStarFun = (commentId: string, isUnStar: boolean) => {
+      commentStar(commentId, isUnStar)
+    }
+    async function commentStar(commentId: string, isUnStar: boolean) {
+      const data = await getCommentStar(commentId, isUnStar)
+      if (data.success) {
+        if (isUnStar) {
+          starNum.value--
+          ElMessage.success('取消点赞成功')
+        } else {
+          starNum.value++
+          ElMessage.success('点赞成功')
+        }
+      } else {
+        ElMessage.error(data.data)
+      }
+    }
+    //删除评论
+    const delCommentFun=(commentId:string)=>{
+      delComment(commentId)
+    }
+    async function delComment(commentId:string) {
+      const data = await getDelComment(commentId)
+        if(data.success){
+          ElMessage.success('删除评论成功')
+          content.emit('destroyCommentEmit',true)
+        }else{
+          ElMessage.error(data.data)
+        }
+    }
+    //删除虚拟评论
+    const delVirCommentFun=(commentId:string)=>{
+      content.emit('VirReplyDelEmit',props.virIndex)
     }
     return {
       replyFun,
@@ -106,19 +156,22 @@ export default defineComponent({
       replyInputContent,
       isReplyInput,
       submitReplyFun,
+      commentStarFun,
+      starNum,
+      delCommentFun,
+      delVirCommentFun
     }
   },
 })
 </script>
 
 <style scoped lang="less">
-
 .top {
   display: flex;
   align-items: center;
 }
-.commentBtn{
-    cursor: pointer;
+.commentBtn {
+  cursor: pointer;
 }
 span {
   font-size: 14px;
@@ -135,7 +188,7 @@ span {
   display: flex;
   justify-content: end;
   margin-top: 2px;
-//   background-color: rgb(114, 114, 255);
+  //   background-color: rgb(114, 114, 255);
   div {
     margin: 0 8px;
     font-size: 12px;
