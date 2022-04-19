@@ -1,12 +1,12 @@
 <template>
   <div class="CommentsCard">
     <div>
-      <el-form :rules="rules" label-width="50px" class="demo-ruleForm">
-        <el-form-item label="评论" prop="desc">
-          <el-input ref="inputRef" v-model="commentContent" type="textarea" />
+      <el-form :rules="rules" class="demo-ruleForm form">
+        <el-form-item prop="desc">
+          <el-input style="width:100%" placeholder="我要评论..." ref="inputRef" v-model="commentContent" type="textarea" />
         </el-form-item>
         <el-form-item>
-          <el-button style="margin:0 auto" type="primary" @click="submitComment()">发表评论</el-button>
+          <el-button class="subBtn" type="primary" @click="submitComment()">发表评论</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -136,5 +136,13 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   margin-top: 10px;
+}
+.form{
+  margin: 0 4px;
+  position: relative;
+  .subBtn{
+    position: absolute;
+    right: 0;
+  }
 }
 </style>

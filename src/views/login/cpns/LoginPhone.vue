@@ -83,7 +83,6 @@ export default defineComponent({
         message.success('登录成功')
         router.go(-1)
       }else{
-        message.warning(data.data)
       }
     }
 

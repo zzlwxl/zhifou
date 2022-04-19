@@ -37,9 +37,9 @@
       </template>
     </div>
     <div v-if="isReplyInput" class="replyInput">
-      <el-input @blur="isReplyInput=!isReplyInput" clearable ref="inputRef" v-model="replyInputContent" :placeholder="`回复 ${nickNameFun(comment.author.nickName)}`" class="input-with-select">
+      <el-input @blur.stop="test" clearable ref="inputRef" v-model="replyInputContent" :placeholder="`回复 ${nickNameFun(comment.author.nickName)}`" class="input-with-select">
         <template #append>
-          <el-button @click="submitReplyFun">提交</el-button>
+          <el-button @click.stop="submitReplyFun">提交</el-button>
         </template>
       </el-input>
     </div>
@@ -79,6 +79,7 @@ export default defineComponent({
     let parentCommentId = ''
     let replyInputContent = ref('')
     let starNum = ref(0)
+    let isClickSubBtn=false
     const inputRef=ref<InstanceType<typeof ElInput>>()
     starNum.value = props.comment.commentStar
 
@@ -125,6 +126,8 @@ export default defineComponent({
           commentContent: replyInputContent.value,
         })
         replyInputContent.value = ''
+        //提交成功,隐藏输入框
+        // isReplyInput.value=!isReplyInput.value
       } else {
         message.error(data.data)
       }
@@ -168,6 +171,10 @@ export default defineComponent({
     const delVirCommentFun = (commentId: string) => {
       delComment(commentId, true)
     }
+    const test=()=>{
+      console.log('切换焦点')
+      // isReplyInput.value=!isReplyInput.value
+    }
     return {
       replyFun,
       nickNameFun,
@@ -179,7 +186,8 @@ export default defineComponent({
       starNum,
       delCommentFun,
       delVirCommentFun,
-      inputRef
+      inputRef,
+      test
     }
   },
 })

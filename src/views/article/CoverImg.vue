@@ -18,6 +18,9 @@ import localCache from '../../utils/cache'
 export default defineComponent({
   name: 'Avatar',
   emits: ['coverImgEmit'],
+  props:{
+    imgUrl:{}
+  },
   setup(props, content) {
     const circleUrl = ref()
     const action = 'http://192.168.1.68:8080/cos/upload'
@@ -49,6 +52,13 @@ export default defineComponent({
       return true
     }
     const headerObj = { token: 'zzl_' + localCache.getCache('token') }
+    //是否是编辑文章
+    const init=()=>{
+      if(props.imgUrl){
+        circleUrl.value=props.imgUrl
+      }
+    }
+    init()
     return {
       circleUrl,
       handleRemove,

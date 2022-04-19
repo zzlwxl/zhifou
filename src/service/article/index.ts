@@ -15,7 +15,9 @@ enum Article {
   getArticleByCate='/article/getByCategoryId',
   getArticleBySearch='/article/fuzzySearch',
   getAddStar = '/article/star',
-  unStar='/article/unStar'
+  unStar='/article/unStar',
+  editArticle='/article/edit',
+  delArticle="/article/del"
 }
 
 
@@ -23,6 +25,18 @@ export function addArticle(data: IArticle) {
   return zzlRequest.post<IDataType>({
     url: Article.addArticle,
     data
+  })
+}
+export function editArticle(data:IArticle){
+  return zzlRequest.post<IDataType>({
+    url:Article.editArticle,
+    data
+  })
+}
+export function delArticle(articleId:string){
+  return zzlRequest.get<IDataType>({
+    url:Article.delArticle,
+    data:{articleId}
   })
 }
 export function getCategorys() {

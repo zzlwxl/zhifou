@@ -111,6 +111,12 @@ export default defineComponent({
     }
     const editArticle=()=>{
       console.log(props.articleData)
+      router.push({
+        path:'/create',
+        query:{
+          articleId:props.articleData?.articleId
+        }
+      })
     }
     return {
       article,
