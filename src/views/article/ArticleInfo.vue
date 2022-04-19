@@ -1,8 +1,7 @@
 <template>
   <div class='ArticleInfo'>
     <div class="article_box">
-      <div class="active_box">d</div>
-      <pre class="info-box">{{articleData.articleContent}}</pre>
+      <div class="info-box">{{articleData.articleContent}}</div>
     </div>
     <div class="commentBox">
       <CommentsCard :articleId="articleData.articleId"></CommentsCard>
@@ -13,7 +12,7 @@
 import { defineComponent,ref } from 'vue'
 import {getArticleInfo} from '../../service/article/index'
 import {useRoute} from 'vue-router'
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 import CommentsCard from '../comment/CommentsCard.vue'
 
 export default defineComponent({
@@ -31,7 +30,7 @@ export default defineComponent({
         articleData.value=data.data
         console.log(data)
       }else{
-        ElMessage.warning(data.data)
+        message.warning(data.data)
       }
     }
     return{
@@ -43,16 +42,14 @@ export default defineComponent({
 
 <style scoped lang='less'>
 .article-box{
-  // display: flex;
   .active_box{
+    margin: 6px;
     width: 100%;
     height: 5%;
-    background-color: red;
   }
   .info_box{
     width: 100%;
     height: 95%;
-    background-color: blue;
   }
 }
 .commentBox{

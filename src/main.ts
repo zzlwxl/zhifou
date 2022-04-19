@@ -6,5 +6,5 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'normalize.css' // 默认样式 npm install normalize.css
 import './assets/css/index.less' //自定义默认样式
-
-createApp(App).use(store).use(router).use(ElementPlus).mount('#app')
+const app=createApp(App)
+app.use(store).use(router).use(ElementPlus).mount('#app')

@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import type { UploadProps, UploadFile } from 'element-plus'
-import { ElMessage } from 'element-plus'
+import  message  from '../../utils/message'
 import localCache from '../../utils/cache'
 
 export default defineComponent({
@@ -32,21 +32,18 @@ export default defineComponent({
       if (response.success) {
         circleUrl.value = response.data.fileBaseUrl + response.data.filePath
         console.log(response.data)
-        ElMessage.success('上传成功')
+        message.success('上传成功')
         content.emit('coverImgEmit', circleUrl.value)
       } else {
-        ElMessage.error(response.data)
+        message.error(response.data)
       }
     }
     const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
       if (rawFile.type !== 'image/jpeg') {
-        ElMessage({
-          message: '请上传jpeg、jpg、png',
-          type: 'warning',
-        })
+        message.warning('请上传jpeg、jpg、png')
         return false
       } else if (rawFile.size / 1024 / 1024 > 2) {
-        ElMessage.error('Avatar picture size can not exceed 2MB!')
+        message.error('图片大小不能超过2MB')
         return false
       }
       return true
@@ -59,16 +56,16 @@ export default defineComponent({
       headerObj,
       handleAvatarSuccess,
       handlePictureCardPreview,
-      dialogVisible
+      dialogVisible,
     }
   },
 })
 </script>
 
 <style scoped lang="less">
-.avatar{
-    width: 100px;
-    cursor: pointer;
+.avatar {
+  width: 100px;
+  cursor: pointer;
 }
 
 .Avatar {

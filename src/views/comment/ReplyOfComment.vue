@@ -2,34 +2,42 @@
   <div class="ReplyOfComment">
     <div class="top">
       <div>
-        <el-avatar :size="40" :src="comment.author.headImgUrl" />
+        <el-avatar :size="30" :src="comment.author.headImgUrl" />
       </div>
-      <span v-if="!isReply">{{ nickNameFun(comment.author.nickName) }}:</span>
-      <span v-else>{{ nickNameFun(comment.author.nickName) }} 回复 @{{ nickNameFun(present.nickName) }}:</span>
+      <span class="first" v-if="!isReply">{{ nickNameFun(comment.author.nickName) }}:</span>
+      <span class="first" v-else
+        >{{ nickNameFun(comment.author.nickName) }} <span>回复</span><span class="second">{{ nickNameFun(present.nickName) }}:</span></span
+      >
     </div>
     <div class="content">
       {{ comment.commentContent }}
     </div>
     <div class="active">
       <template v-if="!comment.owner">
-        <div>{{ formatUtcString(comment.createTime) }}</div>
+        <el-icon :size="size" :color="color">
+          <Stopwatch />
+        </el-icon>
+        <span>{{ formatUtcString(comment.createTime) }}</span>
         <el-icon :size="size" :color="(starNum === comment.commentStar) === !comment.liked ? color : '#C62828'">
           <Star />
         </el-icon>
-        <div class="commentBtn" v-if="(starNum === comment.commentStar) === !comment.liked" @click.stop="commentStarFun(comment.commentId, false)">{{ `点赞 ${starNum}` }}</div>
-        <div class="commentBtn" v-else @click.stop="commentStarFun(comment.commentId, true)">{{ `点赞 ${starNum}` }}</div>
-        <div class="commentBtn" @click.stop="replyFun(comment.commentId)">评论</div>
+        <span class="commentBtn" v-if="(starNum === comment.commentStar) === !comment.liked" @click.stop="commentStarFun(comment.commentId, false)">{{ `点赞 ${starNum}` }}</span>
+        <span class="commentBtn" style="color:#C62828" v-else @click.stop="commentStarFun(comment.commentId, true)">{{ `点赞 ${starNum}` }}</span>
+        <el-icon :size="size">
+          <Comment />
+        </el-icon>
+        <span class="commentBtn" @click.stop="replyFun(comment.commentId)">评论</span>
       </template>
       <template v-else>
-        <div v-if="!isVirComment" class="commentBtn" @click="delCommentFun(comment.commentId)">删除</div>
-        <div v-else class="commentBtn" @click="delVirCommentFun(comment.commentId)">删除</div>
+        <el-icon :size="size" :color="(starNum === comment.commentStar) === !comment.liked ? color : '#C62828'">
+          <DeleteFilled />
+        </el-icon>
+        <span v-if="!isVirComment" class="commentBtn" @click="delCommentFun(comment.commentId)">删除</span>
+        <span v-else class="commentBtn" @click="delVirCommentFun(comment.commentId)">删除</span>
       </template>
     </div>
     <div v-if="isReplyInput" class="replyInput">
-      <el-input v-model="replyInputContent" class="input-with-select">
-        <template #prepend>
-          <div>评论 @{{ nickNameFun(comment.author.nickName) }}</div>
-        </template>
+      <el-input @blur="isReplyInput=!isReplyInput" clearable ref="inputRef" v-model="replyInputContent" :placeholder="`回复 ${nickNameFun(comment.author.nickName)}`" class="input-with-select">
         <template #append>
           <el-button @click="submitReplyFun">提交</el-button>
         </template>
@@ -38,27 +46,30 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, nextTick} from 'vue'
 import { useStore } from '../../store/index'
 import { useRoute, useRouter } from 'vue-router'
 
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 
 import { formatUtcString } from '../../utils/date'
 
 import { addComment } from '../../service/comment/index'
 
-import { getCommentStar,getDelComment } from '../../service/comment/index'
+import { getCommentStar, getDelComment } from '../../service/comment/index'
 
-import { Comment, Star } from '@element-plus/icons-vue'
+import { Comment, Star, Stopwatch, DeleteFilled } from '@element-plus/icons-vue'
+import {ElInput} from 'element-plus'
 
 export default defineComponent({
   name: 'ReplyOfComment',
-  props: ['comment', 'isReply', 'present','isVirComment','virIndex'],
-  emits: ['isReplyOkEmit','destroyCommentEmit','VirReplyDelEmit'],
+  props: ['comment', 'isReply', 'present', 'isVirComment', 'virIndex'],
+  emits: ['isReplyOkEmit', 'destroyCommentEmit', 'VirReplyDelEmit'],
   components: {
     Comment,
     Star,
+    Stopwatch,
+    DeleteFilled,
   },
   setup(props, content) {
     const route = useRoute()
@@ -68,6 +79,7 @@ export default defineComponent({
     let parentCommentId = ''
     let replyInputContent = ref('')
     let starNum = ref(0)
+    const inputRef=ref<InstanceType<typeof ElInput>>()
     starNum.value = props.comment.commentStar
 
     //是否已经登录
@@ -81,6 +93,9 @@ export default defineComponent({
       isLogin()
       isReplyInput.value = !isReplyInput.value
       parentCommentId = parentCommentID
+      nextTick(()=>{
+        inputRef.value?.focus()
+      })
     }
     const nickNameFun = (nickName: string) => {
       return nickName ? nickName : '路人甲'
@@ -91,7 +106,7 @@ export default defineComponent({
       if (replyInputContent.value) {
         submitComment()
       } else {
-        return ElMessage.warning('请输入回复内容')
+        return message.warning('请输入回复内容')
       }
     }
     async function submitComment() {
@@ -101,7 +116,7 @@ export default defineComponent({
         parentCommentId: parentCommentId,
       })
       if (data.success) {
-        ElMessage.success('回复成功')
+        message.success('回复成功')
         isReplyInput.value = false
         content.emit('isReplyOkEmit', {
           replyer: store.state.user.userInfo,
@@ -111,7 +126,7 @@ export default defineComponent({
         })
         replyInputContent.value = ''
       } else {
-        ElMessage.error(data.data)
+        message.error(data.data)
       }
     }
     //点赞
@@ -123,36 +138,35 @@ export default defineComponent({
       if (data.success) {
         if (isUnStar) {
           starNum.value--
-          ElMessage.success('取消点赞成功')
+          message.success('取消点赞成功')
         } else {
           starNum.value++
-          ElMessage.success('点赞成功')
+          message.success('点赞成功')
         }
       } else {
-        ElMessage.error(data.data)
+        message.error(data.data)
       }
     }
     //删除评论
-    const delCommentFun=(commentId:string)=>{
+    const delCommentFun = (commentId: string) => {
       delComment(commentId)
     }
-    async function delComment(commentId:string,isDelVirComment=false) {
+    async function delComment(commentId: string, isDelVirComment = false) {
       const data = await getDelComment(commentId)
-        if(data.success){
-          ElMessage.success('删除评论成功')
-          if(isDelVirComment){
-            content.emit('VirReplyDelEmit',props.virIndex)
-          }
-          else{
-            content.emit('destroyCommentEmit',true)
-          }
-        }else{
-          ElMessage.error(data.data)
+      if (data.success) {
+        message.success('删除评论成功')
+        if (isDelVirComment) {
+          content.emit('VirReplyDelEmit', props.virIndex)
+        } else {
+          content.emit('destroyCommentEmit', true)
         }
+      } else {
+        message.error(data.data)
+      }
     }
     //删除虚拟评论
-    const delVirCommentFun=(commentId:string)=>{
-      delComment(commentId,true)
+    const delVirCommentFun = (commentId: string) => {
+      delComment(commentId, true)
     }
     return {
       replyFun,
@@ -164,40 +178,58 @@ export default defineComponent({
       commentStarFun,
       starNum,
       delCommentFun,
-      delVirCommentFun
+      delVirCommentFun,
+      inputRef
     }
   },
 })
 </script>
 
 <style scoped lang="less">
+@fontCol: #777;
+@col1: #2196f3;
+@col2: #388e3c;
+.ReplyOfComment {
+  margin-bottom: 30px;
+}
 .top {
   display: flex;
   align-items: center;
+  .first{
+    color: @col1;
+    cursor: pointer;
+  }
+  .second{
+    cursor: pointer;
+    color: @col2;
+  }
 }
 .commentBtn {
   cursor: pointer;
 }
 span {
-  font-size: 14px;
+  font-size: 12px;
   margin-left: 5px;
-  // color: @colFirstComment;
+  color: @fontCol;
 }
 .content {
-  background-color: #fff;
   margin-left: 50px;
-  font-size: 1rem;
-  // color: @colFirstComment;
+  margin-right: 10px;
+  margin-bottom: 4px;
+  border-radius: 10px;
+  padding: 4px;
+  font-size: 1.2rem;
+  color: rgb(117, 117, 117);
+  line-height: 1.6rem;
+  background-color: #fff;
 }
 .active {
-  display: flex;
-  justify-content: end;
-  margin-top: 2px;
-  //   background-color: rgb(114, 114, 255);
-  div {
-    margin: 0 8px;
-    font-size: 12px;
-    // color: @colOtherComment;
+  float: right;
+  span {
+    margin-right: 10px;
   }
+}
+.replyInput{
+  margin: 0 10px;
 }
 </style>

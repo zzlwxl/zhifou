@@ -13,6 +13,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { getArticleTop } from '../../service/article/index'
+import message  from '../../utils/message'
 
 export default defineComponent({
   name: 'Slide',
@@ -22,6 +23,8 @@ export default defineComponent({
       const artiicle = await getArticleTop({ orderBy: 'articleViews.desc' })
       if (artiicle.success) {
         articleTopAll.value.push(...artiicle.data)
+      } else {
+        message.error(artiicle.data)
       }
     }
     getArticle()
@@ -44,7 +47,7 @@ export default defineComponent({
 .el-carousel__item span {
   width: 100%;
   background-color: rgba(239, 0, 0, 0.1) !important;
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   position: absolute;
   font-size: 14px;
   top: 90%;

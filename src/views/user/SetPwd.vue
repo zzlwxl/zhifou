@@ -19,7 +19,7 @@ import localCache from '../../utils/cache'
 import { useRouter } from 'vue-router'
 import { pwdRules } from './config/pwdRule'
 
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 
 import type { FormInstance } from 'element-plus'
 import { IEditPwd } from '../../service/user/type'
@@ -53,17 +53,11 @@ export default defineComponent({
     async function submitForm(data: IEditPwd) {
       const value = await editPwd(data)
       if (value.success) {
-        ElMessage({
-          message: '修改成功，请重新登录',
-          type: 'success',
-        })
+        message.success('修改成功，请重新登录')
           localCache.deleteCache('token')
           router.replace('/login')
       }else{
-          ElMessage({
-          message: value.data,
-          type: 'warning',
-        })
+          message.warning(value.data)
       }
     }
     return {

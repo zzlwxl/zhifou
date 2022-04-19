@@ -4,7 +4,7 @@ import { Register ,Login} from "@/service/login/login";
 
 import localCache from '@/utils/cache'
 import router from "@/router";
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 
 import { ILoginState } from "./types";
 import { IRootState } from "../types";
@@ -41,10 +41,7 @@ const loginModule:Module<ILoginState,IRootState>={
         commit('changeisRefReshCode',false)
         router.go(-1)
       }else{
-        ElMessage({
-          message: loginData.data,
-          type: 'warning',
-        })
+        message.warning(loginData.data)
         commit('changeisRefReshCode',true)
       }
     },
@@ -52,10 +49,7 @@ const loginModule:Module<ILoginState,IRootState>={
       // console.log('accountLoginAction执行了action',payload)
       // 登录
       if(!payload.code){
-        return ElMessage({
-          message: '验证码不能为空',
-          type: 'warning',
-        })
+        return message.warning('验证码不能为空')
       }
       const registerData = await Register({
         userName:payload.userName,
@@ -74,14 +68,11 @@ const loginModule:Module<ILoginState,IRootState>={
           commit('changeisRefReshCode',false)
           router.go(-1)
         }else{
-          ElMessage.warning(loginData.data)
+          message.warning(loginData.data)
           commit('changeisRefReshCode',true)
         }
       }else{
-        ElMessage({
-          message: registerData.data,
-          type: 'warning',
-        })
+        message.warning(registerData.data)
         commit('changeisRefReshCode',true)
       }
       // const {id,token}= loginRequest.data

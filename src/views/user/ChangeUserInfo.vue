@@ -30,7 +30,7 @@ import { defineComponent, ref, reactive } from 'vue'
 import { useStore } from '../../store'
 import { userRules } from './config/userRule'
 
-import {ElMessage} from 'element-plus'
+import message from '../../utils/message'
 
 import type { FormInstance } from 'element-plus'
 import {IUserInfo} from '../../service/user/type'
@@ -69,15 +69,12 @@ export default defineComponent({
     async function submitForm(data:IUserInfo) {
         const value = await editUserInfo(data)
         if(value.success){
-          ElMessage({
-          message: '修改成功',
-          type: 'success',
-        })
+          message.success('修改成功')
           //更改vuex里的用户信息
           store.commit('user/changeUserInfo',value.data)
           content.emit('changeDialogVisibleEmit')
         }else{
-          ElMessage.error(value.data)
+          message.error(value.data)
         }
     }
     return {

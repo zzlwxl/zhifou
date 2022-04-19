@@ -38,7 +38,7 @@ import CoverImg from './CoverImg.vue'
 import { useRouter } from 'vue-router'
 import { articleRules } from './config/articleRules'
 
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 
 import type { FormInstance } from 'element-plus'
 import { IArticle } from '../../service/article/type'
@@ -78,6 +78,7 @@ export default defineComponent({
       if (!formEl) return
       await formEl.validate((valid: any, fields: any) => {
         if (valid) {
+          console.log('subForm',subForm)
           const submitFormData = {
             articleTitle: subForm.articleTitle,
             articleName: subForm.articleName,
@@ -94,16 +95,10 @@ export default defineComponent({
     async function submitForm(data: IArticle) {
       const value = await addArticle(data)
       if (value.success) {
-        ElMessage({
-          message: '提交成功',
-          type: 'success',
-        })
-          router.push('/')
+        message.success('提交成功')
+        router.push('/')
       } else {
-        ElMessage({
-          message: value.data,
-          type: 'warning',
-        })
+        message.warning(value.data)
       }
     }
     return {

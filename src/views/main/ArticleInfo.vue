@@ -56,7 +56,7 @@ export default defineComponent({
 @media screen and (min-width: 800px) {
   .right {
     height: 1000px;
-    background-color: rgb(0, 0, 198);
+    background-color: rgb(159, 159, 255);
     display: block;
     width: 40%;
   }

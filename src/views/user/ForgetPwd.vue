@@ -4,7 +4,7 @@
       <el-form-item label="用户名" prop="userName">
         <div class="get-code">
           <el-input v-model="codeForm.userName" placeholder="提交用户名发送手机验证码" />
-          <el-button id="codeBtn" :disabled="disabled" style="margin-left: 5px" type="primary" @click="submitCodeFormRule(ruleCodeFormRef)">{{disabled ? `${timeNum}s` : `获取验证码`}}</el-button>
+          <el-button id="codeBtn" :disabled="disabled" style="margin-left: 5px" type="primary" @click="submitCodeFormRule(ruleCodeFormRef)">{{ disabled ? `${timeNum}s` : `获取验证码` }}</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -23,13 +23,13 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive,onUnmounted } from 'vue'
+import { defineComponent, ref, reactive, onUnmounted } from 'vue'
 
 import { useRouter } from 'vue-router'
 import { pwdRules } from './config/pwdRule'
 import { userRules } from './config/resetPwdRule'
 
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 
 import type { FormInstance } from 'element-plus'
 import { IForgetPwdCode, IResetPwd } from '../../service/user/type'
@@ -44,9 +44,8 @@ export default defineComponent({
     const ruleResetFormRef = ref<FormInstance>()
 
     const disabled = ref(false)
-    let timeNum=ref(60)
-    let unMountTime=false
-
+    let timeNum = ref(60)
+    let unMountTime = false
 
     const codeForm = reactive({
       userName: '',
@@ -80,26 +79,20 @@ export default defineComponent({
       console.log(codeData)
       if (codeData.success) {
         submitForm.uuid = codeData.data
-        disabled.value=true
-        ElMessage({
-          message: '获取验证码成功',
-          type: 'success',
-        })
-        let timer=setInterval(()=>{
-         if(timeNum.value===0){
-           clearInterval(timer)
-           disabled.value=false
-         }else if(unMountTime){
-           clearInterval(timer)
-         }else{
-           timeNum.value--
-         }
-        },1000)
+        disabled.value = true
+        message.success('获取验证码成功')
+        let timer = setInterval(() => {
+          if (timeNum.value === 0) {
+            clearInterval(timer)
+            disabled.value = false
+          } else if (unMountTime) {
+            clearInterval(timer)
+          } else {
+            timeNum.value--
+          }
+        }, 1000)
       } else {
-        ElMessage({
-          message: codeData.data,
-          type: 'warning',
-        })
+        message.warning(codeData.data)
       }
     }
     //修改密码提交前验证表单
@@ -115,20 +108,14 @@ export default defineComponent({
     async function submitPwdForm(data: IResetPwd) {
       const resetPwdData = await resetPwd(submitForm)
       if (resetPwdData.success) {
-          ElMessage({
-              message:'修改成功',
-              type:'success'
-          })
+        message.success('修改成功')
         router.push('/login')
-      }else{
-          ElMessage({
-              message:resetPwdData.data,
-              type:'warning'
-          })
+      } else {
+        message.warning(resetPwdData.data)
       }
     }
-    onUnmounted(()=>{
-      unMountTime=true
+    onUnmounted(() => {
+      unMountTime = true
     })
     return {
       codeForm,
@@ -141,7 +128,7 @@ export default defineComponent({
       ruleCodeFormRef,
       ruleResetFormRef,
       disabled,
-      timeNum
+      timeNum,
     }
   },
 })

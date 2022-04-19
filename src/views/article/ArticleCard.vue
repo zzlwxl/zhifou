@@ -7,7 +7,10 @@
           <div class="top-cate-box">
             <div class="cate">{{ article.author.nickName }}</div>
             <div class="cate">原创</div>
-            <div class="cate"><div></div><span>{{ article.category.categoryName }}</span> </div>
+            <div class="cate">
+              <div></div>
+              <span>{{ article.category.categoryName }}</span>
+            </div>
           </div>
           <div class="title">
             <h1>{{ article.articleTitle }}</h1>
@@ -23,33 +26,33 @@
         <el-icon :size="size" :color="color">
           <View />
         </el-icon>
-        <div class="active">{{ '浏览量 ' + article.articleViews }}</div>
+        <div class="active">{{ '浏览 ' + article.articleViews }}</div>
         <el-icon :size="size" :color="color">
           <Comment />
         </el-icon>
-        <div class="active">{{ '评论量 ' + article.articleComments }}</div>
-        <el-icon :size="size" :color="(starNum === article.articleStar)==!article.liked ? color : '#C62828'">
+        <div class="active">{{ '评论 ' + article.articleComments }}</div>
+        <el-icon :size="size" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
           <Star />
         </el-icon>
-        <div v-if="(starNum === article.articleStar)==!article.liked " class="active" @click.stop="addStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
-        <div v-else class="active" @click.stop="unStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
+        <div v-if="(starNum === article.articleStar) == !article.liked" class="active" @click.stop="addStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
+        <div v-else class="active" style="color:#C62828" @click.stop="unStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
         <el-icon v-if="isEdit" :size="size" :color="color">
           <Edit />
         </el-icon>
-        <div class="active" v-if="isEdit">编辑文章</div>
+        <div class="active" v-if="isEdit" @click.stop="editArticle">编辑</div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent ,ref,watchEffect} from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { getAddStar,unStar } from '../../service/article/index'
+import { getAddStar, unStar } from '../../service/article/index'
 
 import { formatUtcString } from '../../utils/date'
 
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 import { Edit, Stopwatch, View, Comment, Star } from '@element-plus/icons-vue'
 
 export default defineComponent({
@@ -75,9 +78,9 @@ export default defineComponent({
     const article = props.articleData
     const isEdit = props.isEdit
     const color = '#777'
-    let starNum=ref(0)
-    watchEffect(()=>{
-      starNum.value=article?.articleStar
+    let starNum = ref(0)
+    watchEffect(() => {
+      starNum.value = article?.articleStar
     })
     const clickArticleInfo = (id: string) => {
       router.push(`/articleinfo/info/${id}`)
@@ -88,10 +91,10 @@ export default defineComponent({
     async function addStar(id: string) {
       const data = await getAddStar({ articleId: id })
       if (data.success) {
-        ElMessage.success('点赞成功')
+        message.success('点赞成功')
         starNum.value++
       } else {
-        ElMessage.warning(data.data)
+        message.warning(data.data)
       }
     }
     const unStarFun = (id: string) => {
@@ -100,11 +103,14 @@ export default defineComponent({
     async function deleteStar(id: string) {
       const data = await unStar(id)
       if (data.success) {
-        ElMessage.success('取消点赞成功')
+        message.success('取消点赞成功')
         starNum.value--
       } else {
-        ElMessage.warning(data.data)
+        message.warning(data.data)
       }
+    }
+    const editArticle=()=>{
+      console.log(props.articleData)
     }
     return {
       article,
@@ -114,7 +120,8 @@ export default defineComponent({
       formatUtcString,
       color,
       starNum,
-      unStarFun
+      unStarFun,
+      editArticle
     }
   },
 })
@@ -163,16 +170,16 @@ export default defineComponent({
           font-size: 1rem;
           background-color: @col1;
           color: rgb(255, 255, 255);
-          span{
+          span {
             z-index: 999;
           }
         }
-        .cate:nth-child(1){
+        .cate:nth-child(1) {
           background-color: @fontCol;
         }
-        .cate:nth-child(3){
+        .cate:nth-child(3) {
           background-color: @col2;
-          div{
+          div {
             border-radius: 4px;
             position: absolute;
             top: 0;
@@ -180,7 +187,7 @@ export default defineComponent({
             width: 0px;
             height: 100%;
             background-color: @col1;
-            transition: all .3s;
+            transition: all 0.3s;
             z-index: 1;
           }
         }
@@ -207,10 +214,9 @@ export default defineComponent({
         line-height: 5px;
         color: @fontCol;
         text-indent: 2em;
-
       }
-      @media screen and (min-width:320px) {
-        .content{
+      @media screen and (min-width: 320px) {
+        .content {
           line-height: 16px;
         }
       }
@@ -236,23 +242,19 @@ export default defineComponent({
       @media screen and (min-width: 900px) {
         .content {
           -webkit-line-clamp: 2;
-        line-height: 10px;
+          line-height: 18px;
         }
       }
       @media screen and (min-width: 1000px) {
         .content {
           -webkit-line-clamp: 3;
-        font-size: 1rem;
-        line-height: 14px;
-        height: 30vw;
+          line-height: 18px;
         }
       }
       @media screen and (min-width: 1200px) {
         .content {
           -webkit-line-clamp: 4;
-          font-size: 1.4rem;
-          line-height: 3rem;
-          height: 30vw;
+          line-height: 18px;
         }
       }
     }
@@ -265,22 +267,13 @@ export default defineComponent({
     .active {
       width: 20%;
       font-size: 1.2rem;
-      margin-left: 2px;
+      margin-right: 4px;
       color: @fontCol;
-    }
-    .active:nth-child(1) {
-      font-size: 0.1rem;
     }
   }
 }
 .ArticleCardBox:hover {
   box-shadow: darkgrey 10px 10px 30px 5px;
-  // .top .contentBox .top-cate-box .cate:nth-child(3){
-    // div{
-    //   background-color: @col1;
-    //   width: 100%;
-    // }
-  // }
 }
 @media screen and (min-width: 800px) {
   .ArticleCardBox {

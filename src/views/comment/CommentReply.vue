@@ -4,7 +4,6 @@
       <ReplyOfComment @destroyCommentEmit="destroyComment" v-if="!isDestroy" @isReplyOkEmit="isReplyOk" :comment="comment" :present="present2" :isReply="isReply"></ReplyOfComment>
       <template v-if="isShowVirComment">
         <template v-if="isDelVirCommentFlag>0">
-          {{isDelVirCommentFlag}}
           <div v-for="(item, index) in virReplyCommentList" :key="index" class="replyItem">
             <ReplyOfComment v-if="!delVirCommentMap.has(index)" :present="present" :virIndex="index" :isVirComment="true" @VirReplyDelEmit="VirReplyDel" :comment="item" :isReply="true"></ReplyOfComment>
           </div>
@@ -91,17 +90,14 @@ export default defineComponent({
 @col2: #388e3c;
 
 .commentBox {
-  // background-color: rgb(255, 144, 144);
   .replyInput {
     margin: 6px;
   }
 }
 .commentItem {
   margin: 10px 0;
-  // background-color: rgb(255, 213, 0);
 }
 .replyItem {
   margin: 5px 0 5px 20px;
-  // background-color: rgb(21, 255, 0);
 }
 </style>

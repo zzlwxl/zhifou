@@ -15,7 +15,7 @@
 import { defineComponent, ref, reactive } from 'vue'
 import { createRules } from './config/createRules'
 
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 
 import type { FormInstance } from 'element-plus'
 import { createCate } from '../../service/article/index'
@@ -56,12 +56,11 @@ export default defineComponent({
     async function submitForm(data: any) {
       const value = await createCate(data)
       if (value.success) {
-        ElMessage.success('创建成功')
-        cateForm.categoryName='',
-        cateForm.categoryAlias=''
+        message.success('创建成功');
+        (cateForm.categoryName = ''), (cateForm.categoryAlias = '')
         content.emit('createOKCateEmit', { categoryName: value.data.categoryName, categoryId: value.data.categoryId })
       } else {
-        ElMessage.error(value.data)
+        message.error(value.data)
       }
     }
     return {

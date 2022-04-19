@@ -12,7 +12,8 @@
             </template>
           </div>
           <div class="active">
-            <el-button :disabled="isNullArticle" @click="getArticleAllList" color="#388e3c" style="color: white">加载更多</el-button>
+            <el-button :loading="loading" v-if="!isNullArticle" @click="getArticleAllList" color="#388e3c" style="color: white">加载更多</el-button>
+            <el-button v-else :disabled="isNullArticle" color="#388e3c" style="color: white">已经到底</el-button>
           </div>
         </div>
       </main>
@@ -32,7 +33,7 @@ import Slide from '../article/Slide.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getArticleAll, getArticleByUser, getArticleByCate, getArticleBySearch } from '@/service/article'
 import { IDataType } from '../../service/article/type'
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 
 export default defineComponent({
   name: 'ArticleList',
@@ -49,7 +50,7 @@ export default defineComponent({
     let size = 10
     let ArticleAllList = ref<any>([])
     let isNullArticle = ref(false)
-    let loading = ref(true)
+    let loading = ref(false)
     let getType = 'default'
     let isEdit = ref(false)
     let getID = '' //请求数据查询参数
@@ -91,7 +92,7 @@ export default defineComponent({
     }
     //初始化
     function init() {
-      loading.value = true
+      loading.value = false
       isNullArticle.value = false
       ArticleAllList.value.length = 0
       current = 1
@@ -100,7 +101,7 @@ export default defineComponent({
     }
     //获取默认的文章列表
     async function getArticleAllList() {
-      // loading.value=false
+      loading.value=true
       let articleData!: IDataType
       switch (route.params.type) {
         case 'default':
@@ -124,15 +125,15 @@ export default defineComponent({
           break
       }
       if (articleData.success) {
-        ElMessage.success('获取文章成功')
+        message.success('获取文章成功')
         if (articleData.data.pages === articleData.data.current) {
           isNullArticle.value = true
-          // loading.value=true
         }
         ArticleAllList.value.push(...articleData.data.records)
-        console.log(ArticleAllList.value.length)
-        // loading.value=true
+        loading.value=false
         current++
+      }else{
+        message.warning(articleData.data)
       }
     }
 
@@ -163,19 +164,14 @@ main {
   justify-content: center;
   margin: 0 auto;
   .active {
-    width: 90%;
-    position: fixed;
-    bottom: 8vh;
+    height: 80px;
     display: flex;
     justify-content: center;
     margin-top: 10px;
   }
-  .contentBox {
-  }
   @media screen and (min-width: 800px) {
     .active {
       bottom: 4px;
-      width: 70%;
     }
   }
   .slide {
@@ -192,7 +188,7 @@ main {
 @media screen and (min-width: 800px) {
   .right {
     height: 1000px;
-    background-color: rgb(145, 145, 255);
+    background-color: rgb(0, 0, 219);
     display: block;
     width: 40%;
   }

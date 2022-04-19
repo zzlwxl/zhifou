@@ -86,8 +86,9 @@ import { getCategorys } from '../../service/article/index'
 import { logout } from '../../service/user/user'
 import localCache from '../../utils/cache'
 import { useStore } from 'vuex'
-import { ElMessage } from 'element-plus'
 import { NavMenuEmitData } from './types'
+
+import message from '../../utils/message'
 
 export default defineComponent({
   name: 'main',
@@ -103,12 +104,12 @@ export default defineComponent({
     const store = useStore()
 
     let categorysArray = ref([])
-
     async function categorys() {
       const data = await getCategorys()
       if (data.success) {
         categorysArray.value = data.data
       } else {
+        message.warning(data.data)
       }
     }
     categorys()
@@ -169,9 +170,9 @@ export default defineComponent({
         localCache.deleteCache('token')
         store.commit('user/changeUserInfo', {})
         router.push('/')
-        ElMessage.success(data.data)
+        message.success(data.data)
       } else {
-        ElMessage.warning(data.data)
+        message.warning(data.data)
       }
     }
     const outLogin = () => {
@@ -208,12 +209,12 @@ export default defineComponent({
   margin-left: 10px;
 }
 .phoneNavBox {
+  background-color: #fff;
   .el-menu--horizontal {
     border-bottom: 0px;
   }
   nav {
-    // margin-top: 10px;
-    
+    margin-top: 10px;
   }
   .logo {
     flex: 1;

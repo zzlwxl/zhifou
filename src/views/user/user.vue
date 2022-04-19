@@ -50,7 +50,7 @@ import {BindWx,UnBind} from '../../service/login/login'
 import { useStore } from '../../store/'
 import { useRouter } from 'vue-router'
 
-import { ElMessage } from 'element-plus'
+import message from '../../utils/message'
 
 export default defineComponent({
   name: 'user',
@@ -76,24 +76,24 @@ export default defineComponent({
     async function bindWx(state:string) {
       const data=await BindWx(state)
       if(data.success){
-        ElMessage.success('绑定成功')
+        message.success('绑定成功')
         bindWxDialogVisible.value=false
         userInfo.value.userIdWechat=true
       }else{
-        ElMessage.warning(data.data)
+        message.warning(data.data)
       }
     }
     async function unBindWx() {
       const data = await UnBind()
       if(data.success){
-        ElMessage.success('解绑成功')
+        message.success('解绑成功')
         userInfo.value.userIdWechat=false
       }else{
-        ElMessage.warning(data.data)
+        message.warning(data.data)
       }
     }
     const bindWxOk=()=>{
-      ElMessage.success('绑定成功')
+      message.success('绑定成功')
       bindWxDialogVisible.value=false
       userInfo.value.userIdWechat=true
     }

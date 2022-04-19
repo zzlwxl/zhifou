@@ -28,8 +28,8 @@
 import { defineComponent, ref ,watchEffect} from 'vue'
 import { getCategorys } from '../../service/article/index'
 import { Edit } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
 import CreageCate from './CreateCate.vue'
+import message from '../../utils/message'
 // import {defaultCateID} from './config/defaultCateID'
 import type { FormInstance } from 'element-plus'
 
@@ -53,6 +53,7 @@ export default defineComponent({
       if (data.success) {
         categorysArray.value = data.data
       } else {
+        message.warning(data.data)
       }
     }
     categorys()

@@ -4,7 +4,7 @@ import type { ZZLRequestInterceptors, ZZLRequestConfig } from './type'
 import localCache from '@/utils/cache'
 import router from "@/router";
 
-import { ElMessage } from 'element-plus'
+import message from "@/utils/message";
 import QueryString from "qs";
 // import { ElLoading } from 'element-plus'
 // import {LoadingOptionsResolved} from 'element-plus/global'
@@ -81,15 +81,12 @@ class ZZLRequest {
         (error) => {
           switch (error.response.status) {
             case 401:
-              ElMessage({
-                message: '登录过期，请重新登录!',
-                type: 'warning',
-              })
+              message.warning('登录过期,请重新登录')
               localCache.deleteCache('token')
               router.push('/login')
               break
             default:
-              ElMessage.warning(error.response.msg)
+              message.warning(error.response.msg)
               break
           }
           return error

@@ -1,7 +1,7 @@
 <template>
   <div class="NavMenu">
     <el-button class="menuBtn" @click="drawer2 = true">
-      <el-icon :size="size" :color="color"> <Expand /> </el-icon>菜单</el-button
+      <el-icon :size="size"> <Expand /> </el-icon>菜单</el-button
     >
     <el-drawer size="50%" v-model="drawer2" direction="ltr">
       <template #title>
@@ -30,6 +30,7 @@ import { defineComponent, ref } from 'vue'
 import { getCategorys } from '../../service/article/index'
 import { Expand } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
+import message from '../../utils/message'
 
 export default defineComponent({
   name: 'NavMenu',
@@ -47,6 +48,7 @@ export default defineComponent({
       if (data.success) {
         categorysArray.value = data.data
       } else {
+        message.warning(data.data)
       }
     }
     categorys()
@@ -71,16 +73,23 @@ export default defineComponent({
 <style scoped lang="less">
 @col1: #2196f3;
 @col2: #388e3c;
+
 .menuBtn {
   width: 100%;
+  height: 100%; 
   border-radius: 0;
   border: 0;
-  height: 100%;
+  margin-bottom: 8px;
+}
+.menuBtn:focus{
+  color: #777;
+  background-color: #fff;
 }
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 14px;
 }
 
 .text {
@@ -97,7 +106,4 @@ export default defineComponent({
   color: @col2;
 }
 
-.box-card {
-  width: 480px;
-}
 </style>
