@@ -46,13 +46,15 @@ export function Login(account:IAccount){
 export function accountLoginRequest(account:IAccount){
   return zzlRequest.post<IDataType<ILoginResult>>({
     url:LoginAPI.Register,
-    data:account
+    data:account,
+    noToken: false
   })
 }
 
 export function requetUserInfoById(id:number){
   return zzlRequest.get<IDataType>({
-    url:LoginAPI.LoginUserInfo+id
+    url:LoginAPI.LoginUserInfo+id,
+    noToken: false
   })
 }
 // export function LoginByWxCode(code:string){

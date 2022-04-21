@@ -34,6 +34,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    isViewBind:{
+      type:Boolean,
+      default:false
+    }
   },
   emits: ['getStateEmit', 'bindWxOkEmit'],
   setup(props, content) {
@@ -55,10 +59,6 @@ export default defineComponent({
     })
 
     watchEffect(() => {
-      // if(store.state.login.token!=='' && flag){
-      //    router.push(route.query.redirect+'')
-      //    flag=false
-      // }
     })
     //轮训请求用户是否扫码成功
     async function loginCallback() {

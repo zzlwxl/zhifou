@@ -96,12 +96,14 @@ export function getArticleBySearch(data:IGetArticleAll){
 export function getAddStar(data:IGetAddStar){
   return zzlRequest.get<IDataType>({
     url:Article.getAddStar,
-    data
+    data,
+    noToken: false
   })
 }
 export function unStar(articleId:string){
   return zzlRequest.get<IDataType>({
     url:Article.unStar,
-    data:{articleId}
+    data:{articleId},
+    noToken: false
   })
 }

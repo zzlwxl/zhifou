@@ -3,6 +3,7 @@ import ZZLRequest from "./request"
 import { BASE_URL,TIME_OUT } from "./request/config"
 
 import localCache from '@/utils/cache'
+import message from "@/utils/message"
 
 
 const zzlRequest = new ZZLRequest({
@@ -11,12 +12,6 @@ const zzlRequest = new ZZLRequest({
   interceptors:{
     //请求拦截
     requestInterceptor:(config)=>{
-      // console.log('请求拦截',config)
-      // const token = localCache.getCache('token')
-      // if(token){
-      //   console.log('设置token')
-      //   config.headers.Authorization=`Bearer ${token}`
-      // }
       return config
     },
     requestInterceptorCatch:(err)=>{

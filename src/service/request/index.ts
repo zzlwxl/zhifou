@@ -117,14 +117,10 @@ class ZZLRequest {
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
       }
-      console.log('config.noToken', config)
       this.noToken = config.noToken ?? DEAFULT_NOTOKEN
-      console.log('this.noToken', this.noToken)
       if (!this.noToken) {
         const token = localCache.getCache('token')
-        console.log('需要带token,但拿到的token的是', token)
         if (token) {
-          console.log('token111', token)
           this.instance.defaults.headers.common['token'] = `zzl_${token}`
         }
       } else {

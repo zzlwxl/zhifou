@@ -28,8 +28,8 @@
     <el-dialog v-model="completeUserInfoDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="95%" center>
       <ChangeUserInfo @changeDialogVisibleEmit="changeDialogVisible"></ChangeUserInfo>
     </el-dialog>
-    <el-dialog v-model="bindWxDialogVisible" width="90%" center>
-      <LoginPhone :isBindWxFlag="true"  @bindWxOkEmit="bindWxOk">
+    <el-dialog @close="changeBindWxDialogVisible" v-model="bindWxDialogVisible" width="90%" center>
+      <LoginPhone v-if="bindWxDialogVisible" :isViewBind="bindWxDialogVisible" :isBindWxFlag="true"  @bindWxOkEmit="bindWxOk">
         <template v-slot:title>
           绑定微信
         </template>
@@ -39,7 +39,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref,computed } from 'vue'
+import { defineComponent, ref,computed ,onMounted,onUnmounted} from 'vue'
 import Nav from '../../components/Nav/Nav.vue'
 import Avatar from './Avatar.vue'
 import ChangeUserInfo from './ChangeUserInfo.vue'
@@ -98,7 +98,7 @@ export default defineComponent({
       userInfo.value.userIdWechat=true
     }
     const changeBindWxDialogVisible=()=>{
-      bindWxDialogVisible.value=true
+      bindWxDialogVisible.value=!bindWxDialogVisible.value
     }
     return {
       userInfo,

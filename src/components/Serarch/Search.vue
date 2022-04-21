@@ -2,7 +2,7 @@
   <div class="Serarch">
     <el-input @change="getSearchPage('search',searchValue,searchValue)" clearable v-model="searchValue" placeholder="搜索文章" style="bor" class="input-with-select">
       <template #append>
-        <el-button @click="getSearchPage" class="searchBtn" :icon="Search" />
+        <el-button @click="getSearchPage('search',searchValue,searchValue)" class="searchBtn" :icon="Search" />
       </template>
     </el-input>
   </div>
