@@ -64,6 +64,11 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path:'/edit',
+    name:'edit',
+    component:()=>import('../components/Edit/Edit.vue')
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
     component: () => import('../views/main/NotFound.vue')

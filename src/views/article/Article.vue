@@ -12,6 +12,7 @@
         <el-form-item label="文章内容" prop="articleContent">
           <el-input @input="isEditDataFun('articleContent')" type="textarea" v-model="subForm.articleContent" />
         </el-form-item>
+        <Edit></Edit>
         <el-form-item label="文章状态" prop="articleState">
           <el-radio-group v-model="subForm.articleState">
             <el-radio @click.stop="subForm.articleState === '1' ? '' : isEditDataFun('articleState')" label="1" size="large">发布</el-radio>
@@ -35,6 +36,7 @@ import { defineComponent, ref, watchEffect, nextTick } from 'vue'
 
 import Category from './Category.vue'
 import CoverImg from './CoverImg.vue'
+import Edit from '../../components/Edit/Edit.vue'
 
 import { useRouter, useRoute } from 'vue-router'
 import { articleRules, editArticleRules } from './config/articleRules'
@@ -53,6 +55,7 @@ export default defineComponent({
   components: {
     Category,
     CoverImg,
+    Edit
   },
   setup(props, content) {
     const router = useRouter()
