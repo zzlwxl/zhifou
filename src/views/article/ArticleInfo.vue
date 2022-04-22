@@ -50,6 +50,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang='less'>
+
 .article-box{
   .active_box{
     margin: 6px;

@@ -1,3 +1,7 @@
+@col1: #2196f3;
+@col2: #388e3c;
+@fontCol: #777;
+@tableCol: rgb(255, 255, 255);
 body{
   padding: 0;
   margin: 0;
@@ -6,4 +10,52 @@ body{
 html,body,#app{
   width: 100%;
   height: 100%;
+}
+.ArticleInfo{
+  .article_box{
+    .info-box{
+      h1{
+        border-bottom: 1vh solid @col1;
+      }
+      h2{
+        border-bottom: 1vh solid @col2;
+      }
+      h3,h4,h5{
+        border-bottom: 1vh solid @fontCol;
+      }
+      ul li{
+
+      }
+      ol li{
+
+      }
+      a{
+        color: @col2;
+        text-decoration: none;
+      }
+      a:hover{
+        color:@col1;
+      }
+      table {
+        border: none;
+        border-collapse: collapse;
+      }
+      table td,
+      table th{
+        border: 1px solid #ccc;
+        padding: 3px 5px;
+        min-width: 50px;
+        height: 20px;
+      }
+      table th {
+        border-right: 1px solid #ccc;
+        border-bottom: 2px solid #ccc;
+        text-align: center;
+        background-color: #f1f1f1;
+      }
+      table tr:hover{
+        background-color: @tableCol;
+      }
+    }
+  }
 }
