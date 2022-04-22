@@ -8,11 +8,11 @@
         <el-form-item label="文章标题" prop="articleTitle">
           <el-input @input="isEditDataFun('articleTitle')" v-model="subForm.articleTitle" />
         </el-form-item>
-        <Category :editCateName="editCateName" :editCateId="editCateId" @changeCateEmit="changeCate"></Category>
-        <el-form-item label="文章内容" prop="articleContent">
+        <!-- <el-form-item label="文章内容" prop="articleContent">
           <el-input @input="isEditDataFun('articleContent')" type="textarea" v-model="subForm.articleContent" />
-        </el-form-item>
-        <Edit></Edit>
+        </el-form-item> -->
+        <Edit @inputByEditConentEmit="inputByEditConent" :againEditData="subForm.articleContent"></Edit>
+        <Category :editCateName="editCateName" :editCateId="editCateId" @changeCateEmit="changeCate"></Category>
         <el-form-item label="文章状态" prop="articleState">
           <el-radio-group v-model="subForm.articleState">
             <el-radio @click.stop="subForm.articleState === '1' ? '' : isEditDataFun('articleState')" label="1" size="large">发布</el-radio>
@@ -23,7 +23,7 @@
           <CoverImg :imgUrl="coverImg" @coverImgEmit="coverImgFun"></CoverImg>
         </el-form-item>
         <el-form-item class="btnBox">
-          <el-button v-if="!$route.query.articleId" style="width: 100%" type="primary" @click="submitFormRule(ruleFormRef)">提交</el-button>
+          <el-button v-if="!$route.query.articleId" style="width: 100%" type="primary" @click="submitFormRule(ruleFormRef)">提交2</el-button>
           <el-button class="btn" v-else type="primary" @click="submitFormEdit()">提交</el-button>
           <el-button v-if="$route.query.articleId" class="btn" type="primary" @click="delArticleFun()">删除文章</el-button>
         </el-form-item>
@@ -42,6 +42,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { articleRules, editArticleRules } from './config/articleRules'
 
 import message from '../../utils/message'
+import {defaultEditContent} from './config/defaultEditContent'
 
 import type { FormInstance } from 'element-plus'
 import { IArticle } from '../../service/article/type'
@@ -62,7 +63,7 @@ export default defineComponent({
     const route = useRoute()
     const ruleFormRef = ref<FormInstance>()
     let isArtcileRules = articleRules
-    const subForm = ref({
+    let subForm = ref({
       articleTitle: '',
       articleName: '',
       categoryId: categoryID,
@@ -90,10 +91,13 @@ export default defineComponent({
     }
     //提交前验证表单
     const submitFormRule = async (formEl: FormInstance | undefined) => {
+      if(subForm.value.articleContent===defaultEditContent){
+        return message.warning('请输入文章内容')
+      }
       if (!formEl) return
+      
       await formEl.validate((valid: any, fields: any) => {
         if (valid) {
-          console.log('subForm', isEditData.get('articleTitle'))
           const submitFormData = {
             articleTitle: subForm.value.articleTitle,
             articleName: subForm.value.articleName,
@@ -154,10 +158,11 @@ export default defineComponent({
     async function getArticleInfoFun(articleId: string) {
       const data = await getArticleInfo(articleId)
       if (data.success) {
-        console.log(data)
+        console.log('data',data)
         nextTick(() => {
           subForm.value.articleTitle = data.data.articleTitle
           subForm.value.articleContent = data.data.articleContent
+          console.log('sub',subForm.value)
           subForm.value.categoryId = data.data.category.categoryId
           subForm.value.articleState = data.data.articleState === '发布' ? '1' : '2'
           subForm.value.coverImg = data.data.coverImg
@@ -165,6 +170,7 @@ export default defineComponent({
         coverImg.value = data.data.coverImg
         editCateName.value = data.data.category.categoryName
         editCateId.value = data.data.category.categoryId
+        console.log('subForm.value',subForm.value)
       } else {
         message.error(data.data)
       }
@@ -185,6 +191,11 @@ export default defineComponent({
     const isEditDataFun = (name: string) => {
       isEditData.set(name, true)
     }
+    const inputByEditConent=(data:any)=>{
+      subForm.value.articleContent=data
+      isEditData.set('articleContent',true)
+      console.log(subForm.value)
+    }
     return {
       subForm,
       submitFormRule,
@@ -196,7 +207,8 @@ export default defineComponent({
       editCateName,
       isEditDataFun,
       submitFormEdit,
-      delArticleFun
+      delArticleFun,
+      inputByEditConent
     }
   },
 })
@@ -217,7 +229,6 @@ export default defineComponent({
 }
 .btnBox{
   width: 100%;
-  background-color: red;
   position: relative;
   .btn:nth-child(1){
     width: 40%;

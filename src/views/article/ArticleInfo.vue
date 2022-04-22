@@ -1,7 +1,7 @@
 <template>
   <div class='ArticleInfo'>
     <div class="article_box">
-      <div class="info-box">{{articleData.articleContent}}</div>
+      <div class="info-box"><div v-html="articleData.articleContent"></div></div>
     </div>
     <div class="commentBox">
       <CommentsCard :articleId="articleData.articleId"></CommentsCard>
@@ -9,10 +9,16 @@
   </div>
 </template>
 <script lang='ts'>
-import { defineComponent,ref } from 'vue'
-import {getArticleInfo} from '../../service/article/index'
+import { defineComponent,ref ,watchEffect,nextTick} from 'vue'
 import {useRoute} from 'vue-router'
+
+import {getArticleInfo} from '../../service/article/index'
+
+import Prism from 'prismjs'
+
+
 import message from '../../utils/message'
+
 import CommentsCard from '../comment/CommentsCard.vue'
 
 export default defineComponent({
@@ -29,6 +35,9 @@ export default defineComponent({
       if(data.success){
         articleData.value=data.data
         console.log(data)
+        nextTick(() => {
+          Prism.highlightAll()
+        })
       }else{
         message.warning(data.data)
       }

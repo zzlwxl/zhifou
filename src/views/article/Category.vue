@@ -19,7 +19,7 @@
         </div>
       </el-form-item>
     </el-form>
-    <el-dialog @close="changeCateInputView = true" v-model="centerDialogVisible" title="创建子分类" width="56%" center>
+    <el-dialog @close="changeCateInputView = true" v-model="centerDialogVisible" title="创建子分类" width="90%" center>
       <CreageCate :parentCateId="createCateParentID" @createOKCateEmit="createOKCate"></CreageCate>
     </el-dialog>
   </div>

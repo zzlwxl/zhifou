@@ -8,7 +8,7 @@ export const articleRules = {
     ],
     articleContent: [
       {
-        required: true,
+        required: false,
         message: '请输入文章内容',
         trigger: 'blur'
       },

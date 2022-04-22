@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="ruleFormRef" :model="cateForm" :rules="createRules" label-width="120px" class="demo-cateForm" :size="formSize">
+  <el-form ref="ruleFormRef" :model="cateForm" :rules="createRules" label-width="100px" class="demo-cateForm" :size="formSize">
     <el-form-item label="分类名字" prop="categoryName">
       <el-input v-model="cateForm.categoryName" />
     </el-form-item>

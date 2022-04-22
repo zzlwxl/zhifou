@@ -1,0 +1,1 @@
+export const defaultEditContent='<p><br></p>'
