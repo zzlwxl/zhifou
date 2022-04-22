@@ -179,4 +179,3 @@ export default defineComponent({
   },
 })
 </script>
-<style src="/Users/new/lean/view/vue3/zhifou/node_modules/@wangeditor/editor/dist/css/style.css"></style>
