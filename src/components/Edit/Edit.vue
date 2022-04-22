@@ -13,6 +13,7 @@ import Prism from 'prismjs'
 
 import localCache from '../../utils/cache'
 import message from '../../utils/message'
+import {BASE_URL} from '../../service/request/config'
 import {defaultEditContent} from '../../views/article/config/defaultEditContent'
 
 import { imgUploadServer } from '../../views/article/config/upload'
@@ -26,6 +27,7 @@ export default defineComponent({
   setup(props, content) {
     // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef()
+     const action = BASE_URL+'/cos/upload'
 
     // 内容 HTML
     let valueHtml = ref('')
@@ -96,7 +98,7 @@ export default defineComponent({
     const headerObj = { token: 'zzl_' + localCache.getCache('token') }
     const editorConfig: Partial<IEditorConfig> = { MENU_CONF: {} }
     editorConfig.MENU_CONF!['uploadImage'] = {
-      server: imgUploadServer,
+      server: action,
       fieldName: 'file',
 
       // 单个文件的最大体积限制，默认为 2M

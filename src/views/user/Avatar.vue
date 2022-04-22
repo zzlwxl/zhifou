@@ -13,6 +13,7 @@ import message from '../../utils/message'
 // import localCache from '../../utils/cache'
 import  localCache from '@/utils/cache'
 import {useStore} from '../../store/index'
+import {BASE_URL} from '../../service/request/config'
 import { editUserInfo } from '../../service/user/user'
 
 export default defineComponent({
@@ -25,7 +26,7 @@ export default defineComponent({
   setup(props, content) {
     const circleUrl = ref()
     const store = useStore()
-    const action = 'http://192.168.1.68:8080/cos/upload'
+    const action = BASE_URL+'/cos/upload'
 
     circleUrl.value=props.headImgUrl
     const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {

@@ -15,6 +15,8 @@ import type { UploadProps, UploadFile } from 'element-plus'
 import  message  from '../../utils/message'
 import localCache from '../../utils/cache'
 
+import {BASE_URL} from '../../service/request/config'
+
 export default defineComponent({
   name: 'Avatar',
   emits: ['coverImgEmit'],
@@ -23,7 +25,7 @@ export default defineComponent({
   },
   setup(props, content) {
     const circleUrl = ref()
-    const action = 'http://192.168.1.68:8080/cos/upload'
+    const action = BASE_URL+'/cos/upload'
     const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
       console.log(uploadFile, uploadFiles)
     }
