@@ -11,7 +11,6 @@ import Nav from '../../components/Nav/Nav.vue'
 import ArticleList from '../article/ArticleList.vue'
 
 export default defineComponent({
-  name: 'Main',
   components: {
     Nav,
     // Slide,

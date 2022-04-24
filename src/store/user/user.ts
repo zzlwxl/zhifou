@@ -9,7 +9,8 @@ import { ElMessage } from 'element-plus'
 import { IUserInfo } from './types'
 import { IRootState } from '../types'
 import {checkPhone} from '../../utils/checkPhone'
-// import {} from '@/service/user/type'
+
+import { MySocket } from '../../public/mySocket'
 
 const userModule: Module<IUserInfo, IRootState> = {
     namespaced: true,
@@ -32,6 +33,8 @@ const userModule: Module<IUserInfo, IRootState> = {
             console.log(userData)
             if(userData.success ?? false){
                 commit('changeUserInfo',userData.data)
+                function a() {}
+                MySocket.init(userData.data.userId,a)
             }
         }
     }

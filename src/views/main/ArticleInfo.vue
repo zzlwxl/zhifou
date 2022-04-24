@@ -6,7 +6,7 @@
       <div class="articleBox">
         <router-view></router-view>
       </div>
-      <aside class="right">右边</aside>
+      <aside class="right">右</aside>
     </div>
       <FooterNav></FooterNav>
     <footer>

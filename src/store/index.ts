@@ -3,6 +3,7 @@ import { IRootState,IStoreType } from './types'
 
 import login from './login/login'
 import user from './user/user'
+import articleBy from './article/article'
 
 const store = createStore<IRootState>({
   state() {
@@ -16,7 +17,8 @@ const store = createStore<IRootState>({
   },  
   modules: {
     login,
-    user
+    user,
+    articleBy
   }
 })
 

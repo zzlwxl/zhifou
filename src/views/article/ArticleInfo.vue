@@ -1,5 +1,9 @@
 <template>
   <div class='ArticleInfo'>
+    <div class="null"></div>
+    <div class="header">
+      <ArticleHeader :article="articleData"></ArticleHeader>
+    </div>
     <div class="article_box">
       <div class="info-box"><div v-html="articleData.articleContent"></div></div>
     </div>
@@ -20,11 +24,13 @@ import Prism from 'prismjs'
 import message from '../../utils/message'
 
 import CommentsCard from '../comment/CommentsCard.vue'
+import ArticleHeader from './ArticleHeader.vue'
 
 export default defineComponent({
   name: 'ArticleInfo',
   components:{
-    CommentsCard
+    CommentsCard,
+    ArticleHeader
   },
   setup(props,content){
     const route = useRoute()
@@ -50,17 +56,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang='less'>
+.header{
 
-.article-box{
-  .active_box{
-    margin: 6px;
-    width: 100%;
-    height: 5%;
-  }
-  .info_box{
-    width: 100%;
-    height: 95%;
-  }
+}
+.article_box{
+  margin: 4px;
 }
 .commentBox{
   width: 100%;

@@ -18,10 +18,10 @@ import {defaultEditContent} from '../../views/article/config/defaultEditContent'
 
 import { imgUploadServer } from '../../views/article/config/upload'
 
-import EditTest from './EditTest.vue'
+import '@wangeditor/editor/dist/css/style.css'
 
 export default defineComponent({
-  components: { Editor, Toolbar, EditTest },
+  components: { Editor, Toolbar },
   emits: ['inputByEditConentEmit'],
   props: ['againEditData'],
   setup(props, content) {
@@ -90,7 +90,7 @@ export default defineComponent({
     const toolbarConfig: Partial<IToolbarConfig> = {
       excludeKeys: ['uploadVideo'],
     }
-    console.log('toolbarConfig', toolbarConfig)
+    // console.log('toolbarConfig', toolbarConfig)
     // editorConfig
     // const editorConfig = { placeholder: '请输入内容...' ,}
     //上传图片

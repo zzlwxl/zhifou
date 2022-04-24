@@ -25,7 +25,10 @@ import { BindWx } from '../../../service/login/login'
 import { useStore } from '../../../store/index'
 import { useRoute, useRouter } from 'vue-router'
 
+import { WX_OAUTH2_LOGIN_SUCCESS } from '../../../configs'
+
 import message from '../../../utils/message'
+import { anonymousSocket } from '../../../utils/mySocket'
 
 export default defineComponent({
   name: 'LoginPhone',
@@ -34,10 +37,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    isViewBind:{
-      type:Boolean,
-      default:false
-    }
+    isViewBind: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['getStateEmit', 'bindWxOkEmit'],
   setup(props, content) {
@@ -50,16 +53,17 @@ export default defineComponent({
     let codeImgSrc = ref('')
     let callBackFlag = false
     let token = ''
-    let count = 0
+    let count = 60
     let flag = true
+
+    // const WX_OAUTH2_LOGIN_SUCCESS='WX_OAUTH2_LOGIN_SUCCESS'
 
     const account = reactive({
       userName: localCache.getCache('name') ?? '',
       passWord: localCache.getCache('password') ?? '',
     })
 
-    watchEffect(() => {
-    })
+    watchEffect(() => {})
     //轮训请求用户是否扫码成功
     async function loginCallback() {
       if (isBindWxFlag) {
@@ -69,7 +73,7 @@ export default defineComponent({
           console.log('绑定的信息', data)
           message.success('绑定成功')
           callBackFlag = true
-          content.emit('bindWxOkEmit')
+          // content.emit('bindWxOkEmit')
           return
         }
       }
@@ -82,23 +86,29 @@ export default defineComponent({
         localCache.setCache('token', data.data.token)
         message.success('登录成功')
         router.go(-1)
-      }else{
+      } else {
       }
     }
-
 
     onMounted(() => {
       //获取二维码
       LoginByWxAuthCode()
-      console.log('isddddddd', isBindWxFlag)
     })
     onUnmounted(() => {
-      count = 60
+      // count = 60
     })
+    function a(e: any) {
+      const data = JSON.parse(e.data)
+      if (data.event === WX_OAUTH2_LOGIN_SUCCESS) {
+          localCache.setCache('token', data.data)
+          router.go(-1)
+      }
+    }
     async function LoginByWxAuthCode() {
       const data = await LoginByWxAuth2() //获取二维码
       if (data.success) {
         state = data.data.state
+        const ws = anonymousSocket(a, state)
         codeImgSrc.value = data.data.img
         // if (isBindWxFlag) {
         //   console.log('datadatafatfasfas', data)
@@ -106,22 +116,22 @@ export default defineComponent({
         //   callBackFlag=true
         // }
 
-        let timer = setInterval(() => {
-          if (callBackFlag) {
-            //   if (isBindWxFlag) {
-            //     content.emit('getStateEmit', data.data.state)
-            //     content.emit('getStateEmit', data.data.state)
-            //   }
-            clearInterval(timer)
-          } else if (count === 60) {
-            clearInterval(timer)
-            message.error('二维码已经失效')
-          } else {
-            count++
-            //轮训请求用户是否已经扫码成功
-            loginCallback()
-          }
-        }, 1000)
+        // let timer = setInterval(() => {
+        //   if (callBackFlag) {
+        //     //   if (isBindWxFlag) {
+        //     //     content.emit('getStateEmit', data.data.state)
+        //     //     content.emit('getStateEmit', data.data.state)
+        //     //   }
+        //     clearInterval(timer)
+        //   } else if (count === 60) {
+        //     clearInterval(timer)
+        //     message.error('二维码已经失效')
+        //   } else {
+        //     count++
+        //     //轮训请求用户是否已经扫码成功
+        //     loginCallback()
+        //   }
+        // }, 1000)
       }
       // }
     }
@@ -162,11 +172,11 @@ export default defineComponent({
     font-size: 1.4rem;
   }
 }
-.title{
+.title {
   display: flex;
   flex-direction: column;
   align-items: center;
-  .tips{
+  .tips {
     color: rgb(161, 161, 161);
     margin-top: 2px;
     font-size: 12px;

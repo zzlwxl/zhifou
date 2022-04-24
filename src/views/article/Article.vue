@@ -6,11 +6,8 @@
       </span>
       <el-form ref="ruleFormRef" :model="subForm" :rules="isArtcileRules" class="demo-userInfoForm" :size="formSize">
         <el-form-item label="文章标题" prop="articleTitle">
-          <el-input @input="isEditDataFun('articleTitle')" v-model="subForm.articleTitle" />
+          <el-input @input="isEditDataFun('articleTitle')" pa v-model="subForm.articleTitle" />
         </el-form-item>
-        <!-- <el-form-item label="文章内容" prop="articleContent">
-          <el-input @input="isEditDataFun('articleContent')" type="textarea" v-model="subForm.articleContent" />
-        </el-form-item> -->
         <Edit @inputByEditConentEmit="inputByEditConent" :againEditData="subForm.articleContent"></Edit>
         <Category :editCateName="editCateName" :editCateId="editCateId" @changeCateEmit="changeCate"></Category>
         <el-form-item label="文章状态" prop="articleState">
@@ -23,7 +20,7 @@
           <CoverImg :imgUrl="coverImg" @coverImgEmit="coverImgFun"></CoverImg>
         </el-form-item>
         <el-form-item class="btnBox">
-          <el-button v-if="!$route.query.articleId" style="width: 100%" type="primary" @click="submitFormRule(ruleFormRef)">提交2</el-button>
+          <el-button v-if="!$route.query.articleId" style="width: 100%" type="primary" @click="submitFormRule(ruleFormRef)">提交</el-button>
           <el-button class="btn" v-else type="primary" @click="submitFormEdit()">提交</el-button>
           <el-button v-if="$route.query.articleId" class="btn" type="primary" @click="delArticleFun()">删除文章</el-button>
         </el-form-item>
@@ -52,7 +49,6 @@ import { categoryID } from './config/defaultCateID'
 import { addArticle, getArticleInfo, editArticle,delArticle } from '../../service/article/index'
 
 export default defineComponent({
-  name: 'Article',
   components: {
     Category,
     CoverImg,
@@ -194,7 +190,6 @@ export default defineComponent({
     const inputByEditConent=(data:any)=>{
       subForm.value.articleContent=data
       isEditData.set('articleContent',true)
-      console.log(subForm.value)
     }
     return {
       subForm,

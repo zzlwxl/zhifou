@@ -19,27 +19,15 @@
         </div>
       </div>
       <div class="activeBox">
-        <el-icon :size="size" :color="color">
-          <Stopwatch />
-        </el-icon>
-        <div class="active">{{ formatUtcString(article.createTime) }}</div>
-        <el-icon :size="size" :color="color">
-          <View />
-        </el-icon>
-        <div class="active">{{ '浏览 ' + article.articleViews }}</div>
-        <el-icon :size="size" :color="color">
-          <Comment />
-        </el-icon>
-        <div class="active">{{ '评论 ' + article.articleComments }}</div>
-        <el-icon :size="size" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
-          <Star />
-        </el-icon>
-        <div v-if="(starNum === article.articleStar) == !article.liked" class="active" @click.stop="addStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
-        <div v-else class="active" style="color:#C62828" @click.stop="unStarFun(article.articleId)">{{ `点赞 ${starNum}` }}</div>
-        <el-icon v-if="isEdit" :size="size" :color="color">
-          <Edit />
-        </el-icon>
-        <div class="active" v-if="isEdit" @click.stop="editArticle">编辑</div>
+        <div class="left">
+          <ArticleActive :article="article"></ArticleActive>
+        </div>
+        <div class="right">
+          <el-icon v-if="isEdit" :size="size" :color="color">
+            <Edit />
+          </el-icon>
+          <div v-if="isEdit" @click.stop="editArticle">编辑</div>
+        </div>
       </div>
     </div>
   </div>
@@ -52,8 +40,9 @@ import { getAddStar, unStar } from '../../service/article/index'
 
 import { formatUtcString } from '../../utils/date'
 
-import message from '../../utils/message'
-import { Edit, Stopwatch, View, Comment, Star } from '@element-plus/icons-vue'
+import ArticleActive from './ArticleActive.vue'
+
+import { Edit } from '@element-plus/icons-vue'
 
 export default defineComponent({
   name: 'ArticleCard',
@@ -67,67 +56,33 @@ export default defineComponent({
     },
   },
   components: {
+    ArticleActive,
     Edit,
-    Stopwatch,
-    View,
-    Comment,
-    Star,
   },
   setup(props, content) {
     const router = useRouter()
     const article = props.articleData
     const isEdit = props.isEdit
     const color = '#777'
-    let starNum = ref(0)
-    watchEffect(() => {
-      starNum.value = article?.articleStar
-    })
     const clickArticleInfo = (id: string) => {
       router.push(`/articleinfo/info/${id}`)
     }
-    const addStarFun = (id: string) => {
-      addStar(id)
-    }
-    async function addStar(id: string) {
-      const data = await getAddStar({ articleId: id })
-      if (data.success) {
-        message.success('点赞成功')
-        starNum.value++
-      } else {
-        message.warning(data.data)
-      }
-    }
-    const unStarFun = (id: string) => {
-      deleteStar(id)
-    }
-    async function deleteStar(id: string) {
-      const data = await unStar(id)
-      if (data.success) {
-        message.success('取消点赞成功')
-        starNum.value--
-      } else {
-        message.warning(data.data)
-      }
-    }
-    const editArticle=()=>{
+    const editArticle = () => {
       console.log(props.articleData)
       router.push({
-        path:'/create',
-        query:{
-          articleId:props.articleData?.articleId
-        }
+        path: '/create',
+        query: {
+          articleId: props.articleData?.articleId,
+        },
       })
     }
     return {
       article,
       clickArticleInfo,
       isEdit,
-      addStarFun,
       formatUtcString,
       color,
-      starNum,
-      unStarFun,
-      editArticle
+      editArticle,
     }
   },
 })
@@ -270,11 +225,17 @@ export default defineComponent({
     width: 100%;
     display: flex;
     align-items: center;
-    .active {
+    .left {
+      width: 80%;
+    }
+    .right {
       width: 20%;
+      display: flex;
       font-size: 1.2rem;
-      margin-right: 4px;
       color: @fontCol;
+      &:hover {
+        color: @col2;
+      }
     }
   }
 }

@@ -90,8 +90,9 @@ import { NavMenuEmitData } from './types'
 
 import message from '../../utils/message'
 
+import {MySocket} from '../../public/mySocket'
+
 export default defineComponent({
-  name: 'main',
   components: {
     Edit,
     Search,
@@ -160,7 +161,6 @@ export default defineComponent({
     onMounted(() => {
       userInfo()
     })
-
     const userName = computed(() => {
       return store.state.user.userInfo.userName
     })
@@ -171,6 +171,7 @@ export default defineComponent({
         store.commit('user/changeUserInfo', {})
         router.push('/')
         message.success(data.data)
+        MySocket.finish()
       } else {
         message.warning(data.data)
       }
@@ -194,8 +195,9 @@ export default defineComponent({
 @col1: #2196f3;
 @col2: #388e3c;
 .mainBottom {
-  height: 38px;
+  height: 42px;
 }
+
 .main {
   position: fixed;
   width: 100%;
@@ -243,9 +245,10 @@ export default defineComponent({
     width: 20%;
   }
 }
+
 @media screen and (min-width: 800px) {
   .mainBottom {
-    height: 58px;
+    height: 30px;
   }
   .phoneNavBox {
     display: none;
@@ -295,6 +298,16 @@ export default defineComponent({
     .el-sub-menu__title {
       padding: 9px 19px !important;
     }
+  }
+}
+@media screen and (min-width: 1000px) {
+  .mainBottom {
+    height: 20px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .mainBottom {
+    height: 18px;
   }
 }
 </style>

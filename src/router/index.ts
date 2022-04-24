@@ -69,6 +69,11 @@ const routes: Array<RouteRecordRaw> = [
     component:()=>import('../components/Edit/Edit.vue')
   },
   {
+    path:'/message',
+    name:'message',
+    component:()=>import('../components/Socket/Socket.vue')
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
     component: () => import('../views/main/NotFound.vue')

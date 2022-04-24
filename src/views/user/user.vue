@@ -94,7 +94,7 @@ export default defineComponent({
     }
     const bindWxOk=()=>{
       message.success('绑定成功')
-      bindWxDialogVisible.value=false
+      bindWxDialogVisible.value=!bindWxDialogVisible.value
       userInfo.value.userIdWechat=true
     }
     const changeBindWxDialogVisible=()=>{

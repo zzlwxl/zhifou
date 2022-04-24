@@ -2,7 +2,9 @@
   <div class="ArticleList">
     <Nav @chilkEmit="dataByEmit"></Nav>
     <div class="mainBox">
-      <aside class="left">左</aside>
+      <aside class="left">
+        <ArticleLCard></ArticleLCard>
+      </aside>
       <main>
         <div class="slide">
           <Slide></Slide>
@@ -17,7 +19,9 @@
           </div>
         </div>
       </main>
-      <aside class="right">右</aside>
+      <aside class="right">
+        <ArticleRCard></ArticleRCard>
+      </aside>
     </div>
     <footer>
       <FooterNav></FooterNav>
@@ -26,13 +30,20 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, watchEffect } from 'vue'
+
 import ArticleCard from './ArticleCard.vue'
 import FooterNav from '../../components/Footer/FooterNav.vue'
 import Nav from '../../components/Nav/Nav.vue'
 import Slide from '../article/Slide.vue'
+import ArticleRCard from './ArticleRCard.vue'
+import ArticleLCard from './ArticleLCard.vue'
+
 import { useRoute, useRouter } from 'vue-router'
+
 import { getArticleAll, getArticleByUser, getArticleByCate, getArticleBySearch } from '@/service/article'
+
 import { IDataType } from '../../service/article/type'
+
 import message from '../../utils/message'
 
 export default defineComponent({
@@ -42,6 +53,8 @@ export default defineComponent({
     Slide,
     Nav,
     FooterNav,
+    ArticleRCard,
+    ArticleLCard
   },
   setup(props, content) {
     const route = useRoute()
@@ -136,7 +149,6 @@ export default defineComponent({
         message.warning(articleData.data)
       }
     }
-
     return {
       ArticleAllList,
       getArticleAllList,
@@ -162,7 +174,7 @@ main {
   height: 1000px;
   display: flex;
   justify-content: center;
-  margin: 0 auto;
+  // margin: 0 auto;
   .active {
     height: 80px;
     display: flex;
@@ -185,12 +197,16 @@ main {
 .right {
   display: none;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 1000px) {
+  main{
+    justify-content: center;
+    width: 60%;
+  }
   .right {
-    height: 1000px;
-    background-color: rgb(0, 0, 219);
     display: block;
-    width: 40%;
+    margin-right: 10px;
+    margin-top: 2px;
+    width: 340px;
   }
   .left {
     display: none;
@@ -199,14 +215,14 @@ main {
 @media screen and (min-width: 1600px) {
   .left {
     height: 1000px;
-    background-color: rgb(150, 255, 150);
-    width: 30%;
+    margin-left: 10px;
+    margin-top: 2px;
+    width: 340px;
     display: block;
   }
   .right {
     height: 1000px;
-    background-color: rgb(138, 138, 255);
-    width: 30%;
+    width: 340px;
     display: block;
   }
 }
