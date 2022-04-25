@@ -8,10 +8,10 @@ if (process.env.NODE_ENV == 'development') {
   BASE_URL = 'http://192.168.1.68:8080';
   // BASE_URL = 'https://api.lddcc.cn';
 } else if (process.env.NODE_ENV == 'debug') {
-  WS_URL='ws://api.lddcc.cn:8080/ws'
+  WS_URL='wss://api.lddcc.cn/ws'
   BASE_URL = 'https://api.lddcc.cn';
 } else if (process.env.NODE_ENV == 'production') {
-  WS_URL='ws://api.lddcc.cn:8080/ws'
+  WS_URL='wss://api.lddcc.cn/ws'
   BASE_URL = 'https://api.lddcc.cn';
   alert('网站还在开发中...')
 } else {
