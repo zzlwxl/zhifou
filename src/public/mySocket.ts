@@ -1,27 +1,49 @@
 import {userSocket} from '../utils/mySocket'
 import { IWsMsg,WsMsgType } from './type';
+import store from '../store';
+import { watchEffect } from 'vue';
+import message from '@/utils/message';
+
 
 export class MySocket{
     public static socket:any;
     public static userId:string
     public static funList:((data:any)=>void)[]=[(e)=>{}];
+    public static count=0
+    public static connecting=false
     
-    static init(id:string,a:(e:any)=>void){
-        if(!MySocket.socket){
-            MySocket.socket = userSocket(id,MySocket.callback)
-            MySocket.userId=id
+    static init(id?:string){
+       console.log('state',store.state.name)
+    //    if(MySocket.socket && MySocket.socket.readyState===0) return;
+        if(!MySocket.socket || MySocket.socket.readyState===3){
+            if(id){
+                MySocket.userId=id
+            }
+            if(MySocket.userId){
+                MySocket.socket = userSocket(MySocket.userId,MySocket.callback)
+                MySocket.count++
+            }
         }
-        setTimeout(() => {
-            MySocket.sendMessage('wxl')
-        }, 1000);
     }                                                                                                                                                            
     //指定消息类型
     static sendMessage(message:string){
         MySocket.send(WsMsgType.MESSAGE,message)
     }
+
     //调用者重新指定消息类型
     static send(event:WsMsgType,data:any){
-        if(!MySocket.socket){
+        if(MySocket.socket&& MySocket.socket.readyState===1 && MySocket.connecting){
+            MySocket.connecting=false
+        }
+        if(MySocket.connecting) return;
+        if(MySocket.count>5){
+            message.warning('[聊天功能]:超过最大连接次数') 
+            return
+        }
+        if(!MySocket.socket || MySocket.socket.readyState!==1){
+            MySocket.connecting=true
+            MySocket.init()
+            MySocket.send(event,data)
             return
         }
         let msg:IWsMsg={
@@ -39,6 +61,12 @@ export class MySocket{
         })
     }
     static finish() {
+        MySocket.socket.close()
         MySocket.socket=null
+    }
+    static addFun(fun:(data:any)=>void){
+        if(MySocket.funList){
+            MySocket.funList.push(fun)
+        }
     }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="Avatar">
     <el-avatar :size="50" :src="circleUrl ? circleUrl : $store.state.user.userInfo.headImgUrl" />
-    <el-upload class="upload-demo" :headers="headerObj" :action="action" :on-success="handleAvatarSuccess" :on-preview="handlePreview" :show-file-list="false" :on-remove="handleRemove">
+    <el-upload class="upload-demo" :headers="headerObj" :action="action" :on-success="handleAvatarSuccess" :show-file-list="false" :on-remove="handleRemove">
       <el-button style="margin-top:10px" type="primary">更改头像</el-button>
     </el-upload>
   </div>

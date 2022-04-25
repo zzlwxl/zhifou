@@ -1,7 +1,7 @@
 <template>
   <div class="CommentsCard">
     <div>
-      <el-form :rules="rules" class="demo-ruleForm form">
+      <el-form class="demo-ruleForm form">
         <el-form-item prop="desc">
           <el-input style="width:100%" placeholder="我要评论..." ref="inputRef" v-model="commentContent" type="textarea" />
         </el-form-item>

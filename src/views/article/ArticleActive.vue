@@ -2,32 +2,32 @@
   <div class="ArticleActive">
     <div class="activeBox">
       <div class="active">
-        <el-icon class="icon" :size="size" :color="color">
+        <el-icon class="icon">
           <Stopwatch />
         </el-icon>
         {{ formatUtcString(article.createTime) }}
       </div>
       <div class="active">
-        <el-icon class="icon" :size="size" :color="color">
+        <el-icon class="icon">
           <View />
         </el-icon>
 
         {{ '浏览 ' + article.articleViews }}
       </div>
       <div class="active">
-        <el-icon class="icon" :size="size" :color="color">
+        <el-icon class="icon">
           <ChatDotRound />
         </el-icon>
         {{ '评论 ' + article.articleComments }}
       </div>
       <div v-if="(starNum === article.articleStar) == !article.liked" class="active" @click.stop="addStarFun(article.articleId)">
-        <el-icon class="icon" :size="size" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
+        <el-icon class="icon" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
           <Star />
         </el-icon>
         {{ `点赞 ${starNum}` }}
       </div>
       <div v-else class="active" style="color: #c62828" @click.stop="unStarFun(article.articleId)">
-        <el-icon class="icon" :size="size" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
+        <el-icon class="icon" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
           <Star />
         </el-icon>
         {{ `点赞 ${starNum}` }}
@@ -61,6 +61,7 @@ export default defineComponent({
   },
   setup(props, content) {
     let starNum = ref(0)
+    const color = '#777'
     watchEffect(() => {
       starNum.value = props.article?.articleStar
     })
@@ -94,6 +95,7 @@ export default defineComponent({
       unStarFun,
       formatUtcString,
       starNum,
+      color
     }
   },
 })

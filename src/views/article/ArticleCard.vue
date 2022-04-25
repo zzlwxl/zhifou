@@ -63,7 +63,7 @@ export default defineComponent({
     const router = useRouter()
     const article = props.articleData
     const isEdit = props.isEdit
-    const color = '#777'
+    
     const clickArticleInfo = (id: string) => {
       router.push(`/articleinfo/info/${id}`)
     }
@@ -81,7 +81,6 @@ export default defineComponent({
       clickArticleInfo,
       isEdit,
       formatUtcString,
-      color,
       editArticle,
     }
   },

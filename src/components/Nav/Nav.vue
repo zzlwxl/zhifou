@@ -32,7 +32,7 @@
       <header class="navBox">
         <span @click="$router.push('/')" class="logo">知<span>否</span></span>
         <nav>
-          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+          <el-menu class="el-menu-demo" mode="horizontal">
             <el-sub-menu :index="item.categoryId" v-for="item in categorysArray" :key="item.categoryId">
               <template #title>{{ item.categoryName }}</template>
               <template v-if="item.children.length">

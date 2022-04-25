@@ -1,7 +1,7 @@
 <template>
   <div class="NavMenu">
     <el-button class="menuBtn" @click="drawer2 = true">
-      <el-icon :size="size"> <Expand /> </el-icon>菜单</el-button
+      <el-icon> <Expand /> </el-icon>菜单</el-button
     >
     <el-drawer size="50%" v-model="drawer2" direction="ltr">
       <template #title>

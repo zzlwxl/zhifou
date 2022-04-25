@@ -25,10 +25,11 @@ import { BindWx } from '../../../service/login/login'
 import { useStore } from '../../../store/index'
 import { useRoute, useRouter } from 'vue-router'
 
-import { WX_OAUTH2_LOGIN_SUCCESS } from '../../../configs'
+import { WX_OAUTH2_LOGIN_SUCCESS, WX_OAUTH2_BIND_SUCCESS } from '../../../configs'
 
 import message from '../../../utils/message'
-import { anonymousSocket } from '../../../utils/mySocket'
+import { anonymousSocket,userSocket } from '../../../utils/mySocket'
+import { MySocket } from '../../../public/mySocket'
 
 export default defineComponent({
   name: 'LoginPhone',
@@ -100,21 +101,27 @@ export default defineComponent({
     function a(e: any) {
       const data = JSON.parse(e.data)
       if (data.event === WX_OAUTH2_LOGIN_SUCCESS) {
-          localCache.setCache('token', data.data)
-          router.go(-1)
+        localCache.setCache('token', data.data)
+        router.go(-1)
+      } 
+    }
+    function bindCallback(data:any){
+      if (data.event === WX_OAUTH2_BIND_SUCCESS) {
+        content.emit('bindWxOkEmit')
       }
     }
     async function LoginByWxAuthCode() {
-      const data = await LoginByWxAuth2() //获取二维码
+      const data = await LoginByWxAuth2(isBindWxFlag?2:1) //获取二维码
       if (data.success) {
         state = data.data.state
-        const ws = anonymousSocket(a, state)
-        codeImgSrc.value = data.data.img
-        // if (isBindWxFlag) {
-        //   console.log('datadatafatfasfas', data)
-        //   content.emit('getStateEmit', data.data.state)
-        //   callBackFlag=true
-        // }
+        if (isBindWxFlag) {
+          content.emit('getStateEmit', data.data.state)
+          codeImgSrc.value = data.data.img
+          MySocket.addFun(bindCallback)
+        }else{
+          const ws = anonymousSocket(a, state)
+          codeImgSrc.value = data.data.img
+        }
 
         // let timer = setInterval(() => {
         //   if (callBackFlag) {

@@ -9,9 +9,11 @@ const store = createStore<IRootState>({
   state() {
     return{
       name:'wxl',
+      userInfo:{}
     }
   },
   mutations: {
+    
   },
   actions: {
   },  

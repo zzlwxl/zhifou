@@ -28,7 +28,7 @@
     <el-dialog v-model="completeUserInfoDialogVisible" :title="userInfo.firstLogin ? '首次登录，请补充用户信息' : '更新用户信息'" width="95%" center>
       <ChangeUserInfo @changeDialogVisibleEmit="changeDialogVisible"></ChangeUserInfo>
     </el-dialog>
-    <el-dialog @close="changeBindWxDialogVisible" v-model="bindWxDialogVisible" width="90%" center>
+    <el-dialog v-model="bindWxDialogVisible" width="90%" center>
       <LoginPhone v-if="bindWxDialogVisible" :isViewBind="bindWxDialogVisible" :isBindWxFlag="true"  @bindWxOkEmit="bindWxOk">
         <template v-slot:title>
           绑定微信
@@ -94,11 +94,11 @@ export default defineComponent({
     }
     const bindWxOk=()=>{
       message.success('绑定成功')
-      bindWxDialogVisible.value=!bindWxDialogVisible.value
+      bindWxDialogVisible.value=false
       userInfo.value.userIdWechat=true
     }
     const changeBindWxDialogVisible=()=>{
-      bindWxDialogVisible.value=!bindWxDialogVisible.value
+      bindWxDialogVisible.value=true
     }
     return {
       userInfo,

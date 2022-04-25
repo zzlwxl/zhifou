@@ -64,10 +64,11 @@ export function requetUserInfoById(id:number){
 //     noToken:true
 //   })
 // }
-export function LoginByWxAuth2(){
+export function LoginByWxAuth2(t:number){
   return zzlRequest.get<IDataType>({
     url:LoginAPI.LoginByWxAuth2,
-    noToken:true
+    noToken:t===1,
+    data:{type:t}
   })
 }
 export function LoginByWxAuth2Callback(state:string){

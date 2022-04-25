@@ -14,7 +14,8 @@
         </template>
       </div>
     </div>
-    <el-input clearable v-model="msg" placeholder="发个消息" class="input-with-select">
+       <el-button @click="goNewMessageFun" :class="isScroll ? 'showBtn' : 'noShowBtn'" type="danger" round>{{`未读消息${messageNum}`}}</el-button>
+    <el-input @change="sendBtnFun" clearable v-model="msg" placeholder="发个消息" class="input-with-select">
       <template #append>
         <el-button @click="sendBtnFun" class="sendBtn" :icon="Promotion" />
       </template>
@@ -22,13 +23,12 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed, ref, watchEffect, onMounted } from 'vue'
+import { defineComponent, computed, ref, nextTick, onMounted } from 'vue'
 
 import { MySocket } from '../../public/mySocket'
 import { WsMsgType } from '../../public/type'
 
 import { Promotion } from '@element-plus/icons-vue'
-import type { ElScrollbar } from 'element-plus'
 
 import { useStore } from '../../store/'
 
@@ -45,14 +45,51 @@ export default defineComponent({
     let userId=computed(()=>{
       return store.state.user.userInfo.userId
     })
-    let scroll = ref(0)
 
+    let scrollLen=0
+    let messageNum=ref(0)
+    let isScroll = ref(false)
+    let isMouseover=(false)
+
+    
+    const init=()=>{
+      isMouseover=false
+      scrollLen=0
+      messageNum.value=0
+      isScroll.value=false
+    }
+    onMounted(()=>{
+      innerRef.value!.addEventListener('mouseover',(e)=>{
+      isMouseover=true
+      })
+      //滚动条滚动了
+      innerRef.value!.addEventListener('scroll',(e)=>{
+        if(isMouseover){
+          isScroll.value=true
+        }
+      })
+    })
+    //回到最新的消息列表
+    const goNewMessageFun=()=>{
+      isScroll.value=false
+      innerRef.value!.scrollTop=scrollLen
+      messageNum.value=0
+    }
     const callback = (data: any) => {
       if (data.event === WsMsgType.BROADCAST_MESSAGE) {
         messageList.value.push(data)
-        console.log('实际高度',innerRef.value!.scrollHeight)
-        console.log('滚动条高度',innerRef.value!.scrollTop)
-        innerRef.value!.scrollTop=innerRef.value!.scrollHeight
+        nextTick(()=>{
+          if(!isScroll.value){
+            messageNum.value=0
+            if(innerRef.value){
+              
+              innerRef.value!.scrollTop=innerRef.value!.scrollHeight
+            }
+          }else{
+            messageNum.value++
+            scrollLen=innerRef.value!.scrollHeight
+          }
+        })
       }
     }
     onMounted(() => {
@@ -62,6 +99,7 @@ export default defineComponent({
       if (!msg.value) {
         return message.warning('请输入消息')
       }
+      init()
       MySocket.sendMessage(msg.value)
       msg.value = ''
     }
@@ -72,7 +110,10 @@ export default defineComponent({
       messageList,
       formatUtcAllString,
       innerRef,
-      userId
+      userId,
+      isScroll,
+      goNewMessageFun,
+      messageNum
     }
   },
 })
@@ -89,6 +130,13 @@ export default defineComponent({
 .scorllBox{
   height: 280px;
   overflow: scroll;
+}
+.showBtn{
+  z-index: 1000;
+  display: block;
+}
+.noShowBtn{
+  display:none;
 }
 .sendBtn {
   color: white;

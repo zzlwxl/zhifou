@@ -5,13 +5,13 @@
         <el-link>{{ data.articleTitle }}</el-link>
       </div>
       <div class="active">
-        <el-icon v-if="type==='articleTopByViewsType'" class="icon" :size="size" :color="color">
+        <el-icon v-if="type==='articleTopByViewsType'" class="icon">
           <View />
         </el-icon>
-        <el-icon v-if="type==='articleTopByStarsType'" class="icon" :size="size" :color="color">
+        <el-icon v-if="type==='articleTopByStarsType'" class="icon">
           <Star />
         </el-icon>
-        <el-icon v-if="type==='articleTopByCommentsType'" class="icon" :size="size" :color="color">
+        <el-icon v-if="type==='articleTopByCommentsType'" class="icon">
           <ChatDotRound />
         </el-icon>
         {{num}}

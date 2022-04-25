@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="ruleFormRef" :model="userInfoForm" :rules="userRules" label-width="70px" class="demo-userInfoForm" :size="formSize">
+  <el-form ref="ruleFormRef" :model="userInfoForm" :rules="userRules" label-width="70px" class="demo-userInfoForm">
     <el-form-item label="用户名" prop="userName">
       <el-input v-model="userInfoForm.userName" />
     </el-form-item>

@@ -33,8 +33,7 @@ const userModule: Module<IUserInfo, IRootState> = {
             console.log(userData)
             if(userData.success ?? false){
                 commit('changeUserInfo',userData.data)
-                function a() {}
-                MySocket.init(userData.data.userId,a)
+                MySocket.init(userData.data.userId)
             }
         }
     }

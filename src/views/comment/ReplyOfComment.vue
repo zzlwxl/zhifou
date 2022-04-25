@@ -2,7 +2,7 @@
   <div class="ReplyOfComment">
     <div class="top">
       <div>
-        <el-avatar :size="30" :src="comment.author.headImgUrl" />
+        <el-avatar :src="comment.author.headImgUrl" />
       </div>
       <span class="first" v-if="!isReply">{{ nickNameFun(comment.author.nickName) }}:</span>
       <span class="first" v-else
