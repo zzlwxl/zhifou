@@ -54,6 +54,8 @@ export default defineComponent({
         owner: true,
         author: {
           headImgUrl: value.user.author.headImgUrl,
+          nickName:value.user.author.nickName,
+          userId:value.user.author.userId
         },
       })
     }

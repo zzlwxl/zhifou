@@ -8,16 +8,18 @@
               <el-avatar :size="30" :src="item.data.user.headImgUrl" />
             </div>
             <span style="margin-left: 4px; margin-right: 4px">{{ item.data.user.nickName }}</span>
-            <span style="margin-left: 4px">{{item.time}}</span>
+            <span style="margin-left: 4px ; font-size: 12px;">{{item.time}}</span>
           </div>
           <div :class="userId===item.data.user.userId ? 'msgByUser' : 'msg'">{{ item.data.message }}</div>
         </template>
       </div>
     </div>
-       <el-button @click="goNewMessageFun" :class="isScroll ? 'showBtn' : 'noShowBtn'" type="danger" round>{{`未读消息${messageNum}`}}</el-button>
-    <el-input @change="sendBtnFun" clearable v-model="msg" placeholder="发个消息" class="input-with-select">
+    <div class="btnBox">
+       <el-button v-if="messageNum" @click="goNewMessageFun" :class="isScroll ? 'showBtn' : 'noShowBtn'" type="primary" round>{{`未读消息${messageNum}`}}</el-button>
+    </div>
+    <el-input @keyup.enter.native="sendBtnFun" clearable v-model="msg" placeholder="发个消息" class="input-with-select">
       <template #append>
-        <el-button @click="sendBtnFun" class="sendBtn" :icon="Promotion" />
+        <el-button @click.stop="sendBtnFun" class="sendBtn" :icon="Promotion" />
       </template>
     </el-input>
   </div>
@@ -53,27 +55,34 @@ export default defineComponent({
 
     
     const init=()=>{
-      isMouseover=false
       scrollLen=0
       messageNum.value=0
       isScroll.value=false
     }
     onMounted(()=>{
+      //监听pc端鼠标经过,当用户鼠标经过并且又监听到滚动条滚动了,则视为用户在翻记录
       innerRef.value!.addEventListener('mouseover',(e)=>{
+      isMouseover=true
+      })
+      //监听手机端滚动,只要滚动就代表用户已经在翻记录了(滚动条也会跟着滚动)
+      innerRef.value!.addEventListener('scroll',(e)=>{
       isMouseover=true
       })
       //滚动条滚动了
       innerRef.value!.addEventListener('scroll',(e)=>{
         if(isMouseover){
-          isScroll.value=true
+          if(innerRef.value!.scrollHeight-innerRef.value!.scrollTop<300){
+            init()
+          }else {
+            isScroll.value=true
+          }
         }
       })
     })
     //回到最新的消息列表
     const goNewMessageFun=()=>{
-      isScroll.value=false
       innerRef.value!.scrollTop=scrollLen
-      messageNum.value=0
+      init()
     }
     const callback = (data: any) => {
       if (data.event === WsMsgType.BROADCAST_MESSAGE) {
@@ -82,7 +91,6 @@ export default defineComponent({
           if(!isScroll.value){
             messageNum.value=0
             if(innerRef.value){
-              
               innerRef.value!.scrollTop=innerRef.value!.scrollHeight
             }
           }else{
@@ -113,7 +121,7 @@ export default defineComponent({
       userId,
       isScroll,
       goNewMessageFun,
-      messageNum
+      messageNum,
     }
   },
 })
@@ -129,7 +137,14 @@ export default defineComponent({
 }
 .scorllBox{
   height: 280px;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.btnBox{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
 }
 .showBtn{
   z-index: 1000;
@@ -139,12 +154,12 @@ export default defineComponent({
   display:none;
 }
 .sendBtn {
-  color: white;
-  background-color: @col2;
+  color: white !important;
+  background-color: @col1 !important;
   border-radius: 0 4px 4px 0;
 }
 .sendBtn:hover {
-  background-color: @col1;
+  background-color: @col2 !important;
   color: white;
 }
 .item {

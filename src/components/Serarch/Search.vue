@@ -1,8 +1,8 @@
 <template>
   <div class="Serarch">
-    <el-input @change="getSearchPage('search',searchValue,searchValue)" clearable v-model="searchValue" placeholder="搜索文章" style="bor" class="input-with-select">
+    <el-input @focus="showList" @keyup.enter.native="getSearchPage('search', searchValue, searchValue)" clearable v-model="searchValue" placeholder="搜索文章" style="bor" class="input-with-select">
       <template #append>
-        <el-button @click="getSearchPage('search',searchValue,searchValue)" class="searchBtn" :icon="Search" />
+        <el-button @click="getSearchPage('search', searchValue, searchValue)" class="searchBtn" :icon="Search" />
       </template>
     </el-input>
   </div>
@@ -14,27 +14,34 @@ import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Serarch',
-  emits:['chilkSearchEmit'],
+  emits: ['chilkSearchEmit', 'isOkSearchEmit'],
   setup(props, content) {
     let searchValue = ref<string>('')
     const router = useRouter()
-    const getSearchPage = (type:string,name: string, id: string) => {
+
+    const showList=()=>{
+
+    }
+    const getSearchPage = (type: string, name: string, id: string) => {
       router.push({
         path: 'article',
         name: 'article',
         query: {
-          name
+          name,
         },
         params: {
-          type
+          type,
         },
       })
-     content.emit('chilkSearchEmit',name)
+      searchValue.value = ''
+      content.emit('chilkSearchEmit', name)
+      content.emit('isOkSearchEmit')
     }
     return {
       Search,
       searchValue,
       getSearchPage,
+      showList
     }
   },
 })
@@ -47,7 +54,7 @@ export default defineComponent({
   background-color: rgb(255, 255, 255);
   display: flex;
   align-items: center;
-  width: 20%;
+  width: 260px;
   .searchBtn {
     color: white;
     background-color: @col2;

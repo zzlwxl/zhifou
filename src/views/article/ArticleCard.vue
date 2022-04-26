@@ -171,13 +171,14 @@ export default defineComponent({
         -webkit-box-orient: vertical;
         display: -webkit-box;
         font-size: 1.2rem;
-        line-height: 5px;
+        line-height: 4px;
         color: @fontCol;
         text-indent: 2em;
       }
       @media screen and (min-width: 320px) {
         .content {
-          line-height: 16px;
+          line-height: 12px;
+          font-size: 1.1rem;
         }
       }
       @media screen and (min-width: 540px) {

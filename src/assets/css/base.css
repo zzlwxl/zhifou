@@ -9,23 +9,36 @@ body,
   width: 100%;
   height: 100%;
 }
+.ArticleInfo .article_box .info-box p {
+  font-size: 14px;
+}
 .ArticleInfo .article_box .info-box h1 {
-  border-bottom: 1vh solid #2196f3;
+  border-bottom: 0.4vw solid #2196f3;
 }
 .ArticleInfo .article_box .info-box h2 {
-  border-bottom: 1vh solid #388e3c;
+  border-bottom: 0.3vw solid #388e3c;
 }
 .ArticleInfo .article_box .info-box h3,
 .ArticleInfo .article_box .info-box h4,
 .ArticleInfo .article_box .info-box h5 {
-  border-bottom: 1vh solid #777;
+  border-bottom: 0.2vw solid #777;
+}
+.ArticleInfo .article_box .info-box ul li {
+  font-size: 14px;
+}
+.ArticleInfo .article_box .info-box ol li {
+  font-size: 14px;
 }
 .ArticleInfo .article_box .info-box a {
   color: #388e3c;
+  font-size: 14px;
   text-decoration: none;
 }
 .ArticleInfo .article_box .info-box a:hover {
   color: #2196f3;
+}
+.ArticleInfo .article_box .info-box div {
+  font-size: 14px;
 }
 .ArticleInfo .article_box .info-box table {
   border: none;

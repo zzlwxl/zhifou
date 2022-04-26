@@ -1,4 +1,4 @@
-
+import { MySocket } from "@/public/mySocket"
 function useWebSocket(handleMessage:(e:any)=>void,url:string) {
   const ws = new WebSocket(url)
   const init = () => {
@@ -12,6 +12,7 @@ function useWebSocket(handleMessage:(e:any)=>void,url:string) {
   }
   function handleOpen(e:any) {
     console.log('websocket open',e)
+    MySocket.liveHeart()
   }
   function handleClose(e:any) {
     console.log('websocket close')

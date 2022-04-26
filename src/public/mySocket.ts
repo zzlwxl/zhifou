@@ -13,8 +13,8 @@ export class MySocket{
     public static connecting=false
     
     static init(id?:string){
-       console.log('state',store.state.name)
-    //    if(MySocket.socket && MySocket.socket.readyState===0) return;
+        console.log('state',store.state.name)
+        //    if(MySocket.socket && MySocket.socket.readyState===0) return;
         if(!MySocket.socket || MySocket.socket.readyState===3){
             if(id){
                 MySocket.userId=id
@@ -29,7 +29,14 @@ export class MySocket{
     static sendMessage(message:string){
         MySocket.send(WsMsgType.MESSAGE,message)
     }
-
+    //心跳
+    static liveHeart(){
+        if(!MySocket.connecting && MySocket.socket.readyState===1){
+            setInterval(()=>{
+                MySocket.send(WsMsgType.TEST,'心跳')
+            },10000)
+        }
+    }
     //调用者重新指定消息类型
     static send(event:WsMsgType,data:any){
         if(MySocket.socket&& MySocket.socket.readyState===1 && MySocket.connecting){

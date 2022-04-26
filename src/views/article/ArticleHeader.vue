@@ -5,6 +5,9 @@
     <div class="active">
       <ArticleActive :article="articleData">
         <template #author>
+           <el-icon class="icon">
+          <User />
+        </el-icon>
           {{articleData.author ? articleData.author.nickName : ''}}
         </template>
       </ArticleActive>
@@ -16,11 +19,13 @@
 <script lang="ts">
 import { defineComponent, ref, watchEffect } from 'vue'
 import ArticleActive from './ArticleActive.vue'
+import { User } from '@element-plus/icons-vue'
 
 export default defineComponent({
   name: 'ArticleHeader',
   components: {
     ArticleActive,
+    User
   },
   props: ['article'],
   setup(props, content) {
@@ -48,5 +53,7 @@ export default defineComponent({
 }
 h1 {
   color: @col2;
+  display: flex;
+  justify-content: center;
 }
 </style>

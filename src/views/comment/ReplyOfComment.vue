@@ -5,8 +5,8 @@
         <el-avatar :src="comment.author.headImgUrl" />
       </div>
       <span class="first" v-if="!isReply">{{ nickNameFun(comment.author.nickName) }}:</span>
-      <span class="first" v-else
-        >{{ nickNameFun(comment.author.nickName) }} <span>回复</span><span class="second">{{ nickNameFun(present.nickName) }}:</span></span
+      <span class="first" v-else>
+        {{ nickNameFun(comment.author.nickName) }} <span>回复</span><span class="second">{{ nickNameFun(present.nickName) }}:</span></span
       >
     </div>
     <div class="content">

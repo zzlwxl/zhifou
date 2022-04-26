@@ -31,7 +31,7 @@ export default defineComponent({
 .cardBox{
   border-radius: 10px;
   background-color: #fff;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   padding: 4px;
   .title{
     color: @col2;

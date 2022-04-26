@@ -1,6 +1,12 @@
 <template>
   <div>
     <div class="main">
+      <div class="messagePhoneBtn">
+        <el-button @click="phoneMessageDialogVisible = !phoneMessageDialogVisible" type="primary" round>世界消息</el-button>
+      </div>
+      <el-dialog v-model="phoneMessageDialogVisible" width="300px" center>
+        <Chat></Chat>
+      </el-dialog>
       <header class="phoneNavBox">
         <nav>
           <NavMenu @NavMenuSelectEmit="NavMenuSelect"></NavMenu>
@@ -9,7 +15,7 @@
         <span class="login">
           <template v-if="userName">
             <div class="user-info">
-              <el-dropdown size="small" type="primary">
+              <el-dropdown trigger="click" size="small" type="primary">
                 <el-avatar :size="30" :src="$store.state.user.userInfo.headImgUrl" />
                 <template #dropdown>
                   <el-dropdown-menu>
@@ -45,7 +51,10 @@
           </el-menu>
           <!-- <HelloWorld></HelloWorld> -->
         </nav>
+        
         <div class="orther"></div>
+        <div class="ortherBox">
+        </div>
         <Search @chilkSearchEmit="chilkSearch"></Search>
         <span class="login">
           <template v-if="userName">
@@ -64,7 +73,7 @@
                 </template>
               </el-dropdown>
             </div>
-            <el-button @click="$router.push('/create')" color="#388e3c" style="color: white" round>创作文章</el-button>
+            <el-button @click="$router.push('/create')" color="#388e3c" style="color: white ; margin-left: 4px;" round>创作文章</el-button>
           </template>
           <template v-else>
             <el-link @click="$router.push('/login')">登录/注册</el-link>
@@ -80,6 +89,7 @@ import { defineComponent, onMounted, computed, ref, reactive, watchEffect } from
 import Search from '../Serarch/Search.vue'
 import NavMenu from './NavMenu.vue'
 import HelloWorld from '../HelloWorld.vue'
+import Chat from '../../views/chat/Chat.vue'
 import { useRouter } from 'vue-router'
 import { Edit } from '@element-plus/icons-vue'
 import { getCategorys } from '../../service/article/index'
@@ -90,7 +100,7 @@ import { NavMenuEmitData } from './types'
 
 import message from '../../utils/message'
 
-import {MySocket} from '../../public/mySocket'
+import { MySocket } from '../../public/mySocket'
 
 export default defineComponent({
   components: {
@@ -98,11 +108,13 @@ export default defineComponent({
     Search,
     NavMenu,
     HelloWorld,
+    Chat
   },
   emits: ['chilkEmit'],
   setup(props, content) {
     const router = useRouter()
     const store = useStore()
+    let phoneMessageDialogVisible = ref(false)
 
     let categorysArray = ref([])
     async function categorys() {
@@ -162,7 +174,7 @@ export default defineComponent({
       userInfo()
     })
     const userName = computed(() => {
-      return store.state.user.userInfo.userName
+      return store.state.user.userInfo.nickName
     })
     async function out() {
       const data = await logout()
@@ -186,6 +198,7 @@ export default defineComponent({
       articleListByData,
       chilkSearch,
       NavMenuSelect,
+      phoneMessageDialogVisible
     }
   },
 })
@@ -197,11 +210,25 @@ export default defineComponent({
 .mainBottom {
   height: 42px;
 }
-
+.ortherBox{
+  width: 80%;
+  background-color: #fff;
+}
 .main {
   position: fixed;
   width: 100%;
   z-index: 1000;
+  .messagePhoneBtn {
+    margin-left: 4px;
+    position: fixed;
+    bottom: 48px;
+    left: -48px;
+    transition: all 1s;
+    z-index: 1999;
+  }
+  .messagePhoneBtn:hover {
+    left: 0;
+  }
 }
 .navBox {
   display: none;
@@ -277,6 +304,7 @@ export default defineComponent({
       align-items: center;
       background-color: rgb(255, 255, 255);
       width: 16%;
+      padding-left: 4px;
     }
     nav {
       // flex: 1;
@@ -308,6 +336,11 @@ export default defineComponent({
 @media screen and (min-width: 1200px) {
   .mainBottom {
     height: 18px;
+  }
+}
+@media screen and (min-width: 1600px) {
+  .messagePhoneBtn {
+    display: none;
   }
 }
 </style>

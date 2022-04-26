@@ -56,6 +56,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang='less'>
+p{
+  font-size: 200px !important;
+}
 .header{
 
 }

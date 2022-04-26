@@ -24,6 +24,7 @@
       </aside>
     </div>
     <footer>
+
       <FooterNav></FooterNav>
     </footer>
   </div>
@@ -37,6 +38,7 @@ import Nav from '../../components/Nav/Nav.vue'
 import Slide from '../article/Slide.vue'
 import ArticleRCard from './ArticleRCard.vue'
 import ArticleLCard from './ArticleLCard.vue'
+
 
 import { useRoute, useRouter } from 'vue-router'
 
@@ -54,7 +56,7 @@ export default defineComponent({
     Nav,
     FooterNav,
     ArticleRCard,
-    ArticleLCard
+    ArticleLCard,
   },
   setup(props, content) {
     const route = useRoute()
@@ -67,6 +69,7 @@ export default defineComponent({
     let getType = 'default'
     let isEdit = ref(false)
     let getID = '' //请求数据查询参数
+
     watchEffect(() => {
       switch (route.params.type) {
         case undefined:
@@ -114,7 +117,7 @@ export default defineComponent({
     }
     //获取默认的文章列表
     async function getArticleAllList() {
-      loading.value=true
+      loading.value = true
       let articleData!: IDataType
       switch (route.params.type) {
         case 'default':
@@ -143,9 +146,9 @@ export default defineComponent({
           isNullArticle.value = true
         }
         ArticleAllList.value.push(...articleData.data.records)
-        loading.value=false
+        loading.value = false
         current++
-      }else{
+      } else {
         message.warning(articleData.data)
       }
     }
@@ -163,8 +166,8 @@ export default defineComponent({
 
 <style scoped lang="less">
 @col2: #388e3c;
-.ArticleList {
-}
+@col1: #2196f3;
+
 .mainBox {
   margin-top: 2vw;
   display: flex;
@@ -198,7 +201,7 @@ main {
   display: none;
 }
 @media screen and (min-width: 1000px) {
-  main{
+  main {
     justify-content: center;
     width: 60%;
   }
@@ -225,5 +228,6 @@ main {
     width: 340px;
     display: block;
   }
+
 }
 </style>
