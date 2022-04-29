@@ -23,8 +23,8 @@
         <ArticleRCard></ArticleRCard>
       </aside>
     </div>
+    <el-backtop :right="10" :bottom="48" />
     <footer>
-
       <FooterNav></FooterNav>
     </footer>
   </div>
@@ -60,7 +60,7 @@ export default defineComponent({
   },
   setup(props, content) {
     const route = useRoute()
-    const router = useRoute()
+    const router = useRouter()
     let current = 1
     let size = 10
     let ArticleAllList = ref<any>([])
@@ -103,6 +103,7 @@ export default defineComponent({
       }
     })
     const dataByEmit = (value: any) => {
+      console.log('dataEmit2',value)
       getID = value.data
       console.log('getID', getID)
     }

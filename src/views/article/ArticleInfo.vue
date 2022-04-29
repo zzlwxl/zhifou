@@ -7,6 +7,7 @@
     <div class="article_box">
       <div class="info-box"><div v-html="articleData.articleContent"></div></div>
     </div>
+    <el-backtop :right="10" :bottom="48" />
     <div class="commentBox">
       <CommentsCard :articleId="articleData.articleId"></CommentsCard>
     </div>
@@ -39,9 +40,9 @@ export default defineComponent({
     async function articleInfo(id:any) {
       const data = await getArticleInfo(id)
       if(data.success){
-        articleData.value=data.data
         console.log(data)
         nextTick(() => {
+          articleData.value=data.data
           Prism.highlightAll()
         })
       }else{

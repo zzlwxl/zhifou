@@ -32,7 +32,7 @@
         </el-icon>
         {{ `点赞 ${starNum}` }}
       </div>
-      <div class="active">
+      <div class="active" @click.stop="goAuthor">
         <slot name="author"> </slot>
       </div>
     </div>
@@ -40,6 +40,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, watchEffect } from 'vue'
+import {useRouter} from 'vue-router'
 
 import { formatUtcString } from '../../utils/date'
 
@@ -48,6 +49,7 @@ import { getAddStar, unStar } from '../../service/article/index'
 import message from '../../utils/message'
 
 import { Edit, Stopwatch, View, ChatDotRound, Star } from '@element-plus/icons-vue'
+
 
 export default defineComponent({
   name: 'ArticleActive',
@@ -60,6 +62,7 @@ export default defineComponent({
     Star,
   },
   setup(props, content) {
+    const router = useRouter()
     let starNum = ref(0)
     const color = '#777'
     watchEffect(() => {
@@ -89,13 +92,22 @@ export default defineComponent({
         message.warning(data.data)
       }
     }
-
+    const goAuthor=()=>{
+      router.push({
+        name:'usermenu',
+        path:'/usermenu',
+        params:{
+          userid:props.article.author.userId
+        }
+      })
+    }
     return {
       addStarFun,
       unStarFun,
       formatUtcString,
       starNum,
-      color
+      color,
+      goAuthor
     }
   },
 })
@@ -116,7 +128,7 @@ export default defineComponent({
     display: flex;
     color: @fontCol;
   }
-  .active:nth-child(4){
+  .active:nth-child(n+3){
     cursor: pointer;
   }
 }

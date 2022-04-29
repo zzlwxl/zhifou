@@ -1,8 +1,6 @@
 <template>
   <div class="LoginPanel">
-    <span class="back">
-      <el-link @click="$router.go(-1)">返回</el-link>
-    </span>
+    <PhoneBackBtn></PhoneBackBtn>
     <el-tabs type="border-card" class="demo-tabs" stretch v-model="currentTab">
       <el-tab-pane name="login">
         <template #label>
@@ -44,9 +42,12 @@
 <script lang="ts">
 import { Avatar, Iphone } from '@element-plus/icons-vue'
 import { defineComponent, ref } from 'vue'
+
 import LoginAccount from './LoginAccount.vue'
 import LoginPhone from './LoginPhone.vue'
 import Login from './Login.vue'
+import PhoneBackBtn from '../../../components/Nav/PhoneBackBtn.vue'
+
 import localCache from '../../../utils/cache'
 
 export default defineComponent({
@@ -56,6 +57,7 @@ export default defineComponent({
     LoginAccount,
     LoginPhone,
     Login,
+    PhoneBackBtn
   },
   setup() {
     const isKeepPassword = ref(true)

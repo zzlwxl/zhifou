@@ -68,7 +68,6 @@ export function getArticleTop(data:IGetArticleTop) {
 export function getArticleInfo(articleId: string) {
   return zzlRequest.get<IDataType>({
     url: Article.getArticleInfo,
-    noToken: true,
     data: { articleId }
   })
 }

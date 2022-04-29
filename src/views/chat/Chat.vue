@@ -33,9 +33,12 @@ import { WsMsgType } from '../../public/type'
 import { Promotion } from '@element-plus/icons-vue'
 
 import { useStore } from '../../store/'
+import { useRouter } from 'vue-router'
 
 import { formatUtcAllString } from '../../utils/date'
 import message from '../../utils/message'
+
+import {GetMsg} from '../../service/word/word'
 
 export default defineComponent({
   name: 'LoginAccount',
@@ -44,6 +47,7 @@ export default defineComponent({
     let messageList = ref<any>([])
     const innerRef = ref<HTMLDivElement>()
     const store=useStore()
+    const router = useRouter()
     let userId=computed(()=>{
       return store.state.user.userInfo.userId
     })
@@ -59,7 +63,20 @@ export default defineComponent({
       messageNum.value=0
       isScroll.value=false
     }
+    //获取历史世界消息
+    async function getMsgFun() {
+      const data=await GetMsg()
+      if(data.success){
+        messageList.value=data.data
+        nextTick(()=>{
+          innerRef.value!.scrollTop=innerRef.value!.scrollHeight
+        })
+      }else{
+        message.error(data.data)
+      }
+    }
     onMounted(()=>{
+      getMsgFun()
       //监听pc端鼠标经过,当用户鼠标经过并且又监听到滚动条滚动了,则视为用户在翻记录
       innerRef.value!.addEventListener('mouseover',(e)=>{
       isMouseover=true
@@ -104,6 +121,10 @@ export default defineComponent({
       MySocket.funList.push(callback)
     })
     const sendBtnFun = () => {
+      if (!store.state.user.userInfo.userId) {
+        router.push('/login')
+        return
+      }
       if (!msg.value) {
         return message.warning('请输入消息')
       }

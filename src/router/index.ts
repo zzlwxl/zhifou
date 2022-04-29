@@ -39,8 +39,14 @@ const routes: Array<RouteRecordRaw> = [
     component: ()=> import(/* webpackChunkName: "login" */ '../views/login/cpns/LoginPanel.vue')
   },
   {
+    path:'/usermenu/:userid',
+    props:true,
+    name:'usermenu',
+    component:()=>import('../views/user/UserMenu.vue')
+  },
+  {
     path: '/user',
-    component: ()=>import(/* webpackChunkName: "user" */ '../views/user/user.vue'),
+    component: ()=>import(/* webpackChunkName: "user" */ '../views/user/User.vue'),
     meta: {
       login_require: true,
     },
@@ -66,7 +72,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path:'/edit',
     name:'edit',
-    component:()=>import('../components/Edit/Edit.vue')
+    component:()=>import('../components/Edit/Edit.vue'),
+    meta: {
+      login_require: true,
+    },
   },
   {
     path:'/message',

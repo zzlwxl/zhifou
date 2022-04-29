@@ -1,9 +1,7 @@
 <template>
   <div class="article">
     <div class="articleBox">
-      <span class="back">
-        <el-link @click="$router.go(-1)">返回</el-link>
-      </span>
+      <PhoneBackBtn></PhoneBackBtn>
       <el-form ref="ruleFormRef" :model="subForm" :rules="isArtcileRules" class="demo-userInfoForm" :size="formSize">
         <el-form-item label="文章标题" prop="articleTitle">
           <el-input @input="isEditDataFun('articleTitle')" pa v-model="subForm.articleTitle" />
@@ -34,6 +32,7 @@ import { defineComponent, ref, watchEffect, nextTick } from 'vue'
 import Category from './Category.vue'
 import CoverImg from './CoverImg.vue'
 import Edit from '../../components/Edit/Edit.vue'
+import PhoneBackBtn from '../../components/Nav/PhoneBackBtn.vue'
 
 import { useRouter, useRoute } from 'vue-router'
 import { articleRules, editArticleRules } from './config/articleRules'
@@ -52,7 +51,8 @@ export default defineComponent({
   components: {
     Category,
     CoverImg,
-    Edit
+    Edit,
+    PhoneBackBtn
   },
   setup(props, content) {
     const router = useRouter()

@@ -8,14 +8,12 @@
       </div>
       <aside class="right">右</aside>
     </div>
-      <FooterNav></FooterNav>
-    <footer>
-    </footer>
-    
+    <FooterNav></FooterNav>
+    <footer></footer>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent ,ref} from 'vue'
+import { defineComponent, ref } from 'vue'
 import Nav from '../../components/Nav/Nav.vue'
 import FooterNav from '../../components/Footer/FooterNav.vue'
 // import Slide from '../article/Slide.vue'
@@ -29,9 +27,7 @@ export default defineComponent({
     // Slide,
     ArticleList,
   },
-  setup(props, content) {
-    
-  },
+  setup(props, content) {},
 })
 </script>
 
@@ -55,10 +51,12 @@ export default defineComponent({
 }
 @media screen and (min-width: 800px) {
   .right {
+    margin-right: 10px;
+    margin-top: 2px;
     height: 1000px;
     background-color: rgb(159, 159, 255);
     display: block;
-    width: 40%;
+    width: 440px;
   }
   .left {
     display: none;
@@ -66,21 +64,14 @@ export default defineComponent({
 }
 @media screen and (min-width: 1600px) {
   .left {
+    margin-left: 10px;
+    margin-top: 2px;
     height: 1000px;
     background-color: rgb(150, 255, 150);
-    width: 20%;
-    display: block;
-  }
-  .right {
-    height: 1000px;
-    background-color: rgb(0, 0, 249);
-    width: 20%;
+    width: 440px;
     display: block;
   }
   .articleBox {
-    width: 60%;
-    height: 1000px;
-    // padding: 100%;
   }
 }
 </style>

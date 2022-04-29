@@ -4,7 +4,7 @@
       <div class="messagePhoneBtn">
         <el-button @click="phoneMessageDialogVisible = !phoneMessageDialogVisible" type="primary" round>世界消息</el-button>
       </div>
-      <el-dialog v-model="phoneMessageDialogVisible" width="300px" center>
+      <el-dialog v-model="phoneMessageDialogVisible" width="90%" center>
         <Chat></Chat>
       </el-dialog>
       <header class="phoneNavBox">
@@ -137,7 +137,6 @@ export default defineComponent({
         path: '/article',
         query: {
           name,
-          id,
         },
         params: {
           type,
