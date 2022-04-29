@@ -1,16 +1,16 @@
 <template>
   <div class="user">
-    <Nav :headImgUrl="userInfo ? userInfo.headImgUrl : ''"></Nav>
+    <Nav></Nav>
     <div class="mainBox">
       <aside class="left">左</aside>
       <div class="userBox">
         <PhoneBackBtn></PhoneBackBtn>
-        <el-tabs tab-position="top" class="demo-tabs">
-          <el-tab-pane label="关于博主"><AuthorInfo :userId="$route.params.userid"></AuthorInfo></el-tab-pane>
-          <el-tab-pane label="关注的人">Role</el-tab-pane>
-          <el-tab-pane label="博主文章"><ArticleByUserList type="byAuthor" :userId="$route.params.userid"></ArticleByUserList></el-tab-pane>
-          <el-tab-pane label="点赞历史"><ArticleByUserList type="byStar" :userId="$route.params.userid"></ArticleByUserList></el-tab-pane>
-          <el-tab-pane label="阅读历史"><ArticleByUserList type="byHistory" :userId="$route.params.userid"></ArticleByUserList></el-tab-pane>
+        <el-tabs v-model="tabIndex" class="demo-tabs">
+          <el-tab-pane label="关于博主"><AuthorInfo v-if="tabIndex==='0'"></AuthorInfo></el-tab-pane>
+          <el-tab-pane label="关注的人"><AuthorList v-if="tabIndex==='1'"></AuthorList></el-tab-pane>
+          <el-tab-pane label="博主文章"><ArticleByUserList v-if="tabIndex==='2'" type="byAuthor" ></ArticleByUserList></el-tab-pane>
+          <el-tab-pane label="点赞历史"><ArticleByUserList v-if="tabIndex==='3'" type="byStar"></ArticleByUserList></el-tab-pane>
+          <el-tab-pane label="阅读历史"><ArticleByUserList v-if="tabIndex==='4'" type="byHistory" ></ArticleByUserList></el-tab-pane>
         </el-tabs>
       </div>
       <aside class="right">右</aside>
@@ -28,6 +28,7 @@ import PhoneBackBtn from '../../components/Nav/PhoneBackBtn.vue'
 import FooterNav from '../../components/Footer/FooterNav.vue'
 import AuthorInfo from './cpns/AuthorInfo.vue'
 import ArticleByUserList from './cpns/ArticleByUserList.vue'
+import AuthorList from './cpns/AuthorList.vue'
 
 export default defineComponent({
   name: 'usermenu',
@@ -36,10 +37,16 @@ export default defineComponent({
     PhoneBackBtn,
     FooterNav,
     AuthorInfo,
-    ArticleByUserList
+    ArticleByUserList,
+    AuthorList
   },
   setup(props, content) {
     const route = useRoute()
+    let tabIndex=ref('0')
+    return{
+      tabIndex,
+    }
+
   },
 })
 </script>

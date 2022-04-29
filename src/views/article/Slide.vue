@@ -1,6 +1,6 @@
 <template>
   <div class="Slide">
-    <el-carousel :interval="4000" type="card" height="200px">
+    <el-carousel :interval="2000" type="card" height="200px">
       <el-carousel-item @click="$router.push(`/articleinfo/info/${item.articleId}`)" v-for="(item, index) in articleTopAll" :key="index">
         <div class="imgBox">
           <img :src="item.coverImg" alt="没有图片" />

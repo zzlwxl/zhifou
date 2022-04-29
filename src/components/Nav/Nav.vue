@@ -137,6 +137,7 @@ export default defineComponent({
         path: '/article',
         query: {
           name,
+          id
         },
         params: {
           type,

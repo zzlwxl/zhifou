@@ -2,9 +2,11 @@
   <div class="ArticleList">
     <Nav @chilkEmit="dataByEmit"></Nav>
     <div class="mainBox">
+      <el-affix :offset="50">
       <aside class="left">
         <ArticleLCard></ArticleLCard>
       </aside>
+      </el-affix>
       <main>
         <div class="slide">
           <Slide></Slide>
@@ -19,9 +21,11 @@
           </div>
         </div>
       </main>
+      <el-affix :offset="50">
       <aside class="right">
         <ArticleRCard></ArticleRCard>
       </aside>
+      </el-affix>
     </div>
     <el-backtop :right="10" :bottom="48" />
     <footer>
@@ -151,6 +155,7 @@ export default defineComponent({
         current++
       } else {
         message.warning(articleData.data)
+        loading.value = false
       }
     }
     return {

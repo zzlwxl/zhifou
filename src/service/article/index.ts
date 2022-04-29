@@ -17,9 +17,15 @@ enum Article {
   getAddStar = '/article/star',
   unStar='/article/unStar',
   editArticle='/article/edit',
-  delArticle="/article/del"
+  delArticle="/article/del",
+  getArticleByStars='/article/getStars'
 }
-
+export function getArticleByStars(data:IGetArticleAll){
+  return zzlRequest.get<IDataType>({
+    url:Article.getArticleByStars,
+    data
+  })
+}
 
 export function addArticle(data: IArticle) {
   return zzlRequest.post<IDataType>({

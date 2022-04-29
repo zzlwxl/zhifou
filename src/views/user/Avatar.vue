@@ -1,7 +1,7 @@
 <template>
   <div class="Avatar">
     <el-avatar :size="50" :src="circleUrl ? circleUrl : $store.state.user.userInfo.headImgUrl" />
-    <el-upload class="upload-demo" :headers="headerObj" :action="action" :on-success="handleAvatarSuccess" :show-file-list="false" :on-remove="handleRemove">
+    <el-upload class="upload-demo" :headers="headerObj" :action="action" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :show-file-list="false" :on-remove="handleRemove">
       <el-button style="margin-top:10px" type="primary">更改头像</el-button>
     </el-upload>
   </div>
@@ -10,8 +10,10 @@
 import { defineComponent, ref } from 'vue'
 import type { UploadProps, UploadUserFile } from 'element-plus'
 import message from '../../utils/message'
-// import localCache from '../../utils/cache'
+
 import  localCache from '@/utils/cache'
+import imageTypeMap from '../../utils/imageUplooadType'
+
 import {useStore} from '../../store/index'
 import {BASE_URL} from '../../service/request/config'
 import { editUserInfo } from '../../service/user/user'
@@ -51,8 +53,9 @@ export default defineComponent({
             store.commit('user/changeUserInfo',data.data)
         }
     }
+
     const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-      if (rawFile.type !== 'image/jpeg') {
+      if (!imageTypeMap.has(rawFile.type)) {
         message.warning('请上传jpeg、jpg、png')
         return false
       } else if (rawFile.size / 1024 / 1024 > 2) {
@@ -68,6 +71,7 @@ export default defineComponent({
       action,
       headerObj,
       handleAvatarSuccess,
+      beforeAvatarUpload
     }
   },
 })

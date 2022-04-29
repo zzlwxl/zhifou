@@ -1,6 +1,6 @@
 <template>
   <div class='AuthorInfo'>
-    <el-descriptions direction="vertical" column="1" size="24" border>
+    <el-descriptions direction="vertical" :column="1" border>
         <el-descriptions-item label="博主信息">
             <el-avatar :size="50" :src="userInfo.headImgUrl" />
         </el-descriptions-item>
@@ -15,6 +15,7 @@
 </template>
 <script lang='ts'>
 import { defineComponent,onMounted,ref,nextTick} from 'vue'
+import {useRoute} from 'vue-router'
 
 import {getById} from '../../../service/user/user'
 
@@ -22,10 +23,10 @@ export default defineComponent({
   name: 'AuthorInfo',
   props:['userId'],
   setup(props,content){
+    const route = useRoute()
     const userInfo=ref({})
-
     async function getByIdFun() {
-        const data=await getById(props.userId)
+        const data=await getById(route.params.userid+'')
         nextTick(()=>{
             userInfo.value=data.data
         })

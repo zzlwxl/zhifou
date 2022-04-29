@@ -13,6 +13,8 @@ import Prism from 'prismjs'
 
 import localCache from '../../utils/cache'
 import message from '../../utils/message'
+import imageUplooadType from '../../utils/imageUplooadType'
+
 import {BASE_URL} from '../../service/request/config'
 import {defaultEditContent} from '../../views/article/config/defaultEditContent'
 
@@ -108,7 +110,7 @@ export default defineComponent({
       maxNumberOfFiles: 10,
 
       // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
-      allowedFileTypes: [],
+      allowedFileTypes: ['image/jpeg','image/png','image/jpg'],
 
       // 自定义上传参数，例如传递验证的 token 等。参数会被添加到 formData 中，一起上传到服务端。
       // meta: {
@@ -138,7 +140,6 @@ export default defineComponent({
       // },
       // // 单个文件上传成功之后
       // onSuccess(file: File, res: any) {
-      //   console.log('上哈村')
       //   message.success(`${file.name} 上传成功`)
       // },
       // // 单个文件上传失败

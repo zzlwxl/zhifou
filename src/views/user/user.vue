@@ -6,7 +6,7 @@
       <div class="imgBox">
         <Avatar :headImgUrl="userInfo ? userInfo.headImgUrl : ''"></Avatar>
       </div>
-      <el-descriptions title="用户信息" direction="vertical" column="1" size="24" border>
+      <el-descriptions title="用户信息" direction="vertical" :column="1" border>
         <el-descriptions-item label="用户名">{{ userInfo.userName }}</el-descriptions-item>
         <el-descriptions-item label="昵称">{{ userInfo.nickName }}</el-descriptions-item>
         <el-descriptions-item label="手机号" :span="2">{{ userInfo.phoneNum }}</el-descriptions-item>

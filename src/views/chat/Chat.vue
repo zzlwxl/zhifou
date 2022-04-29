@@ -4,10 +4,10 @@
       <div v-for="(item, index) in messageList" :key="index" class="item">
         <template v-if="item.data.user">
           <div :class="userId===item.data.user.userId ? 'topByUser' : 'top'">
-            <div class="avaImg">
+            <div style="cursor: pointer;" @click.stop="goAuthor(item.data.user.userId)" class="avaImg">
               <el-avatar :size="30" :src="item.data.user.headImgUrl" />
             </div>
-            <span style="margin-left: 4px; margin-right: 4px">{{ item.data.user.nickName }}</span>
+            <span @click.stop="goAuthor(item.data.user.userId)" style="margin-left: 4px; margin-right: 4px;cursor: pointer;">{{ item.data.user.nickName }}</span>
             <span style="margin-left: 4px ; font-size: 12px;">{{item.time}}</span>
           </div>
           <div :class="userId===item.data.user.userId ? 'msgByUser' : 'msg'">{{ item.data.message }}</div>
@@ -132,6 +132,15 @@ export default defineComponent({
       MySocket.sendMessage(msg.value)
       msg.value = ''
     }
+    const goAuthor=(userid:string)=>{
+      router.push({
+        name:'usermenu',
+        path:'/usermenu',
+        params:{
+          userid
+        }
+      })
+    }
     return {
       msg,
       sendBtnFun,
@@ -143,6 +152,7 @@ export default defineComponent({
       isScroll,
       goNewMessageFun,
       messageNum,
+      goAuthor
     }
   },
 })

@@ -8,18 +8,28 @@
         <Chat></Chat>
       </template>
     </LRCard>
+    <LRCard>
+      <template #title>
+        受欢迎Top5
+      </template>
+      <template #content>
+        <AuthorList :isInsertActive="false"></AuthorList>
+      </template>
+    </LRCard>
   </div>
 </template>
 <script lang='ts'>
 import { defineComponent } from 'vue'
 import LRCard from '../../components/LRCard/LRCard.vue'
 import Chat from '../chat/Chat.vue'
+import AuthorList from '../user/cpns/AuthorList.vue'
 
 export default defineComponent({
   name: 'ArticleLCard',
   components:{
       LRCard,
-      Chat
+      Chat,
+      AuthorList
   },
   setup(props,content){
     

@@ -1,12 +1,13 @@
 <template>
   <div class="ReplyOfComment">
     <div class="top">
-      <div>
-        <el-avatar :src="comment.author.headImgUrl" />
+      <div style="cursor: pointer;">
+        <el-avatar @click.stop="goAuthor(comment.author.userId)" :src="comment.author.headImgUrl" />
       </div>
-      <span class="first" v-if="!isReply">{{ nickNameFun(comment.author.nickName) }}:</span>
-      <span class="first" v-else>
-        {{ nickNameFun(comment.author.nickName) }} <span>回复</span><span class="second">{{ nickNameFun(present.nickName) }}:</span></span
+      <span class="first" v-if="!isReply" @click.stop="goAuthor(comment.author.userId)">{{ nickNameFun(comment.author.nickName) }}:</span>
+      <span class="first" v-else @click.stop="goAuthor(comment.author.userId)">
+        {{ nickNameFun(comment.author.nickName) }} <span>回复</span>
+        <span class="second" @click.stop="goAuthor(present.userId)">{{ nickNameFun(present.nickName) }}:</span></span
       >
     </div>
     <div class="content">
@@ -14,22 +15,22 @@
     </div>
     <div class="active">
       <template v-if="!comment.owner">
-        <el-icon :size="size" :color="color">
+        <el-icon>
           <Stopwatch />
         </el-icon>
         <span>{{ formatUtcString(comment.createTime) }}</span>
-        <el-icon :size="size" :color="(starNum === comment.commentStar) === !comment.liked ? color : '#C62828'">
+        <el-icon :color="(starNum === comment.commentStar) === !comment.liked ? '' : '#C62828'">
           <Star />
         </el-icon>
         <span class="commentBtn" v-if="(starNum === comment.commentStar) === !comment.liked" @click.stop="commentStarFun(comment.commentId, false)">{{ `点赞 ${starNum}` }}</span>
         <span class="commentBtn" style="color:#C62828" v-else @click.stop="commentStarFun(comment.commentId, true)">{{ `点赞 ${starNum}` }}</span>
-        <el-icon :size="size">
+        <el-icon>
           <Comment />
         </el-icon>
         <span class="commentBtn" @click.stop="replyFun(comment.commentId)">评论</span>
       </template>
       <template v-else>
-        <el-icon :size="size" :color="(starNum === comment.commentStar) === !comment.liked ? color : '#C62828'">
+        <el-icon  :color="(starNum === comment.commentStar) === !comment.liked ? '' : '#C62828'">
           <DeleteFilled />
         </el-icon>
         <span v-if="!isVirComment" class="commentBtn" @click="delCommentFun(comment.commentId)">删除</span>
@@ -175,6 +176,15 @@ export default defineComponent({
       console.log('切换焦点')
       // isReplyInput.value=!isReplyInput.value
     }
+    const goAuthor=(userid:string)=>{
+      router.push({
+        name:'usermenu',
+        path:'/usermenu',
+        params:{
+          userid
+        }
+      })
+    }
     return {
       replyFun,
       nickNameFun,
@@ -187,7 +197,8 @@ export default defineComponent({
       delCommentFun,
       delVirCommentFun,
       inputRef,
-      test
+      test,
+      goAuthor
     }
   },
 })

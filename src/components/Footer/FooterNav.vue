@@ -4,7 +4,7 @@
       <el-button-group class="ml-4 btnNav">
         <el-button @click="$router.push('/')" class="btn" size="large" :icon="House">首页</el-button>
         <el-button class="btn" size="large" :icon="Wallet"
-          ><el-dropdown trigger="click" @command="handleCommand">
+          ><el-dropdown trigger="click">
             <span class="el-dropdown-link"> 操作 </span>
             <template #dropdown>
               <el-dropdown-menu>

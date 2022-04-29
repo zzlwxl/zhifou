@@ -20,6 +20,7 @@ export interface IGetArticleAll<T=any>{
     size:number
     categoryId?:string
     key?:string
+    userId?:string
 }
 export interface IGetArticleInfo<T=any>{
     articleId:string

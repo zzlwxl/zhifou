@@ -46,7 +46,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/user',
-    component: ()=>import(/* webpackChunkName: "user" */ '../views/user/User.vue'),
+    component: ()=>import(/* webpackChunkName: "user" */ '../views/user/user.vue'),
     meta: {
       login_require: true,
     },

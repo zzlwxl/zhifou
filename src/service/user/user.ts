@@ -12,7 +12,7 @@ enum UserInfo{
   resetPwd='/auth/resetPwd',
   uploadFile='/cos/upload',
   logout='/auth/logout',
-  userById='/user/getById'
+  userById='/user/getById',
 }
 export function GetUserInfo(){
   return zzlRequest.get<IDataType>({
@@ -53,7 +53,6 @@ export function getById(userId:string){
   return zzlRequest.get<IDataType>({
     url:UserInfo.userById,
     data:{userId},
-    noToken:true,
   })
 }
 // export function uploadFile(data:FormData){
