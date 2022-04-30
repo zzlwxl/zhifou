@@ -62,4 +62,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.ArticleLRCard{
+  position: fixed;
+  margin-right: 10px;
+  width: 340px;
+}
+</style>

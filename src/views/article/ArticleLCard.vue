@@ -38,5 +38,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang='less'>
-
+.ArticleLCard{
+  position: fixed;
+  width: 340px;
+}
 </style>
