@@ -143,7 +143,7 @@ export default defineComponent({
       }
       if (articleData.success) {
         message.success('获取文章成功')
-        if (articleData.data.pages === articleData.data.current) {
+        if (articleData.data.pages === articleData.data.current || articleData.data.pages===0) {
           isNullArticle.value = true
         }
         ArticleAllList.value.push(...articleData.data.records)

@@ -11,6 +11,8 @@
               <div></div>
               <span>{{ article.category.categoryName }}</span>
             </div>
+              <slot name="histoyt">
+              </slot>
           </div>
           <div class="title">
             <h1>{{ article.articleTitle }}</h1>
@@ -23,7 +25,7 @@
           <ArticleActive :article="article"></ArticleActive>
         </div>
         <div class="right">
-          <el-icon v-if="isEdit" :size="size" :color="color">
+          <el-icon v-if="isEdit">
             <Edit />
           </el-icon>
           <div v-if="isEdit" @click.stop="editArticle">编辑</div>
@@ -63,7 +65,7 @@ export default defineComponent({
     const router = useRouter()
     const article = props.articleData
     const isEdit = props.isEdit
-    
+
     const clickArticleInfo = (id: string) => {
       router.push(`/articleinfo/info/${id}`)
     }

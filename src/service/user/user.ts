@@ -2,7 +2,7 @@ import zzlRequest from "../index";
 
 import QS from 'qs'
 
-import {IDataType,IUserInfo,IEditPwd,IForgetPwdCode,IResetPwd,IFileForm} from './type'
+import {IDataType,IUserInfo,IEditPwd,IForgetPwdCode,IResetPwd,IFileForm,IGetFollowsAll} from './type'
 
 enum UserInfo{
   Info='/user/info',
@@ -13,6 +13,38 @@ enum UserInfo{
   uploadFile='/cos/upload',
   logout='/auth/logout',
   userById='/user/getById',
+  follow="/user/follow",
+  unFollow="/user/unFollow",
+  getFollows="/user/getFollows",
+  getFans="/user/getFollowers"
+}
+export function getFans(data:IGetFollowsAll){
+  return zzlRequest.get<IDataType>({
+    url:UserInfo.getFans,
+    data
+  })
+}
+export function getFollows(data:IGetFollowsAll){
+  return zzlRequest.get<IDataType>({
+    url:UserInfo.getFollows,
+    data
+  })
+}
+export function unFollow(userId:string){
+  return zzlRequest.get<IDataType>({
+    url:UserInfo.unFollow,
+    data:{
+      userId
+    }
+  })
+}
+export function follow(userId:string){
+  return zzlRequest.get<IDataType>({
+    url:UserInfo.follow,
+    data:{
+      userId
+    }
+  })
 }
 export function GetUserInfo(){
   return zzlRequest.get<IDataType>({

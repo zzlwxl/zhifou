@@ -1,7 +1,16 @@
 <template>
   <div class="ArticleByUserList">
     <template v-for="item in ArticleAllList">
-      <ArticleCard :articleData="item"></ArticleCard>
+      <ArticleCard :articleData="item.article">
+        <template #histoyt>
+          <div class="historyBox">
+           <el-icon>
+            <Calendar />
+          </el-icon>
+          {{formatUtcString(item.visitTime)}}
+          </div>
+        </template>
+      </ArticleCard>
     </template>
     <div class="active">
       <el-button :loading="loading" v-if="!isNullArticle" @click="getArticleAllList" color="#388e3c" style="color: white">加载更多</el-button>
@@ -14,16 +23,20 @@ import { defineComponent, ref, onMounted ,nextTick} from 'vue'
 import ArticleCard from '../../../views/article/ArticleCard.vue'
 import {useRoute} from 'vue-router'
 
-import { getArticleByStars } from '../../../service/article/index'
+import { Calendar } from '@element-plus/icons-vue'
+
+import { getArticleByStars ,getHistory} from '../../../service/article/index'
 
 import { IDataType } from '../../../service/article/type'
 
 import message from '../../../utils/message'
+import { formatUtcString } from '../../../utils/date'
 
 export default defineComponent({
   name: 'ArticleByUserList',
   components: {
     ArticleCard,
+    Calendar
   },
   props: ['type'],
   setup(props, content) {
@@ -48,15 +61,22 @@ export default defineComponent({
       switch(type){
         case 'byStar':
           articleData = await getArticleByStars({ current, size, userId })
+          break
         case 'byHistory':
-          articleData = await getArticleByStars({ current, size, userId })
+          articleData = await getHistory({ current, size, userId })
+          break
         case 'byAuthor':
           articleData = await getArticleByStars({ current, size, userId })
+          break
+        default:
+          isNullArticle.value=true
+          return
       }
       if (articleData.success) {
         message.success('获取文章成功')
-        if (articleData.data.pages === articleData.data.current) {
+        if (articleData.data.pages === articleData.data.current || articleData.data.pages===0) {
           isNullArticle.value = true
+          loading.value=false
         }
         ArticleAllList.value.push(...articleData.data.records)
         console.log(ArticleAllList.value)
@@ -64,6 +84,8 @@ export default defineComponent({
         current++
       } else {
         message.warning(articleData.data)
+        loading.value=false
+        isNullArticle.value=true
       }
     }
     onMounted(() => {
@@ -74,13 +96,17 @@ export default defineComponent({
       ArticleAllList,
       isNullArticle,
       loading,
-      getArticleAllList
+      getArticleAllList,
+      formatUtcString
     }
   },
 })
 </script>
 
 <style scoped lang="less">
+@col1: #2196f3;
+@col2: #388e3c;
+@fontCol: #777;
 .active{
   width: 100%;
   display: flex;
@@ -93,5 +119,10 @@ export default defineComponent({
 }
 .ArticleByUserList::-webkit-scrollbar {
   width: 0;
+}
+.historyBox{
+  color: @fontCol;
+  display: flex;
+  align-items: center;
 }
 </style>

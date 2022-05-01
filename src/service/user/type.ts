@@ -4,7 +4,12 @@ export interface IDataType<T = any> {
   success: boolean,
   data: T,
 }
-
+export interface IGetFollowsAll<T=any>{
+  userId:string
+  current:number,
+  size:number,
+  orderBy?:string
+}
 export interface IUserInfo<T = any> {
   userName?: string,
   nickName?: string,

@@ -13,7 +13,7 @@
         受欢迎Top5
       </template>
       <template #content>
-        <AuthorList :isInsertActive="false"></AuthorList>
+        <AuthorList type="welcomeTop" :isInsertActive="false"></AuthorList>
       </template>
     </LRCard>
   </div>

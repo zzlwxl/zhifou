@@ -18,7 +18,14 @@ enum Article {
   unStar='/article/unStar',
   editArticle='/article/edit',
   delArticle="/article/del",
-  getArticleByStars='/article/getStars'
+  getArticleByStars='/article/getStars',
+  getHistory="/article/getHistory"
+}
+export function getHistory(data:IGetArticleAll){
+  return zzlRequest.get<IDataType>({
+    url:Article.getHistory,
+    data
+  })
 }
 export function getArticleByStars(data:IGetArticleAll){
   return zzlRequest.get<IDataType>({

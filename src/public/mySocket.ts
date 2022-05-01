@@ -31,7 +31,7 @@ export class MySocket{
     }
     //心跳
     static liveHeart(){
-        if(!MySocket.connecting && MySocket.socket.readyState===1){
+        if(MySocket.socket&&!MySocket.connecting && MySocket.socket.readyState===1){
             setInterval(()=>{
                 MySocket.send(WsMsgType.TEST,'心跳')
             },10000)

@@ -2,26 +2,59 @@
   <div class="AuthorCard">
     <div class="authorCardBox">
       <div class="avatar">
-        <el-avatar src="" />
+        <el-avatar :src="authorData.headImgUrl" />
       </div>
       <div class="content">
         <div>身份</div>
-        <span>昵称</span>
+        <span>{{ authorData.nickName }}</span>
         <span>
-        <slot name="userActice">
-        </slot>
+          <slot name="userActice"> </slot>
         </span>
       </div>
-      <el-button style="margin-right: 4px" :type="true ? 'primary' : ''" round>取消关注</el-button>
+      <div class="active">
+        <el-button v-if="!followed" @click.stop="followFun(authorData.userId)" color="#388e3c" style="color: white; margin-left: 4px" :type="true ? 'primary' : ''" round>关注</el-button>
+        <el-button v-else @click.stop="unFollowFun(authorData.userId)" style="margin-left: 4px" :type="true ? 'primary' : ''" round>取消关注</el-button>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+
+import { getById, follow, unFollow } from '../../../service/user/user'
+
+import message from '../../../utils/message'
 
 export default defineComponent({
   name: 'AuthorCard',
-  setup(props, content) {},
+  props: ['authorData'],
+  setup(props, content) {
+    let followed = ref(props.authorData.followed)
+    //关注
+    async function followFun(userId: string) {
+      const data = await follow(userId)
+      if (data.success) {
+        followed.value = true
+      } else {
+        message.error(data.data)
+      }
+    }
+    //取消关注
+    async function unFollowFun(userId: string) {
+      const data = await unFollow(userId)
+      if (data.success) {
+        console.log(data)
+        followed.value = false
+      } else {
+        message.error(data.data)
+      }
+    }
+    return {
+      followed,
+      followFun,
+      unFollowFun,
+    }
+  },
 })
 </script>
 
@@ -36,6 +69,8 @@ export default defineComponent({
   border-radius: 10px;
   display: flex;
   align-items: center;
+  margin-bottom: 1vw;
+  font-size: 12px;
   .avatar {
     cursor: pointer;
     margin-left: 4px;
@@ -45,6 +80,9 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     margin: 0 4px 0 4px;
+  }
+  .active {
+    margin-right: 4px;
   }
 }
 </style>

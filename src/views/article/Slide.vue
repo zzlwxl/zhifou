@@ -37,6 +37,7 @@ export default defineComponent({
 
 <style scoped lang="less">
 .imgBox {
+
   span {
     overflow: hidden;
     -webkit-line-clamp: 1;

@@ -1,8 +1,8 @@
 <template>
   <div class="ArticleTop5List">
     <div class="box" @click="$router.push(`/articleinfo/info/${data.articleId}`)">
-      <div class="link">
-        <el-link>{{ data.articleTitle }}</el-link>
+      <div class="linkBox">
+        <el-link class="link" :underline="false">{{ data.articleTitle }}</el-link>
       </div>
       <div class="active">
         <el-icon v-if="type==='articleTopByViewsType'" class="icon">
@@ -71,9 +71,12 @@ export default defineComponent({
   display: flex;
   cursor: pointer;
   &:hover{
-      background-color: @bgcCol;
+      color: @col1;
+      .link{
+        color: @col1;
+      }
   }
-  .link {
+  .linkBox {
     width: 80%;
   }
   .active {
