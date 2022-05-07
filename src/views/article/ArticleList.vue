@@ -3,7 +3,7 @@
     <Nav @chilkEmit="dataByEmit"></Nav>
     <div class="mainBox">
       <aside class="left">
-        <ArticleLCard></ArticleLCard>
+        <ArticleLListCard></ArticleLListCard>
       </aside>
       <main>
         <div class="slide">
@@ -20,7 +20,7 @@
         </div>
       </main>
       <aside class="right">
-        <ArticleRCard></ArticleRCard>
+        <ArticleRListCard></ArticleRListCard>
       </aside>
     </div>
     <el-backtop :right="10" :bottom="48" />
@@ -36,8 +36,8 @@ import ArticleCard from './ArticleCard.vue'
 import FooterNav from '../../components/Footer/FooterNav.vue'
 import Nav from '../../components/Nav/Nav.vue'
 import Slide from '../article/Slide.vue'
-import ArticleRCard from './ArticleRCard.vue'
-import ArticleLCard from './ArticleLCard.vue'
+import ArticleRListCard from './ArticleRListCard.vue'
+import ArticleLListCard from './ArticleLListCard.vue'
 
 
 import { useRoute, useRouter } from 'vue-router'
@@ -55,8 +55,8 @@ export default defineComponent({
     Slide,
     Nav,
     FooterNav,
-    ArticleRCard,
-    ArticleLCard,
+    ArticleLListCard,
+    ArticleRListCard,
   },
   setup(props, content) {
     const route = useRoute()

@@ -76,8 +76,8 @@ export default defineComponent({
       if (followsData.success) {
         if (followsData.data.pages === followsData.data.current || followsData.data.pages===0) {
           isNullFollow.value = true
+          loading.value=false
         }
-        console.log('关注列表', followsData)
         current++
         loading.value = false
         followsAllList.value.push(...followsData.data.records)

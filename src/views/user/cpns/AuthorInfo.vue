@@ -23,6 +23,7 @@
 <script lang='ts'>
 import { defineComponent,onMounted,ref,nextTick} from 'vue'
 import {useRoute} from 'vue-router'
+import { useStore } from '../../../store/'
 
 import {getById,follow,unFollow} from '../../../service/user/user'
 import message from '../../../utils/message'
@@ -32,6 +33,7 @@ export default defineComponent({
   props:['userId'],
   setup(props,content){
     const route = useRoute()
+    const store=useStore()
     const userInfo=ref({})
     let followed=ref(false)
     async function getByIdFun() {

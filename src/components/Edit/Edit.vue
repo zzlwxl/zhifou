@@ -1,8 +1,13 @@
 <template>
   <div style="border: 1px solid #ccc">
     <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="height: 500px; overflow-y: hidden" v-model="valueHtml" :defaultConfig="editorConfig" :mode="mode" 
-    @onCreated="handleCreated"/>
+    <Editor 
+    style="height: 500px; overflow-y: hidden" 
+    v-model="valueHtml" 
+    :defaultConfig="editorConfig" 
+    :mode="mode" 
+    @onChange="handleChange"
+    @onCreated="handleCreated" />
   </div>
 </template>
 <script lang="ts">
@@ -13,10 +18,12 @@ import Prism from 'prismjs'
 
 import localCache from '../../utils/cache'
 import message from '../../utils/message'
+import {debounce} from '../../utils/debounce'
 import imageUplooadType from '../../utils/imageUplooadType'
+import {htmlToHNode} from '../../utils/htmlToHNode'
 
-import {BASE_URL} from '../../service/request/config'
-import {defaultEditContent} from '../../views/article/config/defaultEditContent'
+import { BASE_URL } from '../../service/request/config'
+import { defaultEditContent } from '../../views/article/config/defaultEditContent'
 
 import { imgUploadServer } from '../../views/article/config/upload'
 
@@ -29,7 +36,7 @@ export default defineComponent({
   setup(props, content) {
     // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef()
-     const action = BASE_URL+'/cos/upload'
+    const action = BASE_URL + '/cos/upload'
 
     // 内容 HTML
     let valueHtml = ref('')
@@ -49,52 +56,9 @@ export default defineComponent({
         })
       }
     })
-
-    // const handleChange = (editor) => {
-    //   console.log('change:', editor.children)
-    // }
-    // const handleDestroyed = (editor) => {
-    //   console.log('destroyed', editor)
-    // }
-    // const handleFocus = (editor) => {
-    //   console.log('focus', editor)
-    // }
-    // const handleBlur = (editor) => {
-    //   console.log('blur', editor)
-    // }
-    // const customAlert = (info, type) => {
-    //   alert(`【自定义提示】${type} - ${info}`)
-    // }
-    // const customPaste = (editor, event, callback) => {
-    //   console.log('ClipboardEvent 粘贴事件对象', event)
-    //   // const html = event.clipboardData.getData('text/html') // 获取粘贴的 html
-    //   // const text = event.clipboardData.getData('text/plain') // 获取粘贴的纯文本
-    //   // const rtf = event.clipboardData.getData('text/rtf') // 获取 rtf 数据（如从 word wsp 复制粘贴）
-
-    //   // 自定义插入内容
-    //   editor.insertText('xxx')
-
-    //   // 返回 false ，阻止默认粘贴行为
-    //   event.preventDefault()
-    //   callback(false) // 返回值（注意，vue 事件的返回值，不能用 return）
-
-    //   // 返回 true ，继续默认的粘贴行为
-    //   // callback(true)
-    // }
-
-    // 模拟 ajax 异步获取内容
-    // onMounted(() => {
-    //   setTimeout(() => {
-    //     valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
-    //   }, 1500)
-    // })
-
     const toolbarConfig: Partial<IToolbarConfig> = {
       excludeKeys: ['uploadVideo'],
     }
-    // console.log('toolbarConfig', toolbarConfig)
-    // editorConfig
-    // const editorConfig = { placeholder: '请输入内容...' ,}
     //上传图片
     type InsertFnType = (url: string, alt?: string, href?: string) => void
     const headerObj = { token: 'zzl_' + localCache.getCache('token') }
@@ -110,22 +74,9 @@ export default defineComponent({
       maxNumberOfFiles: 10,
 
       // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
-      allowedFileTypes: ['image/jpeg','image/png','image/jpg'],
-
-      // 自定义上传参数，例如传递验证的 token 等。参数会被添加到 formData 中，一起上传到服务端。
-      // meta: {
-      //     token: 'xxx',
-      //     otherKey: 'yyy'
-      // },
-
-      // 将 meta 拼接到 url 参数中，默认 false
-      // metaWithUrl: false,
-
+      allowedFileTypes: ['image/jpeg', 'image/png', 'image/jpg'],
       // 自定义增加 http  header
       headers: headerObj,
-
-      // 跨域是否传递 cookie ，默认为 false
-      // withCredentials: true,
 
       // 超时时间，默认为 10 秒
       // timeout: 5 * 1000, // 5 秒
@@ -133,24 +84,16 @@ export default defineComponent({
         // 从 res 中找到 url alt href ，然后插图图片
         insertFn(res.data.fileBaseUrl + res.data.filePath)
       },
-      // 上传进度的回调函数
-      // onProgress(progress: number) {
-      //   // progress 是 0-100 的数字
-      //   console.log('progress', progress)
-      // },
-      // // 单个文件上传成功之后
-      // onSuccess(file: File, res: any) {
-      //   message.success(`${file.name} 上传成功`)
-      // },
-      // // 单个文件上传失败
-      // onFailed(file: File, res: any) {
-      //   message.error(`${file.name} 上传失败`)
-      // },
-      // // 上传错误，或者触发 timeout 超时
-      // onError(file: File, err: any, res: any) {
-      //   message.warning(`${file.name} 上传出错`,)
-      // },
     }
+    
+    //检验编辑的标题格式是否正确
+    const cheak=()=>{
+      const data=htmlToHNode(valueHtml.value)
+      if(!data.success){
+        message.error(data.msg)
+      }
+    }
+    const precheck = debounce(cheak, 1000, true)
 
     // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
@@ -158,10 +101,12 @@ export default defineComponent({
       if (editor == null) return
       editor.destroy()
     })
-
+    const handleChange = (editor: { getAllMenuKeys: () => any }) => { 
+      precheck()
+      }
     const handleCreated = (editor: { getAllMenuKeys: () => any }) => {
       editorRef.value = editor // 记录 editor 实例，重要
-      // console.log(editor.getAllMenuKeys())
+      const editorList=editor
     }
 
     return {
@@ -171,6 +116,7 @@ export default defineComponent({
       toolbarConfig,
       editorConfig,
       handleCreated,
+      handleChange
 
       // handleChange,
       // handleDestroyed,

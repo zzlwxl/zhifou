@@ -40,7 +40,7 @@ class ZZLRequest {
       this.interceptors?.requestInterceptor,
       this.interceptors?.requestInterceptorCatch
     )
-    //响应拦截
+    // 响应拦截
     this.instance.interceptors.response.use(
       this.interceptors?.responseInterceptor,
       this.interceptors?.responseInterceptorCatch
@@ -81,15 +81,18 @@ class ZZLRequest {
         (error) => {
           switch (error.response.status) {
             case 401:
-              message.warning('登录过期,请重新登录')
+              console.log(error.response)
+              error.response.data.data='登录过期,请重新登录'
+              // message.warning('登录过期,请重新登录')
               localCache.deleteCache('token')
               router.push('/login')
               break
             default:
-              message.warning(error.response.msg)
+              error.response.data.data='请求错误'
+              // message.warning(error.response.msg)
               break
           }
-          return error
+          return error.response.data
           // console.log('所有实例都有的响应拦截器-响应失败')
 
           // 移除加载动画

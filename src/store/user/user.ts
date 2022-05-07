@@ -11,6 +11,7 @@ import { IRootState } from '../types'
 import {checkPhone} from '../../utils/checkPhone'
 
 import { MySocket } from '../../public/mySocket'
+import message from '@/utils/message'
 
 const userModule: Module<IUserInfo, IRootState> = {
     namespaced: true,
@@ -34,6 +35,9 @@ const userModule: Module<IUserInfo, IRootState> = {
             if(userData.success ?? false){
                 commit('changeUserInfo',userData.data)
                 MySocket.init(userData.data.userId)
+            }else{
+                console.log(userData)
+                message.warning(userData.data)
             }
         }
     }

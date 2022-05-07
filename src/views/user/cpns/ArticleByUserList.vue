@@ -63,7 +63,7 @@ export default defineComponent({
           articleData = await getArticleByStars({ current, size, userId })
           break
         case 'byHistory':
-          articleData = await getHistory({ current, size, userId })
+          articleData = await getHistory({ current, size, userId ,orderBy:'visitTime.desc'})
           break
         case 'byAuthor':
           articleData = await getArticleByStars({ current, size, userId })
@@ -114,7 +114,6 @@ export default defineComponent({
   margin-bottom: 50px;
 }
 .ArticleByUserList{
-  height: 1000px;
   overflow:scroll;
 }
 .ArticleByUserList::-webkit-scrollbar {

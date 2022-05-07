@@ -3,15 +3,15 @@
     <Nav></Nav>
     <div class="mainBox">
       <aside class="left">左</aside>
-      <div class="userBox">
+      <div class="userBox" ref="userBoxRef">
         <PhoneBackBtn></PhoneBackBtn>
-        <el-tabs v-model="tabIndex" class="demo-tabs">
-          <el-tab-pane label="关于博主"><AuthorInfo v-if="tabIndex==='0'"></AuthorInfo></el-tab-pane>
-          <el-tab-pane label="关注的人"><AuthorList v-if="tabIndex==='1'"></AuthorList></el-tab-pane>
-          <el-tab-pane label="ta的粉丝"><AuthorList type="fan" v-if="tabIndex==='2'"></AuthorList></el-tab-pane>
-          <el-tab-pane label="博主文章"><ArticleByUserList v-if="tabIndex==='3'" ></ArticleByUserList></el-tab-pane>
-          <el-tab-pane label="点赞历史"><ArticleByUserList v-if="tabIndex==='4'" type="byStar"></ArticleByUserList></el-tab-pane>
-          <el-tab-pane label="阅读历史"><ArticleByUserList v-if="tabIndex==='5'" type="byHistory" ></ArticleByUserList></el-tab-pane>
+        <el-tabs style="font-size: 20px" v-model="tabIndex" class="demo-tabs">
+          <el-tab-pane label="关于博主"><AuthorInfo v-if="tabIndex === '0'"></AuthorInfo></el-tab-pane>
+          <el-tab-pane label="关注的人"><AuthorList v-if="tabIndex === '1'"></AuthorList></el-tab-pane>
+          <el-tab-pane label="ta的粉丝"><AuthorList type="fan" v-if="tabIndex === '2'"></AuthorList></el-tab-pane>
+          <el-tab-pane label="博主文章"><ArticleByUserList v-if="tabIndex === '3'"></ArticleByUserList></el-tab-pane>
+          <el-tab-pane label="点赞历史"><ArticleByUserList v-if="tabIndex === '4'" type="byStar"></ArticleByUserList></el-tab-pane>
+          <el-tab-pane label="阅读历史"><ArticleByUserList v-if="tabIndex === '5'" type="byHistory"></ArticleByUserList></el-tab-pane>
         </el-tabs>
         <el-backtop :right="10" :bottom="48" />
       </div>
@@ -22,8 +22,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
-import {useRoute} from 'vue-router'
+import { defineComponent, ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 
 import Nav from '../../components/Nav/Nav.vue'
 import PhoneBackBtn from '../../components/Nav/PhoneBackBtn.vue'
@@ -31,6 +31,7 @@ import FooterNav from '../../components/Footer/FooterNav.vue'
 import AuthorInfo from './cpns/AuthorInfo.vue'
 import ArticleByUserList from './cpns/ArticleByUserList.vue'
 import AuthorList from './cpns/AuthorList.vue'
+import message from '../../utils/message'
 
 export default defineComponent({
   name: 'usermenu',
@@ -40,15 +41,52 @@ export default defineComponent({
     FooterNav,
     AuthorInfo,
     ArticleByUserList,
-    AuthorList
+    AuthorList,
   },
   setup(props, content) {
     const route = useRoute()
-    let tabIndex=ref('0')
-    return{
-      tabIndex,
-    }
+    const userBoxRef = ref<HTMLDivElement>()
+    let tabIndex = ref('0')
+    let isMousedown = ref(false)
+    let x = 0
 
+    // onMounted(() => {
+    //   userBoxRef.value!.addEventListener('touchstart',(e)=>{
+    //     x=e.targetTouches[0].pageX
+    //     isMousedown.value=true
+    //   })
+    //   userBoxRef.value!.addEventListener('Touchend',(e)=>{
+    //     isMousedown.value=false
+    //     x=0
+    //   })
+    //   userBoxRef.value!.addEventListener('touchmove',(e)=>{
+    //     if(isMousedown.value){
+    //       if(x+20 <e.targetTouches[0].pageX && e.targetTouches[0].pageX-x>0){
+    //         if(tabIndex.value==='5'){
+    //           tabIndex.value='0'
+    //           console.log('加右1')
+    //         }else{
+    //           console.log('加2')
+    //           let num=Number(tabIndex.value+'')
+    //           tabIndex.value=(++num)+''
+    //         }
+    //       }else if(x-20 > e.targetTouches[0].pageX && e.targetTouches[0].pageX-x < 0){
+    //         if(tabIndex.value==='0'){
+    //           tabIndex.value='5'
+    //           console.log('减1')
+    //         }else{
+    //           let num=Number(tabIndex.value+'')
+    //           console.log('减2')
+    //           tabIndex.value=(--num)+''
+    //         }
+    //       }
+    //     }
+    //   })
+    // })
+    return {
+      tabIndex,
+      userBoxRef,
+    }
   },
 })
 </script>

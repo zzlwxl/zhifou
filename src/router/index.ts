@@ -91,10 +91,10 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 })
 router.beforeEach((to, from) => {
-  console.log('to', to, 'from', from)
+  // console.log('to', to, 'from', from)
   if (to.meta.login_require && !LocalCache.getCache('token')) {
     return {
       path: '/login',
@@ -102,5 +102,4 @@ router.beforeEach((to, from) => {
     }
   }
 })
-
 export default router

@@ -2,7 +2,7 @@
   <div class="article">
     <div class="articleBox">
       <PhoneBackBtn></PhoneBackBtn>
-      <el-form ref="ruleFormRef" :model="subForm" :rules="isArtcileRules" class="demo-userInfoForm" :size="formSize">
+      <el-form ref="ruleFormRef" :model="subForm" :rules="isArtcileRules" class="demo-userInfoForm">
         <el-form-item label="文章标题" prop="articleTitle">
           <el-input @input="isEditDataFun('articleTitle')" pa v-model="subForm.articleTitle" />
         </el-form-item>
@@ -203,7 +203,8 @@ export default defineComponent({
       isEditDataFun,
       submitFormEdit,
       delArticleFun,
-      inputByEditConent
+      inputByEditConent,
+      editCateId
     }
   },
 })

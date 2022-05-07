@@ -18,7 +18,7 @@ class message{
         ElNotification.error({
             message: tips,
             showClose: true,
-            duration:1500
+            duration:5000
         })
     }
     info(tips:string) {

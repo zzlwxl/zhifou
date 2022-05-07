@@ -21,6 +21,7 @@ export interface IGetArticleAll<T=any>{
     categoryId?:string
     key?:string
     userId?:string
+    orderBy?:string
 }
 export interface IGetArticleInfo<T=any>{
     articleId:string

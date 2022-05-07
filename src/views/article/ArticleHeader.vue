@@ -32,7 +32,6 @@ export default defineComponent({
     let articleData = ref('')
     watchEffect(() => {
       articleData.value = props.article
-      console.log('articleData.value',articleData.value)
     })
 
     return {

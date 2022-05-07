@@ -1,22 +1,25 @@
 <template>
   <div class="ArticleMain">
-    <Nav></Nav>
-    <div class="mainBox">
-      <aside class="left">左</aside>
-      <div class="articleBox">
-        <router-view></router-view>
-      </div>
-      <aside class="right">右</aside>
-    </div>
-    <FooterNav></FooterNav>
-    <footer></footer>
+   <div class="box">
+     <div class="nav-box">
+      <Nav></Nav>
+     </div>
+     <div class="router-box">
+      <router-view></router-view>
+     </div>
+     <div class="footer-box">
+      <FooterNav></FooterNav>
+      <footer></footer>
+     </div>
+   </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+
 import Nav from '../../components/Nav/Nav.vue'
 import FooterNav from '../../components/Footer/FooterNav.vue'
-// import Slide from '../article/Slide.vue'
+import ArticleInfoRCard from '../article/cnps/ArticleInfoRCard.vue'
 import ArticleList from '../article/ArticleList.vue'
 
 export default defineComponent({
@@ -24,7 +27,7 @@ export default defineComponent({
   components: {
     Nav,
     FooterNav,
-    // Slide,
+    ArticleInfoRCard,
     ArticleList,
   },
   setup(props, content) {},
@@ -32,29 +35,23 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.articleBox {
-  width: 100%;
-  height: 100%;
-}
-.mainBox {
-  margin-top: 2vw;
+.box{
   display: flex;
-  width: 100%;
-  justify-content: center;
-}
-
-.left {
-  display: none;
-}
-.right {
-  display: none;
+  flex-direction: column;
+  .nav-box{
+    width: 100%;
+    background-color: blue;
+  }
+  .router-box{
+    // padding-top: 2vw;
+    margin-top: 2vw;
+  }
 }
 @media screen and (min-width: 800px) {
   .right {
     margin-right: 10px;
     margin-top: 2px;
     height: 1000px;
-    background-color: rgb(159, 159, 255);
     display: block;
     width: 440px;
   }
