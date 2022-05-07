@@ -44,9 +44,16 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.ArticleInfoRCard {
-  position: fixed;
-  margin-right: 10px;
-  width: 340px;
+.ArticleInfoRCard{
+
+}
+@media screen and (min-width:800px) {
+  .ArticleInfoRCard {
+    position: fixed;
+    margin-right: 10px;
+    width: 340px;
+    height: 100%;
+    overflow:scroll;
+  }
 }
 </style>

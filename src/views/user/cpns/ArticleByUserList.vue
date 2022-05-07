@@ -120,6 +120,7 @@ export default defineComponent({
   width: 0;
 }
 .historyBox{
+  font-size: 1rem;
   color: @fontCol;
   display: flex;
   align-items: center;

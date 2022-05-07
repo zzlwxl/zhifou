@@ -24,6 +24,12 @@
         <ArticleInfoRCard :cataData="hTHNData" @clickCataEmit="clickCataFun"></ArticleInfoRCard>
       </aside>
     </div>
+    <el-drawer v-model="drawer" size="50%" direction="btt" :show-close="false" :before-close="handleClose">
+      <ArticleInfoRCard :cataData="hTHNData" @clickCataEmit="clickCataFun"></ArticleInfoRCard>
+    </el-drawer>
+    <div class="cataPhoneBtn">
+      <el-button type="primary" @click="drawer = true" round>目录</el-button>
+    </div>
     <el-backtop :right="10" :bottom="48" />
   </div>
 </template>
@@ -55,6 +61,7 @@ export default defineComponent({
   setup(props, content) {
     const router = useRouter()
     const route = useRoute()
+    let drawer = ref(false)
     let articleData = ref({})
     let hTHNData = ref<IResponse>({
       data: {
@@ -70,7 +77,7 @@ export default defineComponent({
         nextTick(() => {
           articleData.value = data.data
           hTHNData.value = htmlToHNode(data.data.articleContent)
-          console.log('h', hTHNData.value)
+
           if (!hTHNData.value.success) {
             // message.error(hTHNData.value.msg)
           }
@@ -96,6 +103,7 @@ export default defineComponent({
       articleData,
       hTHNData,
       clickCataFun,
+      drawer,
     }
   },
 })
@@ -110,6 +118,18 @@ export default defineComponent({
   justify-content: center;
   // margin-top: 2vw;
 }
+.cataPhoneBtn {
+  display: block;
+  margin-left: 4px;
+  position: fixed;
+  bottom: 88px;
+  left: -20px;
+  transition: all 1s;
+  z-index: 1999;
+  &:hover {
+    left: 0;
+  }
+}
 main {
   width: 100%;
   display: flex;
@@ -121,15 +141,16 @@ main {
     justify-content: center;
     margin-top: 10px;
   }
-  @media screen and (min-width: 800px) {
-    .active {
-      bottom: 4px;
-    }
+}
+
+@media screen and (min-width: 800px) {
+  .active {
+    bottom: 4px;
   }
-  .slide {
-    width: 90%;
-    position: relative;
-  }
+}
+.slide {
+  width: 90%;
+  position: relative;
 }
 .left {
   display: none;
@@ -138,6 +159,9 @@ main {
   display: none;
 }
 @media screen and (min-width: 1000px) {
+  .cataPhoneBtn {
+    display: none;
+  }
   main {
     justify-content: center;
     width: 60%;

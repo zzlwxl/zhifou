@@ -33,6 +33,8 @@ export default defineComponent({
   background-color: #fff;
   margin-bottom: 8px;
   padding: 4px;
+  max-height: 400px;
+  overflow:scroll;
   .title{
     color: @col2;
     border-bottom: 1px solid @borderCol;
