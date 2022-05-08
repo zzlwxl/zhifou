@@ -1,6 +1,6 @@
 <template>
   <div class="ArticleCard">
-    <div class="ArticleCardBox" @click="clickArticleInfo(article.articleId)">
+    <div v-if="article" class="ArticleCardBox" @click="clickArticleInfo(article.articleId)">
       <div class="top">
         <img class="img" :src="article.coverImg" alt="没有图片" />
         <div class="contentBox">

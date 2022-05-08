@@ -2,19 +2,23 @@
   <div class="Footer">
     <div class="navBox">
       <el-button-group class="ml-4 btnNav">
-        <el-button @click="$router.push('/')" class="btn" size="large" :icon="House">首页</el-button>
-        <el-button class="btn" size="large" :icon="Wallet"
-          ><el-dropdown trigger="click">
-            <span class="el-dropdown-link"> 操作 </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item @click="$router.push('/create')" command="a" :icon="Edit">创建文章</el-dropdown-item>
-                <el-dropdown-item command="b" @click="searchDialogVisible = !searchDialogVisible" :icon="Search">搜索文章</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown></el-button
-        >
-        <el-button @click="$router.push('/user')" class="btn" size="large" :icon="User">个人中心</el-button>
+        <slot name="one"> <el-button @click="$router.push('/')" class="btn" size="large" :icon="House">首页</el-button></slot>
+        <slot name="two">
+          <el-button class="btn" size="large" :icon="Wallet"
+            ><el-dropdown trigger="click">
+              <span class="el-dropdown-link"> 操作 </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="$router.push('/create')" command="a" :icon="Edit">创建文章</el-dropdown-item>
+                  <el-dropdown-item command="b" @click="searchDialogVisible = !searchDialogVisible" :icon="Search">搜索文章</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown></el-button
+          >
+        </slot>
+        <slot name="three">
+          <el-button @click="$router.push('/user')" class="btn" size="large" :icon="User">个人中心</el-button>
+        </slot>
       </el-button-group>
     </div>
     <el-dialog v-model="searchDialogVisible" width="90%" center>
@@ -35,8 +39,8 @@ export default defineComponent({
   },
   setup(props, content) {
     let searchDialogVisible = ref(false)
-    const isOkSearch=()=>{
-      searchDialogVisible.value=false
+    const isOkSearch = () => {
+      searchDialogVisible.value = false
     }
     return {
       House,
@@ -45,7 +49,7 @@ export default defineComponent({
       Wallet,
       Search,
       searchDialogVisible,
-      isOkSearch
+      isOkSearch,
     }
   },
 })

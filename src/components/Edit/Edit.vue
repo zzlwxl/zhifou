@@ -51,9 +51,9 @@ export default defineComponent({
       }
       if (valueHtml.value) {
         content.emit('inputByEditConentEmit', valueHtml.value)
-        nextTick(() => {
-          Prism.highlightAll()
-        })
+        // nextTick(() => {
+        //   Prism.highlightAll()
+        // })
       }
     })
     const toolbarConfig: Partial<IToolbarConfig> = {

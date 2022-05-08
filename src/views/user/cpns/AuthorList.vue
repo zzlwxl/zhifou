@@ -8,7 +8,7 @@
       </AuthorCard>
     </template>
     <div class="nullBox">
-      <el-button :loading="loading" v-if="!isNullFollow" @click="getFollowsFun" color="#388e3c" style="color: white">加载更多</el-button>
+      <el-button :loading="loading" v-if="!isNullFollow" @click="getFollowsFun" color="#388e3c" style="color: white">加dd载更多</el-button>
       <el-button v-else :disabled="isNullFollow" color="#388e3c" style="color: white">已经到底</el-button>
     </div>
   </div>

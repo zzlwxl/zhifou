@@ -25,7 +25,7 @@ import {useRoute} from 'vue-router'
 
 import { Calendar } from '@element-plus/icons-vue'
 
-import { getArticleByStars ,getHistory} from '../../../service/article/index'
+import { getArticleByStars ,getHistory,getArticleByUser} from '../../../service/article/index'
 
 import { IDataType } from '../../../service/article/type'
 
@@ -47,6 +47,7 @@ export default defineComponent({
     let size = 10
     let isNullArticle = ref(false)
     let loading = ref(false)
+    let isByAuthor=false
     const userId = route.params.userid+''
     function init() {
       loading.value = false
@@ -54,6 +55,7 @@ export default defineComponent({
       ArticleAllList.value.length = 0
       current = 1
       size = 10
+      isByAuthor=false
     }
     async function getArticleAllList() {
       loading.value = true
@@ -66,7 +68,8 @@ export default defineComponent({
           articleData = await getHistory({ current, size, userId ,orderBy:'visitTime.desc'})
           break
         case 'byAuthor':
-          articleData = await getArticleByStars({ current, size, userId })
+          articleData = await getArticleByUser({ current, size, userId })
+          isByAuthor=true
           break
         default:
           isNullArticle.value=true
@@ -78,8 +81,14 @@ export default defineComponent({
           isNullArticle.value = true
           loading.value=false
         }
-        ArticleAllList.value.push(...articleData.data.records)
-        console.log(ArticleAllList.value)
+        if(isByAuthor){
+          Array.from(articleData.data.records).forEach(item=>{
+            ArticleAllList.value.push({'article':item})
+          })
+        }else{
+          ArticleAllList.value.push(...articleData.data.records)
+        }
+        console.log('文章列表',ArticleAllList.value)
         loading.value = false
         current++
       } else {

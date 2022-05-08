@@ -88,7 +88,7 @@ export function getArticleByUser(data: IGetArticleAll){
   return zzlRequest.get<IDataType>({
     url:Article.getArticleByUser,
     data,
-    // noToken:false
+    noToken:false
   })
 }
 export function getArticleByCate(data:IGetArticleAll){

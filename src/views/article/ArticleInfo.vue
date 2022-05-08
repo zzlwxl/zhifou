@@ -34,7 +34,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watchEffect, nextTick, onMounted } from 'vue'
+import { defineComponent, ref, watchEffect, nextTick, onMounted ,onUpdated} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { getArticleInfo } from '../../service/article/index'
@@ -77,17 +77,15 @@ export default defineComponent({
         nextTick(() => {
           articleData.value = data.data
           hTHNData.value = htmlToHNode(data.data.articleContent)
-
-          if (!hTHNData.value.success) {
-            // message.error(hTHNData.value.msg)
-          }
-          Prism.highlightAll()
         })
       } else {
         message.warning(data.data)
       }
     }
     articleInfo(route.params.id)
+    onUpdated(()=>{
+      Prism.highlightAll()
+    })
     //跳转锚点
     const go = (id: string) => {
       //设置hash值,便于保留位置
