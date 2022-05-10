@@ -15,7 +15,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import AuthorCard from './AuthorCard.vue'
 
 import { getFollows, getFans } from '../../../service/user/user'
@@ -41,7 +41,6 @@ export default defineComponent({
   setup(props, content) {
     const isInsertActive = props.isInsertActive
     const route = useRoute()
-    const router = useRouter()
     let current = 1
     let size = 10
     let followsAllList = ref<any>([])

@@ -18,6 +18,14 @@
         <ArticleTop5List v-for="item in articleTopByComments" :key="item.articleId" :data="item" type="articleTopByCommentsType"></ArticleTop5List>
        </template>
     </LRCard>
+      <LRCard>
+      <template #title>
+        备案
+      </template>
+      <template #content>
+        <a href="https://beian.miit.gov.cn/">豫ICP备19046328号-1</a>
+      </template>
+    </LRCard>
   </div>
 </template>
 <script lang="ts">

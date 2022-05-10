@@ -13,7 +13,7 @@ if (process.env.NODE_ENV == 'development') {
 } else if (process.env.NODE_ENV == 'production') {
   WS_URL='wss://api.lddcc.cn/ws'
   BASE_URL = 'https://api.lddcc.cn';
-  alert('网站还在开发中...')
+  // alert('网站还在开发中...')
 } else {
   //test 单元测试
   BASE_URL = '';

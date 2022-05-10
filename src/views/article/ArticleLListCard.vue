@@ -16,6 +16,7 @@
         <AuthorList type="welcomeTop" :isInsertActive="false"></AuthorList>
       </template>
     </LRCard>
+  
   </div>
 </template>
 <script lang='ts'>
