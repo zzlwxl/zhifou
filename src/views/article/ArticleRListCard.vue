@@ -23,15 +23,17 @@
         备案
       </template>
       <template #content>
-        <a href="https://beian.miit.gov.cn/">豫ICP备19046328号-1</a>
+        <a href="https://beian.miit.gov.cn/">{{bev}}</a>
       </template>
     </LRCard>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent ,computed} from 'vue'
+import { defineComponent ,computed,onMounted,ref} from 'vue'
 import LRCard from '../../components/LRCard/LRCard.vue'
 import ArticleTop5List from './ArticleTop5List.vue'
+
+import {useRoute} from 'vue-router'
 
 import { useStore } from '../../store'
 
@@ -43,6 +45,8 @@ export default defineComponent({
   },
   setup(props, content) {
     const store = useStore()
+    const route=useRoute()
+    let bev=ref('')
     const articleTopByViews= computed(()=>{
       return store.state.articleBy.articleTopByViews
     })
@@ -60,11 +64,22 @@ export default defineComponent({
       }
     }
     initLRArticleList()
-
+    const init=()=>{
+      let hrefList=String(location.hostname).split('.')
+      if(hrefList[0]==='zhifou'){
+        bev.value='豫ICP备19046328号-1'
+      }else{
+        bev.value='豫ICP备20010557号-2'
+      }
+    }
+    onMounted(()=>{
+      init()
+    })
     return{
       articleTopByViews,
       articleTopByStars,
-      articleTopByComments
+      articleTopByComments,
+      bev
     }
   },
 })
