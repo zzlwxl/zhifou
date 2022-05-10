@@ -8,7 +8,6 @@
       <router-view></router-view>
      </div>
      <div class="footer-box">
-      <FooterNav></FooterNav>
       <footer></footer>
      </div>
    </div>

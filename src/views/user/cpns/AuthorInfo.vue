@@ -3,9 +3,7 @@
     <el-descriptions direction="vertical" :column="1" border>
         <el-descriptions-item>
           <template #label>
-            博主信息
-            <el-button v-if="!followed" @click.stop="followFun" color="#388e3c" style="color: white ;margin-left: 4px" :type="true ? 'primary' : ''" round>关注</el-button>
-            <el-button v-else @click.stop="unFollowFun" style="margin-left: 4px" :type="true ? 'primary' : ''" round>取消关注</el-button>
+            <div class="label-box"><span>博主信息</span><FollowedItem :userInfo="userInfo"></FollowedItem></div>
           </template>
           <div class="imgTopBox">
             <el-avatar :size="50" :src="userInfo.headImgUrl" />
@@ -25,52 +23,34 @@ import { defineComponent,onMounted,ref,nextTick} from 'vue'
 import {useRoute} from 'vue-router'
 import { useStore } from '../../../store/'
 
+import FollowedItem from './FollowedItem.vue'
+
 import {getById,follow,unFollow} from '../../../service/user/user'
-import message from '../../../utils/message'
+
 
 export default defineComponent({
   name: 'AuthorInfo',
   props:['userId'],
+  components:{
+    FollowedItem
+  },
   setup(props,content){
     const route = useRoute()
-    const store=useStore()
     const userInfo=ref({})
-    let followed=ref(false)
+   
     async function getByIdFun() {
         const data=await getById(route.params.userid+'')
         nextTick(()=>{
             userInfo.value=data.data
-            followed.value=data.data.followed
         })
     }
-    //关注 
-    async function followFun() {
-      const data=await follow(route.params.userid+'')
-      if(data.success){
-        followed.value=true
-      }else{
-        message.error(data.data)
-      }
-    }
-    //取消关注
-    async function unFollowFun() {
-      const data=await unFollow(route.params.userid+'')
-      if(data.success){
-        console.log(data)
-        followed.value=false
-      }else{
-        message.error(data.data)
-      }
-    }
+    
     onMounted(()=>{
         getByIdFun()
     })
 
     return{
         userInfo,
-        followFun,
-        unFollowFun,
-        followed
     }
   }
 })
@@ -81,5 +61,9 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content:space-between;
+}
+.label-box{
+  display: flex;
+  align-items: center;
 }
 </style>

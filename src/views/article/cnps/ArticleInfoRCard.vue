@@ -3,8 +3,7 @@
     <LRCard>
       <template #title> 目录 </template>
       <template #content>
-        <el-tree :default-expand-all="true" :expand-on-click-node="false" v-if="cataData.success" :data="cataData.data.cataList" :props="defaultProps" @node-click="clickCata" />
-        <p v-else>{{ cataData.msg }}</p>
+        <ArticleCataItem :cataData="cataData" @cataItemEmit="cataItemFun"></ArticleCataItem>
       </template>
     </LRCard>
   </div>
@@ -13,6 +12,7 @@
 import { defineComponent, watchEffect } from 'vue'
 
 import LRCard from '../../../components/LRCard/LRCard.vue'
+import ArticleCataItem from './ArticleCataItem.vue'
 
 export default defineComponent({
   name: 'ArticleInfoRCard',
@@ -20,33 +20,20 @@ export default defineComponent({
   emits:['clickCataEmit'],
   components: {
     LRCard,
+    ArticleCataItem
   },
   setup(props, content) {
-    interface Tree {
-        hName:string,
-        label: string,
-        hType:string,
-        children?: Tree[]
-    }
-    const defaultProps = {
-      children: 'children',
-      label: 'label',
-    }
-    const clickCata=(data:Tree)=>{
-        content.emit('clickCataEmit',data.hName)
+    const cataItemFun=(hName:string)=>{
+        content.emit('clickCataEmit',hName)
     }
     return{
-        defaultProps,
-        clickCata
+        cataItemFun
     }
   },
 })
 </script>
 
 <style scoped lang="less">
-.ArticleInfoRCard{
-
-}
 @media screen and (min-width:800px) {
   .ArticleInfoRCard {
     position: fixed;

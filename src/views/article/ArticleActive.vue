@@ -11,27 +11,18 @@
         <el-icon class="icon">
           <View />
         </el-icon>
-
-        {{ '浏览 ' + article.articleViews }}
+        {{ article.articleViews }}
       </div>
-      <div class="active">
-        <el-icon class="icon">
-          <ChatDotRound />
-        </el-icon>
-        {{ '评论 ' + article.articleComments }}
-      </div>
-      <div v-if="(starNum === article.articleStar) == !article.liked" class="active" @click.stop="addStarFun(article.articleId)">
-        <el-icon class="icon" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
-          <Star />
-        </el-icon>
-        {{ `点赞 ${starNum}` }}
-      </div>
-      <div v-else class="active" style="color: #c62828" @click.stop="unStarFun(article.articleId)">
-        <el-icon class="icon" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
-          <Star />
-        </el-icon>
-        {{ `点赞 ${starNum}` }}
-      </div>
+      <slot name="comment">
+        <div class="active">
+          <CommentItem :article="article"></CommentItem>
+        </div>
+      </slot>
+      <slot name="star">
+        <div class="active">
+          <StarItem :article="article"></StarItem>
+        </div>
+      </slot>
       <div class="active" @click.stop="goAuthor">
         <slot name="author"> </slot>
       </div>
@@ -40,16 +31,16 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, watchEffect } from 'vue'
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 
 import { formatUtcString } from '../../utils/date'
 
 import { getAddStar, unStar } from '../../service/article/index'
 
-import message from '../../utils/message'
+import CommentItem from './cnps/CommentItem.vue'
+import StarItem from './cnps/StarItem.vue'
 
 import { Edit, Stopwatch, View, ChatDotRound, Star } from '@element-plus/icons-vue'
-
 
 export default defineComponent({
   name: 'ArticleActive',
@@ -58,56 +49,23 @@ export default defineComponent({
     Edit,
     Stopwatch,
     View,
-    ChatDotRound,
-    Star,
+    CommentItem,
+    StarItem,
   },
   setup(props, content) {
     const router = useRouter()
-    let starNum = ref(0)
-    const color = '#777'
-    watchEffect(() => {
-      starNum.value = props.article?.articleStar
-    })
-    const addStarFun = (id: string) => {
-      addStar(id)
-    }
-    async function addStar(id: string) {
-      const data = await getAddStar({ articleId: id })
-      if (data.success) {
-        message.success('点赞成功')
-        starNum.value++
-      } else {
-        message.warning(data.data)
-      }
-    }
-    const unStarFun = (id: string) => {
-      deleteStar(id)
-    }
-    async function deleteStar(id: string) {
-      const data = await unStar(id)
-      if (data.success) {
-        message.success('取消点赞成功')
-        starNum.value--
-      } else {
-        message.warning(data.data)
-      }
-    }
-    const goAuthor=()=>{
+    const goAuthor = () => {
       router.push({
-        name:'usermenu',
-        path:'/usermenu',
-        params:{
-          userid:props.article.author.userId
-        }
+        name: 'usermenu',
+        path: '/usermenu',
+        params: {
+          userid: props.article.author.userId,
+        },
       })
     }
     return {
-      addStarFun,
-      unStarFun,
       formatUtcString,
-      starNum,
-      color,
-      goAuthor
+      goAuthor,
     }
   },
 })
@@ -128,7 +86,7 @@ export default defineComponent({
     display: flex;
     color: @fontCol;
   }
-  .active:nth-child(n+3){
+  .active:nth-child(n + 3) {
     cursor: pointer;
   }
 }

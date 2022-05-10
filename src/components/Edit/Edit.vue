@@ -51,9 +51,6 @@ export default defineComponent({
       }
       if (valueHtml.value) {
         content.emit('inputByEditConentEmit', valueHtml.value)
-        // nextTick(() => {
-        //   Prism.highlightAll()
-        // })
       }
     })
     const toolbarConfig: Partial<IToolbarConfig> = {
@@ -117,13 +114,6 @@ export default defineComponent({
       editorConfig,
       handleCreated,
       handleChange
-
-      // handleChange,
-      // handleDestroyed,
-      // handleFocus,
-      // handleBlur,
-      // customAlert,
-      // customPaste,
     }
   },
 })

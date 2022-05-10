@@ -12,8 +12,7 @@
         </span>
       </div>
       <div class="active">
-        <el-button v-if="!followed" @click.stop="followFun(authorData.userId)" color="#388e3c" style="color: white; margin-left: 4px" :type="true ? 'primary' : ''" round>关注</el-button>
-        <el-button v-else @click.stop="unFollowFun(authorData.userId)" style="margin-left: 4px" :type="true ? 'primary' : ''" round>取消关注</el-button>
+        <FollowedItem :userInfo="authorData"></FollowedItem>
       </div>
     </div>
   </div>
@@ -25,35 +24,15 @@ import { getById, follow, unFollow } from '../../../service/user/user'
 
 import message from '../../../utils/message'
 
+import FollowedItem from './FollowedItem.vue'
+
 export default defineComponent({
   name: 'AuthorCard',
   props: ['authorData'],
+  components:{
+    FollowedItem
+  },
   setup(props, content) {
-    let followed = ref(props.authorData.followed)
-    //关注
-    async function followFun(userId: string) {
-      const data = await follow(userId)
-      if (data.success) {
-        followed.value = true
-      } else {
-        message.error(data.data)
-      }
-    }
-    //取消关注
-    async function unFollowFun(userId: string) {
-      const data = await unFollow(userId)
-      if (data.success) {
-        console.log(data)
-        followed.value = false
-      } else {
-        message.error(data.data)
-      }
-    }
-    return {
-      followed,
-      followFun,
-      unFollowFun,
-    }
   },
 })
 </script>

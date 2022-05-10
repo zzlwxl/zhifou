@@ -2,10 +2,12 @@
   <div class="Footer">
     <div class="navBox">
       <el-button-group class="ml-4 btnNav">
-        <slot name="one"> <el-button @click="$router.push('/')" class="btn" size="large" :icon="House">首页</el-button></slot>
+        <slot name="one"> 
+          <el-button @click="$router.push('/')" class="btn" size="large" :icon="House">首页</el-button>
+        </slot>
         <slot name="two">
-          <el-button class="btn" size="large" :icon="Wallet"
-            ><el-dropdown trigger="click">
+          <el-button class="btn" size="large" :icon="Wallet">
+            <el-dropdown trigger="click">
               <span class="el-dropdown-link"> 操作 </span>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -13,8 +15,7 @@
                   <el-dropdown-item command="b" @click="searchDialogVisible = !searchDialogVisible" :icon="Search">搜索文章</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
-            </el-dropdown></el-button
-          >
+            </el-dropdown></el-button>
         </slot>
         <slot name="three">
           <el-button @click="$router.push('/user')" class="btn" size="large" :icon="User">个人中心</el-button>
@@ -75,7 +76,7 @@ export default defineComponent({
     justify-content: space-around;
     background-color: rgb(237, 237, 237);
   }
-  @media screen and (min-width: 800px) {
+  @media screen and (min-width: 1000px) {
     .navBox {
       display: none;
     }
