@@ -20,10 +20,18 @@
     </LRCard>
       <LRCard>
       <template #title>
-        备案
+        关于我们
       </template>
       <template #content>
         <a href="https://beian.miit.gov.cn/">{{bev}}</a>
+      </template>
+    </LRCard>
+    <LRCard>
+      <template #title>
+        赞助我们
+      </template>
+      <template #content>
+        <el-button @click="$router.push('/pay')" type="primary">赞助我们</el-button>
       </template>
     </LRCard>
   </div>

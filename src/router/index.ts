@@ -83,6 +83,11 @@ const routes: Array<RouteRecordRaw> = [
     component:()=>import('../components/Socket/Socket.vue')
   },
   {
+    path:'/pay',
+    name:'pay',
+    component:()=>import('../components/Pay/Pay.vue')
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
     component: () => import('../views/main/NotFound.vue')
