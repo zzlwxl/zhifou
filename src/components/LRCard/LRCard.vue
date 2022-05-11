@@ -1,5 +1,6 @@
 <template>
   <div class='LRCard'>
+    <el-scrollbar max-height="400px">
     <div class="cardBox">
       <div class="title">
         <slot name="title">标题</slot>
@@ -10,6 +11,7 @@
         </slot>
       </div>
     </div>
+    </el-scrollbar>
   </div>
 </template>
 <script lang='ts'>
@@ -33,8 +35,6 @@ export default defineComponent({
   background-color: #fff;
   margin-bottom: 8px;
   padding: 4px;
-  max-height: 400px;
-  overflow:scroll;
   .title{
     color: @col2;
     border-bottom: 1px solid @borderCol;

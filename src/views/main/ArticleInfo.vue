@@ -1,16 +1,16 @@
 <template>
   <div class="ArticleMain">
-   <div class="box">
-     <div class="nav-box">
-      <Nav></Nav>
-     </div>
-     <div class="router-box">
-      <router-view></router-view>
-     </div>
-     <div class="footer-box">
-      <footer></footer>
-     </div>
-   </div>
+    <div class="box">
+      <div class="nav-box">
+        <Nav></Nav>
+      </div>
+      <div class="router-box">
+        <router-view></router-view>
+      </div>
+      <div class="footer-box">
+        <footer></footer>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -34,15 +34,13 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.box{
+.box {
   display: flex;
   flex-direction: column;
-  .nav-box{
+  .nav-box {
     width: 100%;
-    background-color: blue;
   }
-  .router-box{
-    // padding-top: 2vw;
+  .router-box {
     margin-top: 2vw;
   }
 }

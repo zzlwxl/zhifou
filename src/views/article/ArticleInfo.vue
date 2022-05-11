@@ -5,7 +5,7 @@
         <ArticleLListCard></ArticleLListCard>
       </aside>
       <main>
-        <div class="slide">
+        <el-scrollbar @scroll="scrollFun" ref="scrollbarRef" :max-height="screenHeight" class="main-box">
           <div class="contentBox">
             <div class="header">
               <ArticleHeader :article="articleData"></ArticleHeader>
@@ -18,7 +18,7 @@
               <CommentsCard :articleId="articleData.articleId"></CommentsCard>
             </div>
           </div>
-        </div>
+        </el-scrollbar>
       </main>
       <aside class="right">
         <ArticleInfoRCard :cataData="hTHNData" @clickCataEmit="clickCataFun"></ArticleInfoRCard>
@@ -29,12 +29,15 @@
         <el-button class="btn"><StarItem :article="articleData"></StarItem></el-button>
       </template>
       <template #two>
-        <el-button v-if="isShowBackByComment" class="btn" @click="backByComment"><el-icon class="icon"> <Switch /> </el-icon></el-button>
+        <el-button v-if="isShowBackByComment" class="btn" @click="backByComment"
+          ><el-icon class="icon"> <Switch /> </el-icon
+        ></el-button>
         <el-button v-else @click.stop="goCommentByArticle" class="btn"><CommentItem @click.stop="goCommentByArticle" :article="articleData"></CommentItem></el-button>
       </template>
       <template #three>
         <el-button class="btn" @click="drawer = true">
-          <el-icon class="icon"> <Operation /> </el-icon></el-button>
+          <el-icon class="icon"> <Operation /> </el-icon
+        ></el-button>
       </template>
     </FooterNav>
     <el-drawer v-model="drawer" size="50%" direction="btt" :show-close="false">
@@ -47,7 +50,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watchEffect, nextTick, onMounted, onUpdated ,onUnmounted} from 'vue'
+import { defineComponent, ref, watchEffect, nextTick, onMounted, onUpdated, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { getArticleInfo } from '../../service/article/index'
@@ -57,6 +60,7 @@ import Prism from 'prismjs'
 import message from '../../utils/message'
 import { htmlToHNode } from '../../utils/htmlToHNode'
 import type { IResponse } from '../../utils/htmlToHNode'
+import type { ElScrollbar } from 'element-plus'
 
 import ArticleLListCard from './ArticleLListCard.vue'
 import ArticleInfoRCard from '../article/cnps/ArticleInfoRCard.vue'
@@ -67,7 +71,7 @@ import StarItem from './cnps/StarItem.vue'
 import CommentItem from './cnps/CommentItem.vue'
 import ArticleCataItem from './cnps/ArticleCataItem.vue'
 
-import { Operation,Switch } from '@element-plus/icons-vue'
+import { Operation, Switch } from '@element-plus/icons-vue'
 
 export default defineComponent({
   name: 'ArticleInfo',
@@ -81,14 +85,16 @@ export default defineComponent({
     CommentItem,
     ArticleCataItem,
     Operation,
-    Switch
+    Switch,
   },
   setup(props, content) {
     const router = useRouter()
     const route = useRoute()
+    const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
     let drawer = ref(false)
-    let screenData = 0
-    let isShowBackByComment=ref(false) //是否展示返回正文按钮
+    let screenData:number = 0
+    let screenHeight = ref(0)
+    let isShowBackByComment = ref(false) //是否展示返回正文按钮
     let isFirst = true //首次根据保存的hash值滚动
     let articleData = ref({
       articleId: '',
@@ -118,10 +124,8 @@ export default defineComponent({
         go(hashStr.substr(1, hashStr.length))
       }
     })
-
     //跳转锚点
     const go = (id: string) => {
-      console.log('跳了几次')
       //设置hash值,便于保留位置
       router.push(`/articleinfo/info/${articleData.value!.articleId}#${id}`)
       nextTick(() => {
@@ -132,39 +136,37 @@ export default defineComponent({
     //接收到目录组件点击的目录项
     const clickCataFun = (data: string) => {
       isFirst = false
-      screenData=0
-      isShowBackByComment.value=false
+      screenData = 0
+      isShowBackByComment.value = false
       go(data)
     }
     const init = () => {
       isFirst = true
-      screenData=0
-      isShowBackByComment.value=false
+      screenData = 0
+      isShowBackByComment.value = false
       router.push(`/articleinfo/info/${articleData.value!.articleId}`)
     }
-    const computedPageYOffset=()=>{
-      if(!isShowBackByComment.value){
-        screenData = window.pageYOffset
+    const scrollFun = (data: any) => {
+      if (!isShowBackByComment.value) {
+        screenData = data.scrollTop
       }
     }
+    //获取屏幕高度
+    const getScreenHight = () => {
+      screenHeight.value = window.innerHeight
+    }
     onMounted(() => {
-      window.addEventListener('scroll',computedPageYOffset)
-    })
-    onUnmounted(()=>{
-      window.removeEventListener('scroll',computedPageYOffset)
+      getScreenHight()
     })
     //从评论里返回到正文
-    const backByComment=()=>{
-      isShowBackByComment.value=false
-      window.scrollTo({
-        top:screenData,
-        left:0,
-        behavior:'smooth'
-      })
+    const backByComment = () => {
+      isShowBackByComment.value = false
+      scrollbarRef.value!.setScrollTop(Number(screenData))
     }
     //从正文去到评论
-    const goCommentByArticle=()=>{
-      isShowBackByComment.value=true
+    const goCommentByArticle = () => {
+      isFirst = false
+      isShowBackByComment.value = true
       go('comment')
     }
     return {
@@ -175,7 +177,10 @@ export default defineComponent({
       init,
       backByComment,
       isShowBackByComment,
-      goCommentByArticle
+      goCommentByArticle,
+      scrollFun,
+      screenHeight,
+      scrollbarRef,
     }
   },
 })
@@ -188,7 +193,6 @@ export default defineComponent({
 .mainBox {
   display: flex;
   justify-content: center;
-  // margin-top: 2vw;
 }
 .cataPhoneBtn {
   display: block;
@@ -223,7 +227,7 @@ main {
     bottom: 4px;
   }
 }
-.slide {
+.main-box {
   width: 90%;
   position: relative;
 }
