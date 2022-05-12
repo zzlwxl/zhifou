@@ -1,5 +1,5 @@
 <template>
-  <div class="ArticleInfo">
+  <div class="ArticleInfo" ref="articleInfoRef">
     <div class="mainBox">
       <aside class="left">
         <ArticleLListCard></ArticleLListCard>
@@ -18,12 +18,14 @@
               <CommentsCard :articleId="articleData.articleId"></CommentsCard>
             </div>
           </div>
+          <!-- <el-backtop @click="init" :right="10" :bottom="5" /> -->
         </el-scrollbar>
       </main>
       <aside class="right">
         <ArticleInfoRCard :cataData="hTHNData" @clickCataEmit="clickCataFun"></ArticleInfoRCard>
       </aside>
     </div>
+    
     <FooterNav>
       <template #one>
         <el-button class="btn"><StarItem :article="articleData"></StarItem></el-button>
@@ -46,7 +48,6 @@
       </template>
       <ArticleCataItem :cataData="hTHNData" @cataItemEmit="clickCataFun"></ArticleCataItem>
     </el-drawer>
-    <el-backtop @click="init" :right="10" :bottom="48" />
   </div>
 </template>
 <script lang="ts">
@@ -61,6 +62,7 @@ import message from '../../utils/message'
 import { htmlToHNode } from '../../utils/htmlToHNode'
 import type { IResponse } from '../../utils/htmlToHNode'
 import type { ElScrollbar } from 'element-plus'
+import {debounce} from '../../utils/debounce'
 
 import ArticleLListCard from './ArticleLListCard.vue'
 import ArticleInfoRCard from '../article/cnps/ArticleInfoRCard.vue'
@@ -91,8 +93,9 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
     const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
+    const articleInfoRef=ref<HTMLDivElement>()
     let drawer = ref(false)
-    let screenData:number = 0
+    let screenData: number = 0
     let screenHeight = ref(0)
     let isShowBackByComment = ref(false) //是否展示返回正文按钮
     let isFirst = true //首次根据保存的hash值滚动
@@ -119,18 +122,24 @@ export default defineComponent({
     articleInfo(route.params.id)
     onUpdated(() => {
       Prism.highlightAll()
-      if (route.hash && isFirst) {
-        const hashStr = route.hash
-        go(hashStr.substr(1, hashStr.length))
-      }
+       if (route.hash && isFirst && hTHNData.value.data.domStr!=='') {
+          console.log('数据更新2')
+          console.log('准备滚动1')
+          const hashStr = route.hash
+          go(hashStr.substr(1, hashStr.length))
+        }
     })
     //跳转锚点
     const go = (id: string) => {
       //设置hash值,便于保留位置
-      router.push(`/articleinfo/info/${articleData.value!.articleId}#${id}`)
       nextTick(() => {
-        var element = document.getElementById(id) as HTMLElement
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        let element = document.getElementById(id) as HTMLElement
+        if(element){
+          console.log('准备滚动2',id)
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          isFirst = false
+          router.push(`/articleinfo/info/${articleData.value!.articleId}#${id}`)
+        }
       })
     }
     //接收到目录组件点击的目录项
@@ -155,6 +164,7 @@ export default defineComponent({
     const getScreenHight = () => {
       screenHeight.value = window.innerHeight
     }
+    // const getScreenHightCheck=debounce(getScreenHight,1000,false)
     onMounted(() => {
       getScreenHight()
     })
@@ -181,6 +191,7 @@ export default defineComponent({
       scrollFun,
       screenHeight,
       scrollbarRef,
+      articleInfoRef
     }
   },
 })
