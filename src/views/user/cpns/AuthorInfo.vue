@@ -19,9 +19,11 @@
   </div>
 </template>
 <script lang='ts'>
-import { defineComponent,onMounted,ref,nextTick} from 'vue'
-import {useRoute} from 'vue-router'
-import { useStore } from '../../../store/'
+import { defineComponent,onMounted,ref,nextTick,watchEffect} from 'vue'
+import {useRoute,useRouter} from 'vue-router'
+import { useStore} from '../../../store/'
+
+import message from '../../../utils/message'
 
 import FollowedItem from './FollowedItem.vue'
 
@@ -36,19 +38,23 @@ export default defineComponent({
   },
   setup(props,content){
     const route = useRoute()
-    const userInfo=ref({})
-   
+    const router = useRouter()
+    let userInfo=ref({})
     async function getByIdFun() {
         const data=await getById(route.params.userid+'')
-        nextTick(()=>{
-            userInfo.value=data.data
-        })
+        if(data.success){
+          nextTick(()=>{
+              userInfo.value=data.data
+          })
+        }else{
+          message.error(data.data)
+        }
     }
-    
-    onMounted(()=>{
+    watchEffect(()=>{
+      if(route.params.userid){
         getByIdFun()
+      }
     })
-
     return{
         userInfo,
     }

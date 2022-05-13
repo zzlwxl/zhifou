@@ -22,7 +22,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue'
+import { defineComponent, ref, computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 
 import Nav from '../../components/Nav/Nav.vue'
@@ -48,8 +48,11 @@ export default defineComponent({
     const userBoxRef = ref<HTMLDivElement>()
     let tabIndex = ref('0')
     let isMousedown = ref(false)
-    let x = 0
-
+    watchEffect(()=>{
+      if(route.params.userid){
+        tabIndex.value='0'
+      }
+    })
     // onMounted(() => {
     //   userBoxRef.value!.addEventListener('touchstart',(e)=>{
     //     x=e.targetTouches[0].pageX

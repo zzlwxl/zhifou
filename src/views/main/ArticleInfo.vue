@@ -44,28 +44,4 @@ export default defineComponent({
     margin-top: 2vw;
   }
 }
-@media screen and (min-width: 800px) {
-  .right {
-    margin-right: 10px;
-    margin-top: 2px;
-    height: 1000px;
-    display: block;
-    width: 440px;
-  }
-  .left {
-    display: none;
-  }
-}
-@media screen and (min-width: 1600px) {
-  .left {
-    margin-left: 10px;
-    margin-top: 2px;
-    height: 1000px;
-    background-color: rgb(150, 255, 150);
-    width: 440px;
-    display: block;
-  }
-  .articleBox {
-  }
-}
 </style>

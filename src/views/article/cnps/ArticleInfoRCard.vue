@@ -1,6 +1,12 @@
 <template>
   <div class="ArticleInfoRCard">
     <LRCard>
+      <template #title> 生涯 </template>
+      <template #content>
+        <CollectItem :authorData="authorData"></CollectItem>
+      </template>
+    </LRCard>
+    <LRCard>
       <template #title> 目录 </template>
       <template #content>
         <ArticleCataItem :cataData="cataData" @cataItemEmit="cataItemFun"></ArticleCataItem>
@@ -13,14 +19,16 @@ import { defineComponent, watchEffect } from 'vue'
 
 import LRCard from '../../../components/LRCard/LRCard.vue'
 import ArticleCataItem from './ArticleCataItem.vue'
+import CollectItem from './CollectItem.vue'
 
 export default defineComponent({
   name: 'ArticleInfoRCard',
-  props: ['cataData'],
+  props: ['cataData','authorData'],
   emits:['clickCataEmit'],
   components: {
     LRCard,
-    ArticleCataItem
+    ArticleCataItem,
+    CollectItem
   },
   setup(props, content) {
     const cataItemFun=(hName:string)=>{
@@ -40,7 +48,6 @@ export default defineComponent({
     margin-right: 10px;
     width: 340px;
     height: 100%;
-    overflow:scroll;
   }
 }
 </style>

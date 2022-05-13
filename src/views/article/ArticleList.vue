@@ -202,10 +202,10 @@ main {
 .right {
   display: none;
 }
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 800px) {
   main {
     justify-content: center;
-    width: 60%;
+    width: 50%;
   }
   .right {
     display: block;
@@ -217,7 +217,7 @@ main {
     display: none;
   }
 }
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 1400px) {
   .left {
     height: 1000px;
     margin-left: 10px;

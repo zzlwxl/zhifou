@@ -16,7 +16,14 @@ enum UserInfo{
   follow="/user/follow",
   unFollow="/user/unFollow",
   getFollows="/user/getFollows",
-  getFans="/user/getFollowers"
+  getFans="/user/getFollowers",
+  getAuthorCollect="/article/getData"
+}
+export function getAuthorCollect(userId:string){
+  return zzlRequest.get<IDataType>({
+    url:UserInfo.getAuthorCollect,
+    data:{userId}
+  })
 }
 export function getFans(data:IGetFollowsAll){
   return zzlRequest.get<IDataType>({

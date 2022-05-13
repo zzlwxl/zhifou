@@ -1,6 +1,6 @@
 <template>
   <div class="AuthorCard">
-    <div class="authorCardBox">
+    <div class="authorCardBox" @click="goAuthor">
       <div class="avatar">
         <el-avatar :src="authorData.headImgUrl" />
       </div>
@@ -19,6 +19,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import {useRouter} from 'vue-router'
 
 import { getById, follow, unFollow } from '../../../service/user/user'
 
@@ -33,6 +34,19 @@ export default defineComponent({
     FollowedItem
   },
   setup(props, content) {
+    const router = useRouter()
+    const goAuthor = () => {
+      router.push({
+        name: 'usermenu',
+        path: '/usermenu',
+        params: {
+          userid: props.authorData.userId,
+        },
+      })
+    }
+    return{
+      goAuthor
+    }
   },
 })
 </script>
@@ -50,6 +64,7 @@ export default defineComponent({
   align-items: center;
   margin-bottom: 1vw;
   font-size: 12px;
+  cursor: pointer;
   .avatar {
     cursor: pointer;
     margin-left: 4px;

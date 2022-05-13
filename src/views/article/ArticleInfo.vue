@@ -18,17 +18,17 @@
               <CommentsCard :articleId="articleData.articleId"></CommentsCard>
             </div>
           </div>
-          <!-- <el-backtop @click="init" :right="10" :bottom="5" /> -->
+          <!-- <el-backtop @click="一天init" :right="10" :bottom="5" /> -->
         </el-scrollbar>
       </main>
       <aside class="right">
-        <ArticleInfoRCard :cataData="hTHNData" @clickCataEmit="clickCataFun"></ArticleInfoRCard>
+        <ArticleInfoRCard :cataData="hTHNData" :authorData="articleData.author" @clickCataEmit="clickCataFun"></ArticleInfoRCard>
       </aside>
     </div>
     
     <FooterNav>
       <template #one>
-        <el-button class="btn"><StarItem :article="articleData"></StarItem></el-button>
+        <el-button class="btn"><StarItem style="width:100%;height:100%" :article="articleData"></StarItem></el-button>
       </template>
       <template #two>
         <el-button v-if="isShowBackByComment" class="btn" @click="backByComment"
@@ -123,8 +123,6 @@ export default defineComponent({
     onUpdated(() => {
       Prism.highlightAll()
        if (route.hash && isFirst && hTHNData.value.data.domStr!=='') {
-          console.log('数据更新2')
-          console.log('准备滚动1')
           const hashStr = route.hash
           go(hashStr.substr(1, hashStr.length))
         }
@@ -135,7 +133,6 @@ export default defineComponent({
       nextTick(() => {
         let element = document.getElementById(id) as HTMLElement
         if(element){
-          console.log('准备滚动2',id)
           element.scrollIntoView({ behavior: 'smooth', block: 'center' })
           isFirst = false
           router.push(`/articleinfo/info/${articleData.value!.articleId}#${id}`)
@@ -254,7 +251,7 @@ main {
   }
   main {
     justify-content: center;
-    width: 60%;
+    width: 50%;
   }
   .right {
     display: block;
@@ -266,7 +263,7 @@ main {
     display: none;
   }
 }
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 1400px) {
   .left {
     height: 1000px;
     margin-left: 10px;

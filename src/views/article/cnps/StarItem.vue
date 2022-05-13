@@ -4,13 +4,13 @@
       <el-icon class="icon" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
         <Star />
       </el-icon>
-      {{ `${starNum}` }}
+      {{ `${starNum ? starNum : 0}` }}
     </div>
     <div v-else class="active" style="color: #c62828" @click.stop="unStarFun(article.articleId)">
       <el-icon class="icon" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
         <Star />
       </el-icon>
-      {{ `${starNum}` }}
+      {{ `${starNum ? starNum : 0}` }}
     </div>
   </div>
 </template>

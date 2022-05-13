@@ -15,6 +15,9 @@ a {
 a:hover {
   color: #388e3c;
 }
+div {
+  color: #263238;
+}
 .ArticleInfo .article_box .info-box p {
   font-size: 14px;
 }

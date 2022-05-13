@@ -1,5 +1,6 @@
 <template>
   <div class="ArticleLRCard">
+    <el-scrollbar max-height="800px">
     <LRCard>
       <template #title> 高阅读量 </template>
       <template #content> 
@@ -34,6 +35,7 @@
         <el-button @click="$router.push('/pay')" type="primary">赞助我们</el-button>
       </template>
     </LRCard>
+    </el-scrollbar>
   </div>
 </template>
 <script lang="ts">
