@@ -24,12 +24,12 @@
         <div class="left">
           <ArticleActive :article="article"></ArticleActive>
         </div>
-        <div class="right">
+        <span class="right">
           <el-icon v-if="isEdit">
             <Edit />
           </el-icon>
           <div v-if="isEdit" @click.stop="editArticle">编辑</div>
-        </div>
+        </span>
       </div>
     </div>
   </div>

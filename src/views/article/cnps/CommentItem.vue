@@ -1,10 +1,10 @@
 <template>
-  <div class="CommentItem" @click.stop="$router.push(`/articleinfo/info/${article.articleId}#comment`)">
+  <span class="CommentItem" @click.stop="$router.push(`/articleinfo/info/${article.articleId}#comment`)">
     <el-icon class="icon">
       <ChatDotRound />
     </el-icon>
     {{ article ? article.articleComments : 0 }}
-  </div>
+  </span>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'

@@ -1,18 +1,18 @@
 <template>
-  <div class="StarItem">
-    <div v-if="(starNum === article.articleStar) == !article.liked" class="active" @click.stop="addStarFun(article.articleId)">
+  <span class="StarItem">
+    <span v-if="(starNum === article.articleStar) == !article.liked" class="active" @click.stop="addStarFun(article.articleId)">
       <el-icon class="icon" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
         <Star />
       </el-icon>
       {{ `${starNum ? starNum : 0}` }}
-    </div>
-    <div v-else class="active" style="color: #c62828" @click.stop="unStarFun(article.articleId)">
+    </span>
+    <span v-else class="active" style="color: #c62828" @click.stop="unStarFun(article.articleId)">
       <el-icon class="icon" :color="(starNum === article.articleStar) == !article.liked ? color : '#C62828'">
         <Star />
       </el-icon>
       {{ `${starNum ? starNum : 0}` }}
-    </div>
-  </div>
+    </span>
+  </span>
 </template>
 <script lang="ts">
 import { defineComponent, ref, watchEffect } from 'vue'

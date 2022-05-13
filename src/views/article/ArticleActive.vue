@@ -14,18 +14,18 @@
         {{ article.articleViews }}
       </div>
       <slot name="comment">
-        <div class="active">
+        <sapn class="active">
           <CommentItem :article="article"></CommentItem>
-        </div>
+        </sapn>
       </slot>
       <slot name="star">
-        <div class="active">
+        <span class="active">
           <StarItem :article="article"></StarItem>
-        </div>
+        </span>
       </slot>
-      <div class="active" @click.stop="goAuthor">
+      <span class="active" @click.stop="goAuthor">
         <slot name="author"> </slot>
-      </div>
+      </span>
     </div>
   </div>
 </template>
