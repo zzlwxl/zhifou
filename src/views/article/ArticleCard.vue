@@ -2,7 +2,7 @@
   <div class="ArticleCard">
     <div v-if="article" class="ArticleCardBox" @click="clickArticleInfo(article.articleId)">
       <div class="top">
-        <img class="img" :src="article.coverImg" alt="没有图片" />
+        <img class="img" :src="article.coverImg ? article.coverImg : 'https://file.lddcc.cn/h.jpg'" />
         <div class="contentBox">
           <div class="top-cate-box">
             <div class="cate">{{ article.author.nickName }}</div>

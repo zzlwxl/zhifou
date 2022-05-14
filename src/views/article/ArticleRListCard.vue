@@ -1,6 +1,6 @@
 <template>
   <div class="ArticleLRCard">
-    <el-scrollbar max-height="800px">
+    <el-scrollbar max-height="600px">
     <LRCard>
       <template #title> 高阅读量 </template>
       <template #content> 
@@ -19,7 +19,7 @@
         <ArticleTop5List v-for="item in articleTopByComments" :key="item.articleId" :data="item" type="articleTopByCommentsType"></ArticleTop5List>
        </template>
     </LRCard>
-      <LRCard>
+      <!-- <LRCard>
       <template #title>
         关于我们
       </template>
@@ -34,7 +34,7 @@
       <template #content>
         <el-button @click="$router.push('/pay')" type="primary">赞助我们</el-button>
       </template>
-    </LRCard>
+    </LRCard> -->
     </el-scrollbar>
   </div>
 </template>

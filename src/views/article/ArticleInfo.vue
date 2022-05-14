@@ -28,16 +28,16 @@
     
     <FooterNav>
       <template #one>
-        <el-button class="btn"><StarItem style="width:100%;height:100%" :article="articleData"></StarItem></el-button>
+        <el-button size="large" class="btn"><StarItem style="width:100%;height:100%" :article="articleData"></StarItem></el-button>
       </template>
       <template #two>
-        <el-button v-if="isShowBackByComment" class="btn" @click="backByComment"
+        <el-button size="large" v-if="isShowBackByComment" class="btn" @click="backByComment"
           ><el-icon class="icon"> <Switch /> </el-icon
         ></el-button>
-        <el-button v-else @click.stop="goCommentByArticle" class="btn"><CommentItem @click.stop="goCommentByArticle" :article="articleData"></CommentItem></el-button>
+        <el-button v-else size="large" @click.stop="goCommentByArticle" class="btn"><CommentItem @click.stop="goCommentByArticle" :article="articleData"></CommentItem></el-button>
       </template>
       <template #three>
-        <el-button class="btn" @click="drawer = true">
+        <el-button size="large" class="btn" @click="drawer = true">
           <el-icon class="icon"> <Operation /> </el-icon
         ></el-button>
       </template>

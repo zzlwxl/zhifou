@@ -338,7 +338,7 @@ export default defineComponent({
     height: 18px;
   }
 }
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 1400px) {
   .messagePhoneBtn {
     display: none;
   }

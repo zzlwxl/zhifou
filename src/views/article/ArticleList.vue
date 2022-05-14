@@ -176,10 +176,10 @@ export default defineComponent({
   justify-content: center;
 }
 main {
-  height: 1000px;
   display: flex;
   justify-content: center;
-  // margin: 0 auto;
+  height: 1000px;
+  // min-width: 470px;
   .active {
     height: 80px;
     display: flex;
