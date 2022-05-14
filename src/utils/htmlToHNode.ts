@@ -83,45 +83,17 @@ export function htmlToHNode(data:string):IResponse{
             //递增标签值
             count=Number(strList[2])+1;
             (item as HTMLHeadingElement).setAttribute('id',hMap[item.nodeName as 'H1'])
-            switch(item.nodeName){
-                case 'H1':
-                    const cataItem1Map=new CreateCataMap(hMap[item.nodeName as 'H1'],(item as HTMLHeadingElement).innerText as string,item.nodeName as string,[])
-                    cataList.push(cataItem1Map)
-                    break
-                case 'H2':
-                    const cataItem2Map=new CreateCataMap(hMap[item.nodeName as 'H2'],(item as HTMLHeadingElement).innerText as string,item.nodeName as string,[])
-                    const data2= searchParent(cataList,cataItem2Map,0)
-                    if(!data2.success){
-                        isHaveError=true
-                        dataError= data2
-                    }
-                    break
-                case 'H3':
-                    const cataItem3Map=new CreateCataMap(hMap[item.nodeName as 'H3'],(item as HTMLHeadingElement).innerText as string,item.nodeName as string,[])
-                    const data3= searchParent(cataList,cataItem3Map,1)
-                    if(!data3.success){
-                        isHaveError=true
-                        dataError= data3
-                    }
-                    break
-                case 'H4':
-                    const cataItem4Map=new CreateCataMap(hMap[item.nodeName as 'H4'],(item as HTMLHeadingElement).innerText as string,item.nodeName as string,[])
-                    const data4= searchParent(cataList,cataItem4Map,2)
-                    if(!data4.success){
-                        isHaveError=true
-                        dataError= data4
-                    }
-                    break
-                case 'H5':
-                    const cataItem5Map=new CreateCataMap(hMap[item.nodeName as 'H5'],(item as HTMLHeadingElement).innerText as string,item.nodeName as string,[])
-                    const data5= searchParent(cataList,cataItem5Map,3)
-                    if(!data5.success){
-                        isHaveError=true
-                        dataError= data5
-                    }
-                    break
-                default:
-                    return new ResponseData(false, '操作失败',{cataList,domStr:''})
+            let hNum=Number(item.nodeName.split('H')[1])
+            if(hNum===1){
+                const cataItem1Map=new CreateCataMap(hMap[item.nodeName as 'H1'],(item as HTMLHeadingElement).innerText as string,item.nodeName as string,[])
+                cataList.push(cataItem1Map)
+            }else{
+                const cataItemOtherMap=new CreateCataMap(hMap[item.nodeName as 'H2'],(item as HTMLHeadingElement).innerText as string,item.nodeName as string,[])
+                const data= searchParent(cataList,cataItemOtherMap,hNum-2)
+                if(!data.success){
+                    isHaveError=true
+                    dataError= data
+                }
             }
             //更新map里的标签值,方便下次使用
             hMap[item.nodeName as 'H1']=strList[0] + '-' + strList[1] + '-' + count
